@@ -1,11 +1,8 @@
 package edu.wgu.dmadmin.controller;
 
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,13 +22,10 @@ import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
 import edu.wgu.dmadmin.domain.security.User;
 import edu.wgu.dmadmin.domain.user.UserListResponse;
 import edu.wgu.dmadmin.domain.user.UserResponse;
-import edu.wgu.dmadmin.exception.UserIdNotFoundException;
 import edu.wgu.dmadmin.service.DirectoryService;
 import edu.wgu.dmadmin.service.UserManagementService;
-import edu.wgu.dmadmin.util.IdentityUtil;
 import edu.wgu.dmaudit.audit.Audit;
 import edu.wgu.security.authz.annotation.HasAnyRole;
-import edu.wgu.security.authz.annotation.IgnoreAuthorization;
 import edu.wgu.security.authz.annotation.Secured;
 
 /**
@@ -47,24 +41,6 @@ public class UserManagementController {
 
     @Autowired
     private DirectoryService directoryService;
-
-    @Autowired
-    private IdentityUtil iUtil;
-
-    @Audit
-    @IgnoreAuthorization
-    @RequestMapping(value = "/person", method = RequestMethod.GET)
-    public ResponseEntity<Person> getPerson(HttpServletRequest request) throws UserIdNotFoundException, ParseException {
-        return ResponseEntity.ok(this.userService.getPersonFromRequest(request, this.iUtil.getUserId()));
-    }
-
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.USER_SEARCH)
-    @RequestMapping(value = "/person/bannerId/{bannerId}", method = RequestMethod.GET)
-    public ResponseEntity<Person> getPerson(@PathVariable final String bannerId) {
-        return ResponseEntity.ok(this.userService.getPersonByUserId(bannerId));
-    }
 
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
