@@ -35,9 +35,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SecurityAdminControllerTest {
+public class SecurityControllerTest {
     @InjectMocks
-    private SecurityAdminController securityAdminController;
+    private SecurityController securityAdminController;
 
     @Mock
     private SecurityService securityService;

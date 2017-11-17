@@ -37,11 +37,11 @@ public class LdapLookup {
 	@Cacheable(cacheNames="ldap.groups")
 	public LdapGroup getGroup(String groupName) {
 		try {
-			ldapTemplate.setIgnorePartialResultException(true);
-			LdapGroup group = ldapTemplate.findOne(
-					query().base(ldapGroupBase)
+			this.ldapTemplate.setIgnorePartialResultException(true);
+			LdapGroup group = this.ldapTemplate.findOne(
+					query().base(this.ldapGroupBase)
 			         .where("objectclass").is("group")
-			         .and(groupLookupAttribute).is(groupName),
+			         .and(this.groupLookupAttribute).is(groupName),
 			         LdapGroup.class);
 			return group;
 		} catch(EmptyResultDataAccessException e) {
@@ -54,11 +54,11 @@ public class LdapLookup {
 	@Cacheable(cacheNames="ldap.users")
 	public List<LdapUser> getUsers(String userName) {
 		try {
-			ldapTemplate.setIgnorePartialResultException(true);
-			List<LdapUser> users = ldapTemplate.find(
-					query().base(ldapUserBase)
+			this.ldapTemplate.setIgnorePartialResultException(true);
+			List<LdapUser> users = this.ldapTemplate.find(
+					query().base(this.ldapUserBase)
 					.where("objectclass").is("person")
-					.and(userLookupAttribute).is(userName),
+					.and(this.userLookupAttribute).is(userName),
 					LdapUser.class);
 			return users;
 		} catch(EmptyResultDataAccessException e) {

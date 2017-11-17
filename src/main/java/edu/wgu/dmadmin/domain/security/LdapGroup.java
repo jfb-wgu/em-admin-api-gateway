@@ -1,6 +1,7 @@
 package edu.wgu.dmadmin.domain.security;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.naming.Name;
@@ -33,6 +34,11 @@ public final class LdapGroup implements Serializable {
     private Set<Name> members;
 
     public String getCommonName() {
-        return LdapUtils.getStringValue(dn, dn.size()-1);
+        return LdapUtils.getStringValue(this.dn, this.dn.size()-1);
+    }
+    
+    public Set<Name> getMembers() {
+    		if (this.members == null) this.members = new HashSet<>();
+    		return this.members;
     }
 }

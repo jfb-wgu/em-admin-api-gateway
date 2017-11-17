@@ -2,8 +2,6 @@ package edu.wgu.dmadmin.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 
-import edu.wgu.dmadmin.domain.security.User;
-
 /**
  * @author Jessica Pamdeth
  */

@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 
-import edu.wgu.dmadmin.domain.security.User;
-
 /**
  * @author Jessica Pamdeth
  */

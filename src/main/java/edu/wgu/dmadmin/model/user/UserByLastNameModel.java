@@ -1,4 +1,4 @@
-package edu.wgu.dmadmin.model.security;
+package edu.wgu.dmadmin.model.user;
 
 import com.datastax.driver.mapping.annotations.PartitionKey;
 import com.datastax.driver.mapping.annotations.Table;
@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @Table(keyspace = "dm", name = "user_by_last_name", readConsistency = "QUORUM", writeConsistency = "QUORUM")
 public class UserByLastNameModel extends UserModel {
 
-    @PartitionKey(0)
-    public String getLastName() {
-    	return lastName;
-    }
+	@PartitionKey(0)
+	public String getLastName() {
+		return this.lastName;
+	}
 
-    @PartitionKey(1)
-    public String getUserId() {
-    	return userId;
-    }
+	@PartitionKey(1)
+	public String getUserId() {
+		return this.userId;
+	}
 }

@@ -37,8 +37,8 @@ public class RoleModel {
 	Date dateUpdated;
 	
 	public Set<UUID> getPermissions() {
-		if (permissions == null) permissions = new HashSet<UUID>();
-		return permissions;
+		if (this.permissions == null) this.permissions = new HashSet<UUID>();
+		return this.permissions;
 	}
 	
 	public RoleModel(Role role) {

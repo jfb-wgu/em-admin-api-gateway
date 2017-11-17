@@ -1,52 +1,37 @@
 package edu.wgu.dmadmin.service;
 
-import java.text.ParseException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nimbusds.jwt.SignedJWT;
-
-import edu.wgu.dmadmin.domain.security.Person;
-import edu.wgu.dmadmin.domain.security.User;
+import edu.wgu.dmadmin.domain.user.Person;
+import edu.wgu.dmadmin.domain.user.User;
 import edu.wgu.dmadmin.exception.UserNotFoundException;
 import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.security.UserByIdModel;
-import edu.wgu.dmadmin.model.security.UserModel;
+import edu.wgu.dmadmin.model.user.UserByIdModel;
+import edu.wgu.dmadmin.model.user.UserModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dreammachine.model.publish.TaskModel;
-import net.minidev.json.JSONObject;
 
 @Service
 public class UserManagementService {
 	PersonService personService;
-	DirectoryService directoryService;
 	CassandraRepo cassandraRepo;
 	
 	@Autowired
 	public void setCassandraRepo(CassandraRepo repo) {
 		this.cassandraRepo = repo;
 	}
-	
+
 	@Autowired 
 	public void setPersonService(PersonService pService) {
 		this.personService = pService;
-	}
-	
-	@Autowired 
-	public void setDirectoryService(DirectoryService dService) {
-		this.directoryService = dService;
 	}
 	
 	private static Logger logger = LoggerFactory.getLogger(UserManagementService.class);
@@ -103,42 +88,6 @@ public class UserManagementService {
 				.sorted()
 				.collect(Collectors.toList());
 	}
-	
-	public Person getPersonFromRequest(HttpServletRequest request, String userId) throws ParseException {
-		Person person = new Person();
-		String auth = request.getHeader("authorization");
-		
-		if (auth != null) {
-			String jwtToken = auth.substring(6, auth.length());
-			JSONObject json = SignedJWT.parse(jwtToken).getPayload().toJSONObject();
-			person.setPidm(Long.valueOf(json.get("wguPIDM").toString()));
-			person.setUsername(json.get("username").toString());
-			person.setFirstName(json.get("givenName").toString());
-			person.setLastName(json.get("sn").toString());
-			person.setStudentId(json.get("wguBannerID").toString());
-	
-			if ("Employee".equals(json.get("wguLevelOneRole").toString())) {
-				person.setIsEmployee(Boolean.TRUE);
-				person.setUserInfo(this.cassandraRepo.getUser(person.getUserId()).orElseThrow(() -> new UserNotFoundException(userId)));
-			} else {
-				person.setIsEmployee(Boolean.FALSE);
-			}
-			
-			return person;
-		}
-		return getPersonByUserId(userId);
-	}
-	
-	@SuppressWarnings("boxing")
-	public Person getPersonByUserId(String userId) {
-		Person person = this.personService.getPersonByBannerId(userId);
-		
-		if (person.getIsEmployee()) {
-			person.setUserInfo(this.cassandraRepo.getUser(userId).orElseThrow(() -> new UserNotFoundException(userId)));
-		}
-		
-		return person;
-	}
 
 	public UserModel createUser(String username) {
 		Person person = this.personService.getPersonByUsername(username);
@@ -150,26 +99,5 @@ public class UserManagementService {
 		this.cassandraRepo.saveUser(model);
 		
 		return this.cassandraRepo.getUser(model.getUserId()).get();
-	}
-	
-	public Set<Person> getMissingUsers(String groupName) {
-		Set<String> accountNames = this.directoryService.getMembersForGroup(groupName).stream().map(member -> member.getSAMAccountName()).collect(Collectors.toSet());
-		Set<Person> missing = new HashSet<Person>();
-		
-		accountNames.forEach(account -> {
-			try {
-				logger.debug("Looking up user: " + account);
-				Optional<Person> user = Optional.of(this.personService.getPersonByUsername(account));
-				if (user.isPresent()) {
-					Person person = user.get();
-					if (!this.cassandraRepo.getUser(person.getUserId()).isPresent()) 
-						missing.add(person);
-				}
-			} catch(Exception e) {
-				logger.debug(e.getMessage());
-			}
-		});
-		
-		return missing;
 	}
 }

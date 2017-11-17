@@ -8,6 +8,10 @@ import com.datastax.driver.mapping.Result;
 import com.datastax.driver.mapping.annotations.Accessor;
 import com.datastax.driver.mapping.annotations.Query;
 
+import edu.wgu.dmadmin.model.user.UserByFirstNameModel;
+import edu.wgu.dmadmin.model.user.UserByIdModel;
+import edu.wgu.dmadmin.model.user.UserByLastNameModel;
+
 @Accessor
 public interface SecurityAccessor {
     @Query("SELECT * FROM dm.user_by_id")

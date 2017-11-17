@@ -2,6 +2,7 @@ package edu.wgu.dmadmin.service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,15 +20,32 @@ import org.springframework.stereotype.Service;
 import edu.wgu.dmadmin.domain.security.LdapGroup;
 import edu.wgu.dmadmin.domain.security.LdapLookup;
 import edu.wgu.dmadmin.domain.security.LdapUser;
+import edu.wgu.dmadmin.domain.user.Person;
+import edu.wgu.dmadmin.repo.CassandraRepo;
 
 @Service
 public class DirectoryService {
+	PersonService personService;
+	CassandraRepo cassandraRepo;
+	LdapLookup lookup;
+	
+	@Autowired
+	public void setCassandraRepo(CassandraRepo repo) {
+		this.cassandraRepo = repo;
+	}
+
+	@Autowired 
+	public void setPersonService(PersonService pService) {
+		this.personService = pService;
+	}
+	
+	@Autowired
+	public void setLdapLookup(LdapLookup ldapLookup) {
+		this.lookup = ldapLookup;
+	}
 	
 	private static Logger logger = LoggerFactory.getLogger(DirectoryService.class);
 
-	@Autowired
-	private LdapLookup lookup;
-	
 	@Value("${ldap.group.dmAdmin}")
 	private String adminGroup;
 	
@@ -49,17 +67,39 @@ public class DirectoryService {
 		}
 		
 		Set<LdapUser> users = new HashSet<LdapUser>();
-		members.forEach(member -> {
+		for (Name member : members) {
 			users.addAll(this.lookup.getUsers(LdapUtils.getStringValue(member, member.size()-1)));
-		});
+		}
 		
 		try {
 			LdapName ldapGroup = new LdapName(groupName);
-			users.stream().filter(user -> user.getGroups().contains(ldapGroup)).collect(Collectors.toSet());
+			users = users.stream().filter(user -> user.getGroups().contains(ldapGroup)).collect(Collectors.toSet());
 		} catch(InvalidNameException e) {
 			logger.debug(Arrays.toString(e.getStackTrace()));
 		}
 		
 		return users;
+	}
+	
+	
+	public Set<Person> getMissingUsers(String groupName) {
+		Set<String> accountNames = getMembersForGroup(groupName).stream().map(member -> member.getSAMAccountName()).collect(Collectors.toSet());
+		Set<Person> missing = new HashSet<Person>();
+		
+		accountNames.forEach(account -> {
+			try {
+				logger.debug("Looking up user: " + account);
+				Optional<Person> user = Optional.of(this.personService.getPersonByUsername(account));
+				if (user.isPresent()) {
+					Person person = user.get();
+					if (!this.cassandraRepo.getUser(person.getUserId()).isPresent()) 
+						missing.add(person);
+				}
+			} catch(Exception e) {
+				logger.debug(e.getMessage());
+			}
+		});
+		
+		return missing;
 	}
 }

@@ -1,7 +1,6 @@
 package edu.wgu.dmadmin.controller;
 
 import java.util.Arrays;
-import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.wgu.dmadmin.domain.security.LdapUser;
 import edu.wgu.dmadmin.domain.security.Permissions;
-import edu.wgu.dmadmin.domain.security.Person;
-import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
-import edu.wgu.dmadmin.domain.security.User;
+import edu.wgu.dmadmin.domain.user.User;
 import edu.wgu.dmadmin.domain.user.UserListResponse;
 import edu.wgu.dmadmin.domain.user.UserResponse;
-import edu.wgu.dmadmin.service.DirectoryService;
 import edu.wgu.dmadmin.service.UserManagementService;
 import edu.wgu.dmaudit.audit.Audit;
+import edu.wgu.dreammachine.domain.security.SecureByPermissionStrategy;
 import edu.wgu.security.authz.annotation.HasAnyRole;
 import edu.wgu.security.authz.annotation.Secured;
 
@@ -38,9 +34,6 @@ public class UserManagementController {
 
     @Autowired
     private UserManagementService userService;
-
-    @Autowired
-    private DirectoryService directoryService;
 
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
@@ -94,21 +87,5 @@ public class UserManagementController {
     public ResponseEntity<UserListResponse> getUsersForTask(@PathVariable final UUID taskId) {
         UserListResponse result = new UserListResponse(this.userService.getUsersForTask(taskId));
         return new ResponseEntity<UserListResponse>(result, HttpStatus.OK);
-    }
-
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.DIRECTORY_SEARCH)
-    @RequestMapping(value = "/users/ldap/{group}", method = RequestMethod.GET)
-    public ResponseEntity<Set<LdapUser>> getMembersForGroup(@PathVariable final String group) {
-        return new ResponseEntity<Set<LdapUser>>(this.directoryService.getMembersForGroup(group), HttpStatus.OK);
-    }
-
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.DIRECTORY_SEARCH)
-    @RequestMapping(value = "/users/ldap/{group}/missing", method = RequestMethod.GET)
-    public ResponseEntity<Set<Person>> getMissingGroupMembers(@PathVariable final String group) {
-        return new ResponseEntity<Set<Person>>(this.userService.getMissingUsers(group), HttpStatus.OK);
     }
 }

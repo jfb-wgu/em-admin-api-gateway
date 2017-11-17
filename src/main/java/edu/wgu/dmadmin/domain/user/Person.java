@@ -1,4 +1,4 @@
-package edu.wgu.dmadmin.domain.security;
+package edu.wgu.dmadmin.domain.user;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import edu.wgu.dmadmin.model.security.UserByIdModel;
+import edu.wgu.dmadmin.model.user.UserByIdModel;
 import lombok.Data;
 
 @Data
@@ -60,12 +60,12 @@ public class Person implements Serializable {
    @JsonInclude(value=Include.NON_EMPTY)
    public String getStudentId() {
 	   if (this.isEmployee) return "";
-	   return studentId;
+	   return this.studentId;
    }
    
    @JsonInclude(value=Include.NON_EMPTY)
    public String getUserId() {
-	   if (this.isEmployee) return studentId;
+	   if (this.isEmployee) return this.studentId;
 	   return "";
    }
    

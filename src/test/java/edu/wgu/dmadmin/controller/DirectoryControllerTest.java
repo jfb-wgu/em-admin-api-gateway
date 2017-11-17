@@ -1,21 +1,18 @@
 package edu.wgu.dmadmin.controller;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
+import javax.naming.Name;
+import javax.naming.ldap.LdapName;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,29 +22,27 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.wgu.dmadmin.domain.security.LdapUser;
 import edu.wgu.dmadmin.domain.user.Person;
 import edu.wgu.dmadmin.domain.user.User;
-import edu.wgu.dmadmin.domain.user.UserListResponse;
-import edu.wgu.dmadmin.domain.user.UserResponse;
 import edu.wgu.dmadmin.model.user.UserModel;
-import edu.wgu.dmadmin.service.UserManagementService;
+import edu.wgu.dmadmin.service.DirectoryService;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dmadmin.util.IdentityUtil;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserManagementControllerTest {
+public class DirectoryControllerTest {
     @InjectMocks
-    private UserManagementController controller;
+    private DirectoryController controller;
 
     @Mock
-    private UserManagementService userService;
+    private DirectoryService directoryService;
 
     @Mock
     private IdentityUtil iUtil;
@@ -56,7 +51,6 @@ public class UserManagementControllerTest {
     ObjectMapper mapper = new ObjectMapper();
 
     private String userId = "123456";
-    private UUID taskId = UUID.randomUUID();
 
     private Person person;
     private Set<UUID> teams;
@@ -130,123 +124,61 @@ public class UserManagementControllerTest {
         this.user.setPermissions(permissions);
         this.user.setTasks(tasks);
     }
-    
+
     @Test
-    public void testGetUser() throws Exception {
-        String url = "/v1/users/" + this.userId;
+    public void testGetMembersForGroup() throws Exception {
+        String group = "admin";
+        String url = "/v1/users/ldap/" + group;
 
-        UserResponse userResponse = new UserResponse(this.user);
+        LdapName ldapName = new LdapName("cn=Mango,ou=Fruits,o=Food");
 
-        when(this.userService.getUser(this.userId)).thenReturn(this.user);
+        Set<Name> names = new HashSet<>();
+        names.add(ldapName);
+
+        Set<LdapUser> ldapUsers = new HashSet<>();
+        LdapUser ldapUser = new LdapUser();
+        ldapUser.setSAMAccountName("Accoutname");
+        ldapUser.setGivenName("givenName");
+        ldapUser.setGroups(names);
+        ldapUser.setDn(ldapName);
+        ldapUser.setMailNickname("MainNickName");
+        ldapUser.setName("Name");
+        ldapUser.setSn("sn");
+        ldapUser.setUserPrincipalName("Priciple Name");
+        ldapUsers.add(ldapUser);
+
+        when(this.directoryService.getMembersForGroup(group)).thenReturn(ldapUsers);
 
         MvcResult result = this.mockMvc.perform(get(url))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        assertEquals(this.mapper.writeValueAsString(userResponse), result.getResponse().getContentAsString());
+        assertEquals(this.mapper.writeValueAsString(ldapUsers), result.getResponse().getContentAsString());
 
         ArgumentCaptor<String> arg1 = ArgumentCaptor.forClass(String.class);
 
-        verify(this.userService).getUser(arg1.capture());
-        assertEquals(this.userId, arg1.getValue());
+        verify(this.directoryService).getMembersForGroup(arg1.capture());
+        assertEquals(group, arg1.getValue());
     }
 
     @Test
-    public void testAddUsers() throws Exception {
-        String url = "/v1/users";
+    public void testGetMissingGroupMembers() throws Exception {
+        String group = "admin";
+        String url = "/v1/users/ldap/" + group + "/missing";
 
-        User[] userArray = new User[1];
-        userArray[0] = this.user;
+        Set<Person> userSet = new HashSet<>();
+        userSet.add(this.person);
 
-        doNothing().when(this.userService).addUsers(Arrays.asList(userArray));
-
-        this.mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(userArray)))
-                .andExpect(status().isNoContent())
-                .andReturn();
-
-        ArgumentCaptor<List> arg1 = ArgumentCaptor.forClass(List.class);
-
-        verify(this.userService).addUsers(arg1.capture());
-        assertEquals(Arrays.asList(userArray), arg1.getValue());
-    }
-
-    @Test
-    public void testCreateUser() throws Exception {
-        String userName = "pParker";
-        String url = "/v1/users/" + userName;
-
-        this.userModel.setTeams(this.teams);
-
-        User user = new User(this.userModel);
-
-        when(this.userService.createUser(userName)).thenReturn(this.userModel);
-
-        MvcResult result = this.mockMvc.perform(post(url))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        assertEquals(this.mapper.writeValueAsString(user), result.getResponse().getContentAsString());
-
-        ArgumentCaptor<String> arg1 = ArgumentCaptor.forClass(String.class);
-
-        verify(this.userService).createUser(arg1.capture());
-        assertEquals(userName, arg1.getValue());
-    }
-
-    @Test
-    public void testDeleteEvaluator() throws Exception {
-        String url = "/v1/users/" + this.userId;
-
-        doNothing().when(this.userService).deleteUser(this.userId);
-
-        this.mockMvc.perform(delete(url))
-                .andExpect(status().isNoContent())
-                .andReturn();
-
-        ArgumentCaptor<String> arg1 = ArgumentCaptor.forClass(String.class);
-
-        verify(this.userService).deleteUser(arg1.capture());
-        assertEquals(this.userId, arg1.getValue());
-    }
-
-    @Test
-    public void testGetAllUsers() throws Exception {
-        String url = "/v1/users";
-
-        List<User> userList = new ArrayList<>();
-        userList.add(this.user);
-
-        UserListResponse listResponse = new UserListResponse(userList);
-
-        when(this.userService.getUsers()).thenReturn(userList);
-
-        MvcResult result = this.mockMvc.perform(get(url))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        assertEquals(this.mapper.writeValueAsString(listResponse), result.getResponse().getContentAsString());
-
-        verify(this.userService).getUsers();
-    }
-
-    @Test
-    public void testGetUsersForTask() throws Exception {
-        String url = "/v1/users/task/" + this.taskId;
-
-        List<User> userList = new ArrayList<>();
-        userList.add(this.user);
-
-        when(this.userService.getUsersForTask(this.taskId)).thenReturn(userList);
+        when(this.directoryService.getMissingUsers(group)).thenReturn(userSet);
 
         this.mockMvc.perform(get(url))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        ArgumentCaptor<UUID> arg1 = ArgumentCaptor.forClass(UUID.class);
+        ArgumentCaptor<String> arg1 = ArgumentCaptor.forClass(String.class);
 
-        verify(this.userService).getUsersForTask(arg1.capture());
-        assertEquals(this.taskId, arg1.getValue());
+        verify(this.directoryService).getMissingUsers(arg1.capture());
+        assertEquals(group, arg1.getValue());
     }
+
 }

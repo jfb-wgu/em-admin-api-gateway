@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.wgu.dmadmin.domain.security.Permissions;
-import edu.wgu.dmadmin.domain.security.Person;
-import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
+import edu.wgu.dmadmin.domain.user.Person;
 import edu.wgu.dmadmin.exception.UserIdNotFoundException;
-import edu.wgu.dmadmin.service.UserManagementService;
+import edu.wgu.dmadmin.service.UserInfoService;
 import edu.wgu.dmadmin.util.IdentityUtil;
 import edu.wgu.dmaudit.audit.Audit;
+import edu.wgu.dreammachine.domain.security.SecureByPermissionStrategy;
 import edu.wgu.security.authz.annotation.HasAnyRole;
 import edu.wgu.security.authz.annotation.IgnoreAuthorization;
 import edu.wgu.security.authz.annotation.Secured;
@@ -29,10 +29,10 @@ import edu.wgu.security.authz.annotation.Secured;
 @Component
 @RestController
 @RequestMapping("v1")
-public class PersonController {
+public class UserInfoController {
 
     @Autowired
-    private UserManagementService userService;
+    private UserInfoService userService;
 
     @Autowired
     private IdentityUtil iUtil;
@@ -50,5 +50,9 @@ public class PersonController {
     @RequestMapping(value = "/person/bannerId/{bannerId}", method = RequestMethod.GET)
     public ResponseEntity<Person> getPerson(@PathVariable final String bannerId) {
         return ResponseEntity.ok(this.userService.getPersonByUserId(bannerId));
+    }
+    
+    public void setUserInfoService(UserInfoService service) {
+    		this.userService = service;
     }
 }

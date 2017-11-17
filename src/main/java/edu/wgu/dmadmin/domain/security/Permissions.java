@@ -3,7 +3,7 @@ package edu.wgu.dmadmin.domain.security;
 import java.util.HashSet;
 import java.util.Set;
 
-import edu.wgu.dmadmin.util.StatusUtil;
+import edu.wgu.dreammachine.util.StatusUtil;
 
 public class Permissions {
 	

@@ -53,10 +53,10 @@ public final class LdapUser implements Serializable {
     private String sAMAccountName;
     
     public String getCommonName() {
-        return LdapUtils.getStringValue(dn, dn.size()-1);
+        return LdapUtils.getStringValue(this.dn, this.dn.size()-1);
     }
     
     public Set<String> getGroupCommonNames() {
-    	return groups.stream().map(group -> LdapUtils.getStringValue(group, group.size()-1)).collect(Collectors.toSet());
+    	return this.groups.stream().map(group -> LdapUtils.getStringValue(group, group.size()-1)).collect(Collectors.toSet());
     }
 }

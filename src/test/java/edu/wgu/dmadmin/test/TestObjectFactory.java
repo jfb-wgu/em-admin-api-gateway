@@ -17,10 +17,10 @@ import java.util.UUID;
 
 import edu.wgu.dmadmin.domain.search.SearchCriteria;
 import edu.wgu.dmadmin.domain.security.Permissions;
-import edu.wgu.dmadmin.domain.security.User;
+import edu.wgu.dmadmin.domain.user.User;
 import edu.wgu.dmadmin.model.security.PermissionModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.security.UserByIdModel;
+import edu.wgu.dmadmin.model.user.UserByIdModel;
 import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dreammachine.model.publish.RubricModel;
 import edu.wgu.dreammachine.model.publish.TaskModel;

@@ -10,8 +10,4 @@ public class DateUtil {
 	public static Date getZonedNow() {
 		return Date.from(ZonedDateTime.now(SERVER_ZONEID).toInstant());
 	}
-	
-	public static ZonedDateTime getZonedDateTime() {
-		return ZonedDateTime.now(SERVER_ZONEID);
-	}
 }

@@ -1,4 +1,4 @@
-package edu.wgu.dmadmin.domain.security;
+package edu.wgu.dmadmin.domain.user;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,9 @@ import org.apache.commons.collections4.SetUtils;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import edu.wgu.dmadmin.model.security.UserModel;
+
+import edu.wgu.dmadmin.domain.security.Permissions;
+import edu.wgu.dmadmin.model.user.UserModel;
 
 @Data
 @NoArgsConstructor
@@ -37,23 +39,23 @@ public class User  implements Comparable<User> {
     Set<String> taskNames;
     
     public Set<String> getRoleNames() {
-    	if (roleNames == null) roleNames = new HashSet<String>();
-    	return roleNames;
+    	if (this.roleNames == null) this.roleNames = new HashSet<String>();
+    	return this.roleNames;
     }
     
     public Set<String> getTaskNames() {
-    	if (taskNames == null) taskNames = new HashSet<String>();
-    	return taskNames;
+    	if (this.taskNames == null) this.taskNames = new HashSet<String>();
+    	return this.taskNames;
     }
     
     @JsonGetter("roles")
     public Set<?> getDisplayRoles() {
-    	return this.getRoleNames().isEmpty() ? roles : roleNames;
+    	return this.getRoleNames().isEmpty() ? this.roles : this.roleNames;
     }
     
     @JsonGetter("tasks")
     public Set<?> getDisplayTasks() {
-    	return this.getTaskNames().isEmpty() ? tasks : taskNames;
+    	return this.getTaskNames().isEmpty() ? this.tasks : this.taskNames;
     }
     
     @JsonGetter("queues")
@@ -86,8 +88,7 @@ public class User  implements Comparable<User> {
 	public int compareTo(User o) {
 		if (this.getLastName().equals(o.getLastName())) {
 			return this.getFirstName().compareTo(o.getFirstName());
-		} else {
-			return this.getLastName().compareTo(o.getLastName());
 		}
+		return this.getLastName().compareTo(o.getLastName());
 	}
 }

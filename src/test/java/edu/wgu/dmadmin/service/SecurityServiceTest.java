@@ -26,7 +26,7 @@ import edu.wgu.dmadmin.domain.security.Role;
 import edu.wgu.dmadmin.exception.RoleNotFoundException;
 import edu.wgu.dmadmin.model.security.PermissionModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.security.UserByIdModel;
+import edu.wgu.dmadmin.model.user.UserByIdModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.util.DateUtil;
 
