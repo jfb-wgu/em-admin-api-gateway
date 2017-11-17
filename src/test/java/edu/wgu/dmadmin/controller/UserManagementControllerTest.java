@@ -1,17 +1,28 @@
 package edu.wgu.dmadmin.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.wgu.dmadmin.TestObjectFactory;
-import edu.wgu.dmadmin.domain.evaluator.UserListResponse;
-import edu.wgu.dmadmin.domain.evaluator.UserResponse;
-import edu.wgu.dmadmin.domain.security.LdapUser;
-import edu.wgu.dmadmin.domain.security.Person;
-import edu.wgu.dmadmin.domain.security.User;
-import edu.wgu.dmadmin.model.security.UserModel;
-import edu.wgu.dmadmin.service.DirectoryService;
-import edu.wgu.dmadmin.service.UserManagementService;
-import edu.wgu.dmadmin.util.DateUtil;
-import edu.wgu.dmadmin.util.IdentityUtil;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.naming.Name;
+import javax.naming.ldap.LdapName;
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,27 +35,19 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import javax.naming.Name;
-import javax.naming.ldap.LdapName;
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+import edu.wgu.dmadmin.domain.security.LdapUser;
+import edu.wgu.dmadmin.domain.security.Person;
+import edu.wgu.dmadmin.domain.security.User;
+import edu.wgu.dmadmin.domain.user.UserListResponse;
+import edu.wgu.dmadmin.domain.user.UserResponse;
+import edu.wgu.dmadmin.model.security.UserModel;
+import edu.wgu.dmadmin.service.DirectoryService;
+import edu.wgu.dmadmin.service.UserManagementService;
+import edu.wgu.dmadmin.test.TestObjectFactory;
+import edu.wgu.dmadmin.util.DateUtil;
+import edu.wgu.dmadmin.util.IdentityUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserManagementControllerTest {
@@ -127,13 +130,13 @@ public class UserManagementControllerTest {
         this.user = TestObjectFactory.getUser("Peter", "Parker", this.userId, emaRoles, permissions, tasks, landings, "234");
 
         this.userModel.setRoles(emaRoles);
-        this.userModel.setTeams(teams);
+        this.userModel.setTeams(this.teams);
         this.userModel.setLandings(landings);
         this.userModel.setPermissions(permissions);
         this.userModel.setTasks(tasks);
 
         this.user.setRoles(emaRoles);
-        this.user.setTeams(teams);
+        this.user.setTeams(this.teams);
         this.user.setLandings(landings);
         this.user.setPermissions(permissions);
         this.user.setTasks(tasks);

@@ -2,8 +2,7 @@ package edu.wgu.dmadmin.domain.search;
 
 import java.util.List;
 
-import edu.wgu.dmadmin.domain.submission.DashboardSubmission;
-
+import edu.wgu.dreammachine.domain.submission.DashboardSubmission;
 import lombok.Data;
 
 @Data

@@ -1,4 +1,4 @@
-package edu.wgu.dmadmin.domain.evaluator;
+package edu.wgu.dmadmin.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 

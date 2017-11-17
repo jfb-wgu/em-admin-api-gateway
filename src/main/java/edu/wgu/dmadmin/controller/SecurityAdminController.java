@@ -1,13 +1,8 @@
 package edu.wgu.dmadmin.controller;
 
-import edu.wgu.dmadmin.audit.Audit;
-import edu.wgu.dmadmin.domain.security.Permission;
-import edu.wgu.dmadmin.domain.security.Permissions;
-import edu.wgu.dmadmin.domain.security.Role;
-import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
-import edu.wgu.dmadmin.service.SecurityService;
-import edu.wgu.security.authz.annotation.HasAnyRole;
-import edu.wgu.security.authz.annotation.Secured;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.UUID;
+import edu.wgu.dmadmin.domain.security.Permission;
+import edu.wgu.dmadmin.domain.security.Permissions;
+import edu.wgu.dmadmin.domain.security.Role;
+import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
+import edu.wgu.dmadmin.service.SecurityService;
+import edu.wgu.dmaudit.audit.Audit;
+import edu.wgu.security.authz.annotation.HasAnyRole;
+import edu.wgu.security.authz.annotation.Secured;
 
 /**
  * @author Jessica Pamdeth

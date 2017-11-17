@@ -1,20 +1,12 @@
 package edu.wgu.dmadmin.controller;
 
-import edu.wgu.dmadmin.audit.Audit;
-import edu.wgu.dmadmin.domain.evaluator.UserListResponse;
-import edu.wgu.dmadmin.domain.evaluator.UserResponse;
-import edu.wgu.dmadmin.domain.security.LdapUser;
-import edu.wgu.dmadmin.domain.security.Permissions;
-import edu.wgu.dmadmin.domain.security.Person;
-import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
-import edu.wgu.dmadmin.domain.security.User;
-import edu.wgu.dmadmin.exception.UserIdNotFoundException;
-import edu.wgu.dmadmin.service.DirectoryService;
-import edu.wgu.dmadmin.service.UserManagementService;
-import edu.wgu.dmadmin.util.IdentityUtil;
-import edu.wgu.security.authz.annotation.HasAnyRole;
-import edu.wgu.security.authz.annotation.IgnoreAuthorization;
-import edu.wgu.security.authz.annotation.Secured;
+import java.text.ParseException;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +18,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
-import java.util.Arrays;
-import java.util.Set;
-import java.util.UUID;
+import edu.wgu.dmadmin.domain.security.LdapUser;
+import edu.wgu.dmadmin.domain.security.Permissions;
+import edu.wgu.dmadmin.domain.security.Person;
+import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
+import edu.wgu.dmadmin.domain.security.User;
+import edu.wgu.dmadmin.domain.user.UserListResponse;
+import edu.wgu.dmadmin.domain.user.UserResponse;
+import edu.wgu.dmadmin.exception.UserIdNotFoundException;
+import edu.wgu.dmadmin.service.DirectoryService;
+import edu.wgu.dmadmin.service.UserManagementService;
+import edu.wgu.dmadmin.util.IdentityUtil;
+import edu.wgu.dmaudit.audit.Audit;
+import edu.wgu.security.authz.annotation.HasAnyRole;
+import edu.wgu.security.authz.annotation.IgnoreAuthorization;
+import edu.wgu.security.authz.annotation.Secured;
 
 /**
  * @author Jessica Pamdeth

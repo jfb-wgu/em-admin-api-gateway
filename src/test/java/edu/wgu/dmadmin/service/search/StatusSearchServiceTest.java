@@ -17,11 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.wgu.dmadmin.domain.search.DateRange;
-import edu.wgu.dmadmin.domain.submission.DashboardSubmission;
-import edu.wgu.dmadmin.model.submission.SubmissionByStatusGroupAndTaskModel;
 import edu.wgu.dmadmin.service.SearchServiceTest;
 import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dmadmin.util.StatusUtil;
+import edu.wgu.dreammachine.domain.submission.DashboardSubmission;
+import edu.wgu.dreammachine.model.submission.SubmissionByStatusGroupAndTaskModel;
 
 public class StatusSearchServiceTest extends SearchServiceTest {
 	
@@ -34,7 +34,7 @@ public class StatusSearchServiceTest extends SearchServiceTest {
 	 */
 	public void testSearchByStatus1() {
 		this.criteria.setStatus(StatusUtil.PENDING);
-		this.criteria.setEvaluatorFirstName(first2);
+		this.criteria.setEvaluatorFirstName(this.first2);
 		
 		List<SubmissionByStatusGroupAndTaskModel> matches = this.submissions.stream()
 				.filter(s -> s.getStatusGroup().equals(StatusUtil.PENDING))
@@ -62,7 +62,7 @@ public class StatusSearchServiceTest extends SearchServiceTest {
 	 */
 	public void testSearchByStatus2() {
 		this.criteria.setStatus(StatusUtil.PENDING);
-		this.criteria.setEvaluatorLastName(last2);
+		this.criteria.setEvaluatorLastName(this.last2);
 		
 		List<SubmissionByStatusGroupAndTaskModel> matches = this.submissions.stream()
 				.filter(s -> s.getStatusGroup().equals(StatusUtil.PENDING))
@@ -90,8 +90,8 @@ public class StatusSearchServiceTest extends SearchServiceTest {
 	 */
 	public void testSearchByStatus3() {
 		this.criteria.setStatus(StatusUtil.PENDING);
-		this.criteria.setEvaluatorFirstName(first3);
-		this.criteria.setEvaluatorLastName(last3);
+		this.criteria.setEvaluatorFirstName(this.first3);
+		this.criteria.setEvaluatorLastName(this.last3);
 		
 		List<SubmissionByStatusGroupAndTaskModel> matches = this.submissions.stream()
 				.filter(s -> s.getStatusGroup().equals(StatusUtil.PENDING))
@@ -116,7 +116,7 @@ public class StatusSearchServiceTest extends SearchServiceTest {
 	@Test
 	public void testSearchByStatus4() {
 		this.criteria.setStatus(StatusUtil.WORKING);
-		this.criteria.setEvaluatorLastName(last2);
+		this.criteria.setEvaluatorLastName(this.last2);
 		
 		List<SubmissionByStatusGroupAndTaskModel> matches = this.submissions.stream()
 				.filter(s -> s.getStatusGroup().equals(StatusUtil.WORKING))
@@ -169,7 +169,7 @@ public class StatusSearchServiceTest extends SearchServiceTest {
 	public void testSearchByStatus6() {
 		this.criteria.setStatus(StatusUtil.COMPLETED);
 		this.criteria.setDateRange(DateRange.TIMEFRAME_24_HOURS);
-		List<UUID> searchTasks = Arrays.asList(task1, task3);
+		List<UUID> searchTasks = Arrays.asList(this.task1, this.task3);
 		this.criteria.setTasks(searchTasks);
 		
 		Calendar searchCalendar = Calendar.getInstance(TimeZone.getTimeZone(DateUtil.SERVER_ZONEID));
@@ -200,7 +200,7 @@ public class StatusSearchServiceTest extends SearchServiceTest {
 	public void testSearchByStatus7() {
 		this.criteria.setStatus(StatusUtil.PENDING);
 		this.criteria.setDateRange(DateRange.TIMEFRAME_72_HOURS);
-		List<UUID> searchTasks = Arrays.asList(task1, task3);
+		List<UUID> searchTasks = Arrays.asList(this.task1, this.task3);
 		this.criteria.setTasks(searchTasks);
 		
 		Calendar searchCalendar = Calendar.getInstance(TimeZone.getTimeZone(DateUtil.SERVER_ZONEID));
@@ -231,7 +231,7 @@ public class StatusSearchServiceTest extends SearchServiceTest {
 	public void testSearchByStatus8() {
 		this.criteria.setStatus(StatusUtil.PENDING);
 		this.criteria.setDateRange(DateRange.TIMEFRAME_ANY);
-		List<UUID> searchTasks = Arrays.asList(task1, task3);
+		List<UUID> searchTasks = Arrays.asList(this.task1, this.task3);
 		this.criteria.setTasks(searchTasks);
 
 		List<SubmissionByStatusGroupAndTaskModel> matches = this.submissions.stream()
@@ -252,7 +252,7 @@ public class StatusSearchServiceTest extends SearchServiceTest {
 	public void testSearchByStatus9() {
 		this.criteria.setStatus(StatusUtil.HOLD);
 		this.criteria.setDateRange(DateRange.TIMEFRAME_ANY);
-		List<UUID> searchTasks = Arrays.asList(task1, task3);
+		List<UUID> searchTasks = Arrays.asList(this.task1, this.task3);
 		this.criteria.setTasks(searchTasks);
 
 		List<SubmissionByStatusGroupAndTaskModel> matches = this.submissions.stream()

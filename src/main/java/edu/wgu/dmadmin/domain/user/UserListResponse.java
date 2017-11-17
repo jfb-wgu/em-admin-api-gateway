@@ -1,4 +1,4 @@
-package edu.wgu.dmadmin.domain.evaluator;
+package edu.wgu.dmadmin.domain.user;
 
 import java.util.Collections;
 import java.util.List;

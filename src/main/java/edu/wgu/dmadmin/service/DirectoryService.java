@@ -43,14 +43,14 @@ public class DirectoryService {
 	public Set<LdapUser> getMembersForGroup(String groupName) {
 		Set<Name> members = new HashSet<Name>();
 		
-		LdapGroup group = lookup.getGroup(groupName);
+		LdapGroup group = this.lookup.getGroup(groupName);
 		if (group != null) {
 			members.addAll(group.getMembers());
 		}
 		
 		Set<LdapUser> users = new HashSet<LdapUser>();
 		members.forEach(member -> {
-			users.addAll(lookup.getUsers(LdapUtils.getStringValue(member, member.size()-1)));
+			users.addAll(this.lookup.getUsers(LdapUtils.getStringValue(member, member.size()-1)));
 		});
 		
 		try {

@@ -6,10 +6,12 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.junit.Test;
-import edu.wgu.dmadmin.domain.submission.DashboardSubmission;
-import edu.wgu.dmadmin.model.submission.SubmissionByIdModel;
+
 import edu.wgu.dmadmin.service.SearchServiceTest;
+import edu.wgu.dreammachine.domain.submission.DashboardSubmission;
+import edu.wgu.dreammachine.model.submission.SubmissionByIdModel;
 
 public class SubmissionSearchServiceTest extends SearchServiceTest {
 	

@@ -1,7 +1,15 @@
 package edu.wgu.dmadmin.service;
 
+import static edu.wgu.dmadmin.util.StatusUtil.AUTHOR_WORK_EVALUATED;
+import static edu.wgu.dmadmin.util.StatusUtil.AUTHOR_WORK_NEEDS_REVISION;
+import static edu.wgu.dmadmin.util.StatusUtil.AUTHOR_WORK_RESUBMITTED;
+import static edu.wgu.dmadmin.util.StatusUtil.AUTHOR_WORK_SUBMITTED;
+import static edu.wgu.dmadmin.util.StatusUtil.EVALUATION_BEGUN;
+import static edu.wgu.dmadmin.util.StatusUtil.EVALUATION_CANCELLED;
+import static edu.wgu.dmadmin.util.StatusUtil.EVALUATION_RELEASED;
+import static edu.wgu.dmadmin.util.StatusUtil.EVALUATION_TAKEN_OVER;
+import static edu.wgu.dmadmin.util.StatusUtil.OPEN_HOLD;
 import static org.mockito.Mockito.mock;
-import static edu.wgu.dmadmin.util.StatusUtil.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,13 +18,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.junit.Before;
-import edu.wgu.dmadmin.TestObjectFactory;
+
 import edu.wgu.dmadmin.domain.search.SearchCriteria;
 import edu.wgu.dmadmin.model.security.UserByFirstNameModel;
 import edu.wgu.dmadmin.model.security.UserByLastNameModel;
-import edu.wgu.dmadmin.model.submission.SubmissionModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
+import edu.wgu.dmadmin.test.TestObjectFactory;
 import edu.wgu.dmadmin.util.StatusUtil;
+import edu.wgu.dreammachine.model.submission.SubmissionModel;
 
 public class SearchServiceTest {
 	

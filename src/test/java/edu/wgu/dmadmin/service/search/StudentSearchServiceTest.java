@@ -17,11 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.wgu.dmadmin.domain.search.DateRange;
-import edu.wgu.dmadmin.domain.submission.DashboardSubmission;
-import edu.wgu.dmadmin.model.submission.SubmissionByStudentAndTaskModel;
 import edu.wgu.dmadmin.service.SearchServiceTest;
 import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dmadmin.util.StatusUtil;
+import edu.wgu.dreammachine.domain.submission.DashboardSubmission;
+import edu.wgu.dreammachine.model.submission.SubmissionByStudentAndTaskModel;
 
 public class StudentSearchServiceTest extends SearchServiceTest {
 	
@@ -55,7 +55,7 @@ public class StudentSearchServiceTest extends SearchServiceTest {
 	public void testSearchByStudent2() {
 		this.criteria.setStudentId(this.student1);
 		this.criteria.setStatus(StatusUtil.WORKING);
-		this.criteria.setEvaluatorFirstName(first2);
+		this.criteria.setEvaluatorFirstName(this.first2);
 		
 		List<SubmissionByStudentAndTaskModel> matches = this.submissions.stream()
 				.filter(s -> s.getStudentId().equals(this.student1))
@@ -81,7 +81,7 @@ public class StudentSearchServiceTest extends SearchServiceTest {
 	public void testSearchByStudent3() {
 		this.criteria.setStudentId(this.student1);
 		this.criteria.setStatus(StatusUtil.COMPLETED);
-		this.criteria.setEvaluatorLastName(last1);
+		this.criteria.setEvaluatorLastName(this.last1);
 		
 		List<SubmissionByStudentAndTaskModel> matches = this.submissions.stream()
 				.filter(s -> s.getStudentId().equals(this.student1))
@@ -107,7 +107,7 @@ public class StudentSearchServiceTest extends SearchServiceTest {
 	public void testSearchByStudentAndTask1() {
 		this.criteria.setStudentId(this.student2);
 		this.criteria.setStatus(StatusUtil.WORKING);
-		List<UUID> searchTasks = Arrays.asList(task2, task3);
+		List<UUID> searchTasks = Arrays.asList(this.task2, this.task3);
 		this.criteria.setTasks(searchTasks);
 		
 		List<SubmissionByStudentAndTaskModel> matches = this.submissions.stream()
@@ -134,7 +134,7 @@ public class StudentSearchServiceTest extends SearchServiceTest {
 	public void testSearchByStudentAndTask2() {
 		this.criteria.setStudentId(this.student2);
 		this.criteria.setStatus(StatusUtil.PENDING);
-		List<UUID> searchTasks = Arrays.asList(task2, task3);
+		List<UUID> searchTasks = Arrays.asList(this.task2, this.task3);
 		this.criteria.setTasks(searchTasks);
 		this.criteria.setDateRange(DateRange.TIMEFRAME_72_HOURS);
 		
@@ -167,7 +167,7 @@ public class StudentSearchServiceTest extends SearchServiceTest {
 	public void testSearchByStudentAndTask3() {
 		this.criteria.setStudentId(this.student2);
 		this.criteria.setStatus(StatusUtil.COMPLETED);
-		List<UUID> searchTasks = Arrays.asList(task2, task3);
+		List<UUID> searchTasks = Arrays.asList(this.task2, this.task3);
 		this.criteria.setTasks(searchTasks);
 		this.criteria.setDateRange(DateRange.TIMEFRAME_30_DAYS);
 		

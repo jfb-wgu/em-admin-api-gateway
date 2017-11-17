@@ -7,28 +7,26 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.wgu.dmadmin.domain.audit.StatusLogEntry;
 import edu.wgu.dmadmin.domain.search.DateRange;
 import edu.wgu.dmadmin.domain.search.SearchCriteria;
-import edu.wgu.dmadmin.domain.submission.DashboardSubmission;
-import edu.wgu.dmadmin.model.audit.StatusLogByAssessmentModel;
 import edu.wgu.dmadmin.model.security.UserModel;
-import edu.wgu.dmadmin.model.submission.SubmissionByIdModel;
-import edu.wgu.dmadmin.model.submission.SubmissionModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dmadmin.util.StatusUtil;
+import edu.wgu.dreammachine.domain.submission.DashboardSubmission;
+import edu.wgu.dreammachine.model.submission.SubmissionByIdModel;
+import edu.wgu.dreammachine.model.submission.SubmissionModel;
 
 @Service
 public class SearchService {
@@ -48,12 +46,11 @@ public class SearchService {
 			
 			try {
 				UUID submissionId = UUID.fromString(criteria.getSubmissionId());
-				Optional<SubmissionByIdModel> result = cassandraRepo.getSubmissionById(submissionId);
+				Optional<SubmissionByIdModel> result = this.cassandraRepo.getSubmissionById(submissionId);
 				if (result.isPresent()) {
 					return Arrays.asList(new DashboardSubmission(result.get()));
-				} else {				
-					return Collections.emptyList();
-				}
+				} 
+				return Collections.emptyList();
 			} catch(IllegalArgumentException e) {
 				logger.error(Arrays.toString(e.getStackTrace()));
 				return Collections.emptyList();
@@ -112,29 +109,27 @@ public class SearchService {
 	public List<? extends SubmissionModel> searchByStudent(SearchCriteria criteria) {
 		
 		if (CollectionUtils.isNotEmpty(criteria.getTasks())) {
-			return cassandraRepo.getSubmissionByStudentByTasks(criteria.getStudentId(), criteria.getTasks());
-		} else {
-			return cassandraRepo.getSubmissionsByStudentId(criteria.getStudentId());
+			return this.cassandraRepo.getSubmissionByStudentByTasks(criteria.getStudentId(), criteria.getTasks());
 		}
+		return this.cassandraRepo.getSubmissionsByStudentId(criteria.getStudentId());
 	}
 	
 	public List<? extends SubmissionModel> searchByStatus(SearchCriteria criteria) {
 		if (CollectionUtils.isNotEmpty(criteria.getTasks())) {
-			return cassandraRepo.getSubmissionsByStatusGroupAndTasks(criteria.getStatus(), criteria.getTasks());
-		} else {
-			return cassandraRepo.getSubmissionsByStatusGroup(criteria.getStatus());
+			return this.cassandraRepo.getSubmissionsByStatusGroupAndTasks(criteria.getStatus(), criteria.getTasks());
 		}
+		return this.cassandraRepo.getSubmissionsByStatusGroup(criteria.getStatus());
 	}
 	
 	public List<? extends SubmissionModel> searchByEvaluator(SearchCriteria criteria) {
 		List<UserModel> evaluators = new ArrayList<UserModel>();
 		
 		if (StringUtils.isNotBlank(criteria.getEvaluatorFirstName())) {
-			evaluators.addAll(cassandraRepo.getUsersByFirstName(criteria.getEvaluatorFirstName()));
+			evaluators.addAll(this.cassandraRepo.getUsersByFirstName(criteria.getEvaluatorFirstName()));
 		}
 		
 		if (StringUtils.isNotBlank(criteria.getEvaluatorLastName())) {
-			evaluators.addAll(cassandraRepo.getUsersByLastName(criteria.getEvaluatorLastName()));
+			evaluators.addAll(this.cassandraRepo.getUsersByLastName(criteria.getEvaluatorLastName()));
 		}
 		
 		if (StringUtils.isNoneBlank(criteria.getEvaluatorFirstName(), criteria.getEvaluatorLastName())) {
@@ -150,14 +145,8 @@ public class SearchService {
 		List<String> userIds = evaluators.stream().map(e -> e.getUserId()).collect(Collectors.toList());
 		
 		if (CollectionUtils.isNotEmpty(criteria.getTasks())) {
-			return cassandraRepo.getSubmissionsByEvaluatorsAndTasks(userIds, criteria.getTasks());
-		} else {
-			return cassandraRepo.getSubmissionsByEvaluators(userIds);
+			return this.cassandraRepo.getSubmissionsByEvaluatorsAndTasks(userIds, criteria.getTasks());
 		}
-	}
-	
-	public List<StatusLogEntry> getStatusLogByAssessment(UUID assessmentId) {
-		List<StatusLogByAssessmentModel> logs = cassandraRepo.getStatusLogByAssessment(assessmentId);		
-		return logs.stream().map(log -> new StatusLogEntry(log)).collect(Collectors.toList());
+		return this.cassandraRepo.getSubmissionsByEvaluators(userIds);
 	}
 }
