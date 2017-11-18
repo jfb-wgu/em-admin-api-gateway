@@ -20,10 +20,14 @@ import edu.wgu.dmadmin.model.security.SecurityAccessor;
 import edu.wgu.dmadmin.model.user.UserByFirstNameModel;
 import edu.wgu.dmadmin.model.user.UserByIdModel;
 import edu.wgu.dmadmin.model.user.UserByLastNameModel;
+import edu.wgu.dreammachine.model.assessment.EvaluationAccessor;
+import edu.wgu.dreammachine.model.assessment.EvaluationByIdModel;
+import edu.wgu.dreammachine.model.assessment.EvaluationBySubmissionModel;
 import edu.wgu.dreammachine.model.audit.ActivityLogByUserModel;
 import edu.wgu.dreammachine.model.publish.TaskAccessor;
 import edu.wgu.dreammachine.model.publish.TaskByCourseModel;
 import edu.wgu.dreammachine.model.submission.SubmissionAccessor;
+import edu.wgu.dreammachine.model.submission.SubmissionAttachmentModel;
 import edu.wgu.dreammachine.model.submission.SubmissionByEvaluatorAndTaskModel;
 import edu.wgu.dreammachine.model.submission.SubmissionByIdModel;
 import edu.wgu.dreammachine.model.submission.SubmissionByStatusGroupAndTaskModel;
@@ -38,10 +42,13 @@ public class CassandraRepo {
 
 	MappingManager mappingManager;
 	SecurityAccessor securityAccessor;
+	EvaluationAccessor evaluationAccessor;
 	Mapper<UserByIdModel> userMapper;
 	Mapper<RoleModel> roleMapper;
 	Mapper<PermissionModel> permissionMapper;
 	Mapper<ActivityLogByUserModel> activityMapper;
+	Mapper<SubmissionByIdModel> submissionMapper;
+	Mapper<EvaluationByIdModel> evaluationMapper;
 	TaskAccessor taskAccessor;
 	SubmissionAccessor submissionAccessor;
 
@@ -49,12 +56,15 @@ public class CassandraRepo {
 	public CassandraRepo(Session session) {
 		this.mappingManager = new MappingManager(session);
 		this.securityAccessor = this.mappingManager.createAccessor(SecurityAccessor.class);
+		this.evaluationAccessor = this.mappingManager.createAccessor(EvaluationAccessor.class);
 		this.userMapper = this.mappingManager.mapper(UserByIdModel.class);
 		this.permissionMapper = this.mappingManager.mapper(PermissionModel.class);
 		this.roleMapper = this.mappingManager.mapper(RoleModel.class);
 		this.activityMapper = this.mappingManager.mapper(ActivityLogByUserModel.class);
 		this.taskAccessor = this.mappingManager.createAccessor(TaskAccessor.class);
 		this.submissionAccessor = this.mappingManager.createAccessor(SubmissionAccessor.class);
+		this.submissionMapper = this.mappingManager.mapper(SubmissionByIdModel.class);
+		this.evaluationMapper = this.mappingManager.mapper(EvaluationByIdModel.class);
 	}
 
 	public Optional<UserByIdModel> getUser(String userId) {
@@ -206,5 +216,21 @@ public class CassandraRepo {
 	
 	public List<TaskByCourseModel> getTaskBasics() {
 		return this.taskAccessor.getAllBasics().all();
+	}
+
+	public void deleteSubmission(SubmissionByIdModel byId) {
+		this.submissionMapper.delete(byId);
+	}
+	
+	public void deleteEvaluation(EvaluationByIdModel evaluation) {
+		this.evaluationMapper.delete(evaluation);
+	}
+	
+	public List<SubmissionAttachmentModel> getAttachmentsForSubmission(UUID submissionId) {
+		return this.submissionAccessor.getAttachmentsForSubmission(submissionId).all();
+	}
+	
+	public List<EvaluationBySubmissionModel> getEvaluationsBySubmission(UUID submissionId) {
+		return this.evaluationAccessor.getEvaluationsBySubmission(submissionId).all();
 	}
 }

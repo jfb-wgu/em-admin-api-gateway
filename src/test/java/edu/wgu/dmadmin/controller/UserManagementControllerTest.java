@@ -31,6 +31,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.wgu.dmadmin.domain.security.IdentityUtil;
 import edu.wgu.dmadmin.domain.user.Person;
 import edu.wgu.dmadmin.domain.user.User;
 import edu.wgu.dmadmin.domain.user.UserListResponse;
@@ -39,7 +40,6 @@ import edu.wgu.dmadmin.model.user.UserModel;
 import edu.wgu.dmadmin.service.UserManagementService;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 import edu.wgu.dreammachine.util.DateUtil;
-import edu.wgu.dreammachine.util.IdentityUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserManagementControllerTest {
