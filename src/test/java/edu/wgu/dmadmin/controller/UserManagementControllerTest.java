@@ -38,8 +38,8 @@ import edu.wgu.dmadmin.domain.user.UserResponse;
 import edu.wgu.dmadmin.model.user.UserModel;
 import edu.wgu.dmadmin.service.UserManagementService;
 import edu.wgu.dmadmin.test.TestObjectFactory;
-import edu.wgu.dmadmin.util.DateUtil;
-import edu.wgu.dmadmin.util.IdentityUtil;
+import edu.wgu.dreammachine.util.DateUtil;
+import edu.wgu.dreammachine.util.IdentityUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserManagementControllerTest {

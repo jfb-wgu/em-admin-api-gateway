@@ -32,60 +32,60 @@ import edu.wgu.security.authz.annotation.Secured;
 @RequestMapping("v1")
 public class UserManagementController {
 
-    @Autowired
-    private UserManagementService userService;
+	@Autowired
+	private UserManagementService userService;
 
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.USER_SEARCH)
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
-    public ResponseEntity<UserResponse> getUser(@PathVariable final String userId) {
-        UserResponse result = new UserResponse(this.userService.getUser(userId));
-        return new ResponseEntity<UserResponse>(result, HttpStatus.OK);
-    }
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.USER_SEARCH)
+	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<UserResponse> getUser(@PathVariable final String userId) {
+		UserResponse result = new UserResponse(this.userService.getUser(userId));
+		return new ResponseEntity<UserResponse>(result, HttpStatus.OK);
+	}
 
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.USER_CREATE)
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void addUsers(@RequestBody User[] users) {
-        this.userService.addUsers(Arrays.asList(users));
-    }
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.USER_CREATE)
+	@RequestMapping(value = "/users", method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void addUsers(@RequestBody User[] users) {
+		this.userService.addUsers(Arrays.asList(users));
+	}
 
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.USER_CREATE)
-    @RequestMapping(value = "/users/{username}", method = RequestMethod.POST)
-    public ResponseEntity<User> createUser(@PathVariable String username) {
-        User result = new User(this.userService.createUser(username));
-        return new ResponseEntity<User>(result, HttpStatus.OK);
-    }
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.USER_CREATE)
+	@RequestMapping(value = "/users/{username}", method = RequestMethod.POST)
+	public ResponseEntity<User> createUser(@PathVariable String username) {
+		User result = new User(this.userService.createUser(username));
+		return new ResponseEntity<User>(result, HttpStatus.OK);
+	}
 
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.USER_DELETE)
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteEvaluator(@PathVariable final String userId) {
-        this.userService.deleteUser(userId);
-    }
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.USER_DELETE)
+	@RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void deleteEvaluator(@PathVariable final String userId) {
+		this.userService.deleteUser(userId);
+	}
 
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.USER_SEARCH)
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ResponseEntity<UserListResponse> getAllUsers() {
-        UserListResponse result = new UserListResponse(this.userService.getUsers());
-        return new ResponseEntity<UserListResponse>(result, HttpStatus.OK);
-    }
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.USER_SEARCH)
+	@RequestMapping(value = "/users", method = RequestMethod.GET)
+	public ResponseEntity<UserListResponse> getAllUsers() {
+		UserListResponse result = new UserListResponse(this.userService.getUsers());
+		return new ResponseEntity<UserListResponse>(result, HttpStatus.OK);
+	}
 
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.USER_SEARCH)
-    @RequestMapping(value = "/users/task/{taskId}", method = RequestMethod.GET)
-    public ResponseEntity<UserListResponse> getUsersForTask(@PathVariable final UUID taskId) {
-        UserListResponse result = new UserListResponse(this.userService.getUsersForTask(taskId));
-        return new ResponseEntity<UserListResponse>(result, HttpStatus.OK);
-    }
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.USER_SEARCH)
+	@RequestMapping(value = "/users/task/{taskId}", method = RequestMethod.GET)
+	public ResponseEntity<UserListResponse> getUsersForTask(@PathVariable final UUID taskId) {
+		UserListResponse result = new UserListResponse(this.userService.getUsersForTask(taskId));
+		return new ResponseEntity<UserListResponse>(result, HttpStatus.OK);
+	}
 }

@@ -1,6 +1,7 @@
 package edu.wgu.dmadmin.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -28,7 +29,7 @@ import edu.wgu.dmadmin.model.security.PermissionModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
 import edu.wgu.dmadmin.model.user.UserByIdModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
-import edu.wgu.dmadmin.util.DateUtil;
+import edu.wgu.dreammachine.util.DateUtil;
 
 public class SecurityServiceTest {
 	

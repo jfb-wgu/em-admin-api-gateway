@@ -34,7 +34,7 @@ public class HelperController {
 	@Secured(strategies = { SecureByPermissionStrategy.class })
 	@HasAnyRole(Permissions.SYSTEM)
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	@RequestMapping(value = "/delete/{submissionId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/submissions/{submissionId}/delete", method = RequestMethod.DELETE)
 	public void deleteSubmission(@PathVariable final UUID submissionId) {
 		this.helperService.deleteSubmission(submissionId);
 	}
@@ -42,7 +42,7 @@ public class HelperController {
 	@Audit
 	@Secured(strategies = { SecureByPermissionStrategy.class })
 	@HasAnyRole(Permissions.SYSTEM)
-	@RequestMapping(value = "/view/{submissionId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/submissions/{submissionId}/view", method = RequestMethod.GET)
 	public SubmissionData getSubmission(@PathVariable final UUID submissionId) {
 		return this.helperService.getSubmission(submissionId);
 	}

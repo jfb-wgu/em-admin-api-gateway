@@ -18,9 +18,9 @@ import org.slf4j.LoggerFactory;
 
 import edu.wgu.dmadmin.domain.search.DateRange;
 import edu.wgu.dmadmin.service.SearchServiceTest;
-import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dreammachine.domain.submission.DashboardSubmission;
 import edu.wgu.dreammachine.model.submission.SubmissionByStudentAndTaskModel;
+import edu.wgu.dreammachine.util.DateUtil;
 import edu.wgu.dreammachine.util.StatusUtil;
 
 public class StudentSearchServiceTest extends SearchServiceTest {

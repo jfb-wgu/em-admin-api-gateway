@@ -20,7 +20,6 @@ import edu.wgu.dmadmin.model.security.SecurityAccessor;
 import edu.wgu.dmadmin.model.user.UserByFirstNameModel;
 import edu.wgu.dmadmin.model.user.UserByIdModel;
 import edu.wgu.dmadmin.model.user.UserByLastNameModel;
-import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dreammachine.model.audit.ActivityLogByUserModel;
 import edu.wgu.dreammachine.model.publish.TaskAccessor;
 import edu.wgu.dreammachine.model.publish.TaskByCourseModel;
@@ -29,6 +28,7 @@ import edu.wgu.dreammachine.model.submission.SubmissionByEvaluatorAndTaskModel;
 import edu.wgu.dreammachine.model.submission.SubmissionByIdModel;
 import edu.wgu.dreammachine.model.submission.SubmissionByStatusGroupAndTaskModel;
 import edu.wgu.dreammachine.model.submission.SubmissionByStudentAndTaskModel;
+import edu.wgu.dreammachine.util.DateUtil;
 
 @Repository("cassandra")
 public class CassandraRepo {

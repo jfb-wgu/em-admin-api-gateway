@@ -22,10 +22,10 @@ import edu.wgu.dmadmin.domain.search.DateRange;
 import edu.wgu.dmadmin.domain.search.SearchCriteria;
 import edu.wgu.dmadmin.model.user.UserModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
-import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dreammachine.domain.submission.DashboardSubmission;
 import edu.wgu.dreammachine.model.submission.SubmissionByIdModel;
 import edu.wgu.dreammachine.model.submission.SubmissionModel;
+import edu.wgu.dreammachine.util.DateUtil;
 import edu.wgu.dreammachine.util.StatusUtil;
 
 @Service

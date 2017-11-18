@@ -31,56 +31,56 @@ import edu.wgu.security.authz.annotation.Secured;
 @RequestMapping("v1/admin")
 public class SecurityController {
 
-    @Autowired
-    private SecurityService adminService;
+	@Autowired
+	private SecurityService adminService;
 
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.ROLE_CREATE)
-    @RequestMapping(value = "/permissions", method = RequestMethod.GET)
-    public ResponseEntity<List<Permission>> getPermissions() {
-        return ResponseEntity.ok(this.adminService.getPermissions());
-    }
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.ROLE_CREATE)
+	@RequestMapping(value = "/permissions", method = RequestMethod.GET)
+	public ResponseEntity<List<Permission>> getPermissions() {
+		return ResponseEntity.ok(this.adminService.getPermissions());
+	}
 
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.ROLE_CREATE)
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @RequestMapping(value = "/permissions", method = RequestMethod.POST)
-    public void addPermissions(@RequestBody Permission[] permissions) {
-        this.adminService.savePermissions(permissions);
-    }
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.ROLE_CREATE)
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	@RequestMapping(value = "/permissions", method = RequestMethod.POST)
+	public void addPermissions(@RequestBody Permission[] permissions) {
+		this.adminService.savePermissions(permissions);
+	}
 
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.ROLE_CREATE)
-    @RequestMapping(value = "/roles", method = RequestMethod.POST)
-    public List<Role> addRoles(@RequestBody Role[] roles) {
-        return this.adminService.saveRoles(roles);
-    }
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.ROLE_CREATE)
+	@RequestMapping(value = "/roles", method = RequestMethod.POST)
+	public List<Role> addRoles(@RequestBody Role[] roles) {
+		return this.adminService.saveRoles(roles);
+	}
 
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.ROLE_CREATE)
-    @RequestMapping(value = "/roles", method = RequestMethod.GET)
-    public ResponseEntity<List<Role>> getRoles() {
-        return ResponseEntity.ok(this.adminService.getRoles());
-    }
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.ROLE_CREATE)
+	@RequestMapping(value = "/roles", method = RequestMethod.GET)
+	public ResponseEntity<List<Role>> getRoles() {
+		return ResponseEntity.ok(this.adminService.getRoles());
+	}
 
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.ROLE_CREATE)
-    @RequestMapping(value = "/roles/{roleId}", method = RequestMethod.GET)
-    public ResponseEntity<Role> getRole(@PathVariable final UUID roleId) {
-        return ResponseEntity.ok(this.adminService.getRole(roleId));
-    }
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.ROLE_CREATE)
+	@RequestMapping(value = "/roles/{roleId}", method = RequestMethod.GET)
+	public ResponseEntity<Role> getRole(@PathVariable final UUID roleId) {
+		return ResponseEntity.ok(this.adminService.getRole(roleId));
+	}
 
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.ROLE_CREATE)
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @RequestMapping(value = "/roles/{roleId}", method = RequestMethod.DELETE)
-    public void deleteRole(@PathVariable final UUID roleId) {
-        this.adminService.deleteRole(roleId);
-    }
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.ROLE_CREATE)
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	@RequestMapping(value = "/roles/{roleId}", method = RequestMethod.DELETE)
+	public void deleteRole(@PathVariable final UUID roleId) {
+		this.adminService.deleteRole(roleId);
+	}
 }

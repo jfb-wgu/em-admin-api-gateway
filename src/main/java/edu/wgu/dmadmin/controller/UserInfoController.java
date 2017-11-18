@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.wgu.dmadmin.domain.security.Permissions;
 import edu.wgu.dmadmin.domain.user.Person;
-import edu.wgu.dmadmin.exception.UserIdNotFoundException;
 import edu.wgu.dmadmin.service.UserInfoService;
-import edu.wgu.dmadmin.util.IdentityUtil;
 import edu.wgu.dmaudit.audit.Audit;
 import edu.wgu.dreammachine.domain.security.SecureByPermissionStrategy;
+import edu.wgu.dreammachine.util.IdentityUtil;
 import edu.wgu.security.authz.annotation.HasAnyRole;
 import edu.wgu.security.authz.annotation.IgnoreAuthorization;
 import edu.wgu.security.authz.annotation.Secured;
@@ -31,28 +30,28 @@ import edu.wgu.security.authz.annotation.Secured;
 @RequestMapping("v1")
 public class UserInfoController {
 
-    @Autowired
-    private UserInfoService userService;
+	@Autowired
+	private UserInfoService userService;
 
-    @Autowired
-    private IdentityUtil iUtil;
+	@Autowired
+	private IdentityUtil iUtil;
 
-    @Audit
-    @IgnoreAuthorization
-    @RequestMapping(value = "/person", method = RequestMethod.GET)
-    public ResponseEntity<Person> getPerson(HttpServletRequest request) throws UserIdNotFoundException, ParseException {
-        return ResponseEntity.ok(this.userService.getPersonFromRequest(request, this.iUtil.getUserId()));
-    }
+	@Audit
+	@IgnoreAuthorization
+	@RequestMapping(value = "/person", method = RequestMethod.GET)
+	public ResponseEntity<Person> getPerson(HttpServletRequest request) throws ParseException {
+		return ResponseEntity.ok(this.userService.getPersonFromRequest(request, this.iUtil.getUserId()));
+	}
 
-    @Audit
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.USER_SEARCH)
-    @RequestMapping(value = "/person/bannerId/{bannerId}", method = RequestMethod.GET)
-    public ResponseEntity<Person> getPerson(@PathVariable final String bannerId) {
-        return ResponseEntity.ok(this.userService.getPersonByUserId(bannerId));
-    }
-    
-    public void setUserInfoService(UserInfoService service) {
-    		this.userService = service;
-    }
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.USER_SEARCH)
+	@RequestMapping(value = "/person/bannerId/{bannerId}", method = RequestMethod.GET)
+	public ResponseEntity<Person> getPerson(@PathVariable final String bannerId) {
+		return ResponseEntity.ok(this.userService.getPersonByUserId(bannerId));
+	}
+
+	public void setUserInfoService(UserInfoService service) {
+		this.userService = service;
+	}
 }

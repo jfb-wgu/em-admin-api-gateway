@@ -17,7 +17,7 @@ import edu.wgu.dmadmin.model.security.PermissionModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
 import edu.wgu.dmadmin.model.user.UserByIdModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
-import edu.wgu.dmadmin.util.DateUtil;
+import edu.wgu.dreammachine.util.DateUtil;
 
 @Service
 public class SecurityService {

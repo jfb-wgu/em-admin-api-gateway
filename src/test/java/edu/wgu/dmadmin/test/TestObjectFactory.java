@@ -21,10 +21,10 @@ import edu.wgu.dmadmin.domain.user.User;
 import edu.wgu.dmadmin.model.security.PermissionModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
 import edu.wgu.dmadmin.model.user.UserByIdModel;
-import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dreammachine.model.publish.RubricModel;
 import edu.wgu.dreammachine.model.publish.TaskModel;
 import edu.wgu.dreammachine.model.submission.SubmissionModel;
+import edu.wgu.dreammachine.util.DateUtil;
 import edu.wgu.dreammachine.util.StatusUtil;
 
 public class TestObjectFactory {

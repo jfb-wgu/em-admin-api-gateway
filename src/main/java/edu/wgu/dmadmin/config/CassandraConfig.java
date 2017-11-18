@@ -18,15 +18,15 @@ public class CassandraConfig {
     @Bean
     public Cluster cluster() {
         Cluster.Builder builder = Cluster.builder()
-        		.addContactPoints(env.getProperty("spring.data.cassandra.contact-points").split(","))
-        		.withPort(Integer.parseInt(env.getProperty("spring.data.cassandra.port")))
-        		.withCredentials(env.getProperty("spring.data.cassandra.username"), env.getProperty("spring.data.cassandra.password"))
-        		.withQueryOptions(new QueryOptions().setConsistencyLevel(ConsistencyLevel.QUORUM));
+        		.addContactPoints(this.env.getProperty("spring.data.cassandra.contact-points").split(","))
+        		.withPort(Integer.parseInt(this.env.getProperty("spring.data.cassandra.port")))
+        		.withCredentials(this.env.getProperty("spring.data.cassandra.username"), this.env.getProperty("spring.data.cassandra.password"))
+        		.withQueryOptions(new QueryOptions().setConsistencyLevel(ConsistencyLevel.LOCAL_QUORUM));
         return builder.build();
     }
 
     @Bean
     public Session session() throws Exception {
-        return cluster().connect(env.getProperty("spring.data.cassandra.keyspace-name"));
+        return cluster().connect(this.env.getProperty("spring.data.cassandra.keyspace-name"));
     }
 }

@@ -16,7 +16,7 @@ public class UserResponse {
    
    @JsonGetter("evaluator")
    public User getEvaluator() {
-	   return evaluator;
+	   return this.evaluator;
    }
 }
  

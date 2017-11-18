@@ -31,8 +31,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wgu.dmadmin.domain.user.Person;
 import edu.wgu.dmadmin.service.UserInfoService;
 import edu.wgu.dmadmin.test.TestObjectFactory;
-import edu.wgu.dmadmin.util.DateUtil;
-import edu.wgu.dmadmin.util.IdentityUtil;
+import edu.wgu.dreammachine.util.DateUtil;
+import edu.wgu.dreammachine.util.IdentityUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserInfoControllerTest {

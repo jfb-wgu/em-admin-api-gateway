@@ -19,7 +19,7 @@ public class UserListResponse {
    
    @JsonGetter("evaluators") 
    public List<User> getEvaluators() {
-	   Collections.sort(evaluators);
-	   return evaluators;
+	   Collections.sort(this.evaluators);
+	   return this.evaluators;
    }
 }
