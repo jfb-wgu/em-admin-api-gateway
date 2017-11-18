@@ -7,7 +7,7 @@ import edu.wgu.dmadmin.domain.user.User;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-@Table(keyspace = "dm", name = "user_by_id", readConsistency = "QUORUM", writeConsistency = "QUORUM")
+@Table(keyspace = "dm", name = "user_by_id", readConsistency = "LOCAL_QUORUM", writeConsistency = "LOCAL_QUORUM")
 public class UserByIdModel extends UserModel {
 
 	@PartitionKey(0)

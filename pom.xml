@@ -4,7 +4,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>dm-admin</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1</version>
 	<groupId>edu.wgu</groupId>
 	<name>dm-admin</name>
 
@@ -67,18 +66,7 @@
 		<dependency>
 			<groupId>org.springframework.ldap</groupId>
 			<artifactId>spring-ldap-core</artifactId>
-			<version>2.3.1.RELEASE</version>
-		</dependency>
-
-		<!-- javax.validation (JSR-303) -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
+			<version>2.3.2.RELEASE</version>
 		</dependency>
 
 		<!-- Swagger -->
@@ -113,12 +101,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-collections4</artifactId>
-			<version>4.1</version>
-		</dependency>
-
-		<dependency>
 			<groupId>edu.wgu</groupId>
 			<artifactId>dream-machine</artifactId>
 			<version>1.1.0</version>
@@ -127,7 +109,7 @@
 		<dependency>
 			<groupId>edu.wgu</groupId>
 			<artifactId>dm-audit</artifactId>
-			<version>0.0.1.2</version>
+			<version>1.0.0.8</version>
 		</dependency>
 
 	</dependencies>
@@ -191,4 +173,5 @@
 			<url>https://nexus.wgu.edu/content/repositories/WGU</url>
 		</repository>
 	</repositories>
+	<version>1.0.0</version>
 </project>

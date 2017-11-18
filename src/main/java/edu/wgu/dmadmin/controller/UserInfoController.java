@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.wgu.dmadmin.domain.security.IdentityUtil;
 import edu.wgu.dmadmin.domain.security.Permissions;
+import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
 import edu.wgu.dmadmin.domain.user.Person;
 import edu.wgu.dmadmin.service.UserInfoService;
 import edu.wgu.dmaudit.audit.Audit;
-import edu.wgu.dreammachine.domain.security.SecureByPermissionStrategy;
 import edu.wgu.security.authz.annotation.HasAnyRole;
 import edu.wgu.security.authz.annotation.IgnoreAuthorization;
 import edu.wgu.security.authz.annotation.Secured;

@@ -43,26 +43,26 @@ public class CassandraRepo {
 	MappingManager mappingManager;
 	SecurityAccessor securityAccessor;
 	EvaluationAccessor evaluationAccessor;
+	TaskAccessor taskAccessor;
+	SubmissionAccessor submissionAccessor;
 	Mapper<UserByIdModel> userMapper;
 	Mapper<RoleModel> roleMapper;
 	Mapper<PermissionModel> permissionMapper;
 	Mapper<ActivityLogByUserModel> activityMapper;
 	Mapper<SubmissionByIdModel> submissionMapper;
 	Mapper<EvaluationByIdModel> evaluationMapper;
-	TaskAccessor taskAccessor;
-	SubmissionAccessor submissionAccessor;
 
 	@Autowired
 	public CassandraRepo(Session session) {
 		this.mappingManager = new MappingManager(session);
 		this.securityAccessor = this.mappingManager.createAccessor(SecurityAccessor.class);
 		this.evaluationAccessor = this.mappingManager.createAccessor(EvaluationAccessor.class);
+		this.taskAccessor = this.mappingManager.createAccessor(TaskAccessor.class);
+		this.submissionAccessor = this.mappingManager.createAccessor(SubmissionAccessor.class);
 		this.userMapper = this.mappingManager.mapper(UserByIdModel.class);
 		this.permissionMapper = this.mappingManager.mapper(PermissionModel.class);
 		this.roleMapper = this.mappingManager.mapper(RoleModel.class);
 		this.activityMapper = this.mappingManager.mapper(ActivityLogByUserModel.class);
-		this.taskAccessor = this.mappingManager.createAccessor(TaskAccessor.class);
-		this.submissionAccessor = this.mappingManager.createAccessor(SubmissionAccessor.class);
 		this.submissionMapper = this.mappingManager.mapper(SubmissionByIdModel.class);
 		this.evaluationMapper = this.mappingManager.mapper(EvaluationByIdModel.class);
 	}

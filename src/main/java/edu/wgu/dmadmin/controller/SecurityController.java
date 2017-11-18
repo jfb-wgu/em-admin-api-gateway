@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.wgu.dmadmin.domain.security.Permission;
 import edu.wgu.dmadmin.domain.security.Permissions;
 import edu.wgu.dmadmin.domain.security.Role;
+import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
 import edu.wgu.dmadmin.service.SecurityService;
 import edu.wgu.dmaudit.audit.Audit;
-import edu.wgu.dreammachine.domain.security.SecureByPermissionStrategy;
 import edu.wgu.security.authz.annotation.HasAnyRole;
 import edu.wgu.security.authz.annotation.Secured;
 

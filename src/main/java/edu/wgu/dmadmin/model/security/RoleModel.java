@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Table(keyspace = "dm", name = "role", readConsistency = "QUORUM", writeConsistency = "QUORUM")
+@Table(keyspace = "dm", name = "role", readConsistency = "LOCAL_QUORUM", writeConsistency = "LOCAL_QUORUM")
 public class RoleModel {
 	
 	@PartitionKey(0)

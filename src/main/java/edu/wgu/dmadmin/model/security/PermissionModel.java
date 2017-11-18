@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Table(keyspace = "dm", name = "permission", readConsistency = "QUORUM", writeConsistency = "QUORUM")
+@Table(keyspace = "dm", name = "permission", readConsistency = "LOCAL_QUORUM", writeConsistency = "LOCAL_QUORUM")
 public class PermissionModel {
 	
 	@PartitionKey(0)

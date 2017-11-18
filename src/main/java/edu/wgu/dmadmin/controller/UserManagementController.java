@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.wgu.dmadmin.domain.security.Permissions;
+import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
 import edu.wgu.dmadmin.domain.user.User;
 import edu.wgu.dmadmin.domain.user.UserListResponse;
 import edu.wgu.dmadmin.domain.user.UserResponse;
 import edu.wgu.dmadmin.service.UserManagementService;
 import edu.wgu.dmaudit.audit.Audit;
-import edu.wgu.dreammachine.domain.security.SecureByPermissionStrategy;
 import edu.wgu.security.authz.annotation.HasAnyRole;
 import edu.wgu.security.authz.annotation.Secured;
 

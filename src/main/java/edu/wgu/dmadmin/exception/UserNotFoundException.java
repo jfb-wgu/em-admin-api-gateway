@@ -9,6 +9,6 @@ public class UserNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = -7227568295142134596L;
 
 	public UserNotFoundException(String evaluatorId) {
-		super("No evaluator with ID [" + evaluatorId + "] was found in the system.");
+		super("No user with ID [" + evaluatorId + "] was found in the system.");
 	}
 }

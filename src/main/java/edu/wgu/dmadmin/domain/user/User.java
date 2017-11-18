@@ -19,70 +19,72 @@ import edu.wgu.dmadmin.model.user.UserModel;
 
 @Data
 @NoArgsConstructor
-public class User  implements Comparable<User> {
-	
-    String userId;
-    String firstName;
-    String lastName;
-    Set<UUID> roles;
-    Set<String> permissions;
-    Set<UUID> teams;
-    Set<UUID> tasks;
-    Set<String> landings;
-    Date lastLogin;
-    String employeeId;
+public class User implements Comparable<User> {
 
-    @JsonIgnore
-    Set<String> roleNames;
-    
-    @JsonIgnore
-    Set<String> taskNames;
-    
-    public Set<String> getRoleNames() {
-    	if (this.roleNames == null) this.roleNames = new HashSet<String>();
-    	return this.roleNames;
-    }
-    
-    public Set<String> getTaskNames() {
-    	if (this.taskNames == null) this.taskNames = new HashSet<String>();
-    	return this.taskNames;
-    }
-    
-    @JsonGetter("roles")
-    public Set<?> getDisplayRoles() {
-    	return this.getRoleNames().isEmpty() ? this.roles : this.roleNames;
-    }
-    
-    @JsonGetter("tasks")
-    public Set<?> getDisplayTasks() {
-    	return this.getTaskNames().isEmpty() ? this.tasks : this.taskNames;
-    }
-    
-    @JsonGetter("queues")
-    public Set<String> getQueues() {
-    	Set<String> queues = new HashSet<String>();
-    	queues.addAll(SetUtils.intersection(Permissions.getQueues(), this.getPermissions()));
-		
+	String userId;
+	String firstName;
+	String lastName;
+	Set<UUID> roles;
+	Set<String> permissions;
+	Set<UUID> teams;
+	Set<UUID> tasks;
+	Set<String> landings;
+	Date lastLogin;
+	String employeeId;
+
+	@JsonIgnore
+	Set<String> roleNames;
+
+	@JsonIgnore
+	Set<String> taskNames;
+
+	public Set<String> getRoleNames() {
+		if (this.roleNames == null)
+			this.roleNames = new HashSet<String>();
+		return this.roleNames;
+	}
+
+	public Set<String> getTaskNames() {
+		if (this.taskNames == null)
+			this.taskNames = new HashSet<String>();
+		return this.taskNames;
+	}
+
+	@JsonGetter("roles")
+	public Set<?> getDisplayRoles() {
+		return this.getRoleNames().isEmpty() ? this.roles : this.roleNames;
+	}
+
+	@JsonGetter("tasks")
+	public Set<?> getDisplayTasks() {
+		return this.getTaskNames().isEmpty() ? this.tasks : this.taskNames;
+	}
+
+	@JsonGetter("queues")
+	public Set<String> getQueues() {
+		Set<String> queues = new HashSet<String>();
+		queues.addAll(SetUtils.intersection(Permissions.getQueues(), this.getPermissions()));
+
 		// Only include PENDING submissions if the user has tasks configured
 		if (CollectionUtils.isNotEmpty(this.getTasks()) && this.getPermissions().contains(Permissions.TASK_QUEUE)) {
 			queues.add(Permissions.TASK_QUEUE);
 		}
-		
-		return queues;
-    }
 
-    public User(UserModel model) {
-    	this.userId = model.getUserId();
-    	this.firstName = model.getFirstName();
-    	this.lastName = model.getLastName();
-    	this.roles = model.getRoles();
-    	this.permissions = model.getPermissions();
-    	this.teams = model.getTeams();
-    	this.tasks = model.getTasks();
-    	this.landings = model.getLandings();
-    	this.lastLogin = model.getLastLogin();
-    	this.employeeId = model.getEmployeeId();
-    }
+		return queues;
+	}
+
+	public User(UserModel model) {
+		this.userId = model.getUserId();
+		this.firstName = model.getFirstName();
+		this.lastName = model.getLastName();
+		this.roles = model.getRoles();
+		this.permissions = model.getPermissions();
+		this.teams = model.getTeams();
+		this.tasks = model.getTasks();
+		this.landings = model.getLandings();
+		this.lastLogin = model.getLastLogin();
+		this.employeeId = model.getEmployeeId();
+	}
 
 	@Override
 	public int compareTo(User o) {

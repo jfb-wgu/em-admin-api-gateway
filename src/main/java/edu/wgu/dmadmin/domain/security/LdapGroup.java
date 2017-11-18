@@ -18,9 +18,6 @@ import lombok.Data;
 @Entry(objectClasses = {"group"})
 public final class LdapGroup implements Serializable {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 6878617939623507473L;
 
 	@Id
