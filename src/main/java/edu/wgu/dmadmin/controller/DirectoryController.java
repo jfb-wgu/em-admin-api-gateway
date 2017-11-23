@@ -29,14 +29,14 @@ import edu.wgu.security.authz.annotation.Secured;
 public class DirectoryController {
 
     @Autowired
-    private DirectoryService directoryService;
+    private DirectoryService service;
 
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.DIRECTORY_SEARCH)
     @RequestMapping(value = "/users/ldap/{group}", method = RequestMethod.GET)
     public ResponseEntity<Set<LdapUser>> getMembersForGroup(@PathVariable final String group) {
-        return new ResponseEntity<Set<LdapUser>>(this.directoryService.getMembersForGroup(group), HttpStatus.OK);
+        return new ResponseEntity<Set<LdapUser>>(this.service.getMembersForGroup(group), HttpStatus.OK);
     }
 
     @Audit
@@ -44,6 +44,10 @@ public class DirectoryController {
     @HasAnyRole(Permissions.DIRECTORY_SEARCH)
     @RequestMapping(value = "/users/ldap/{group}/missing", method = RequestMethod.GET)
     public ResponseEntity<Set<Person>> getMissingGroupMembers(@PathVariable final String group) {
-        return new ResponseEntity<Set<Person>>(this.directoryService.getMissingUsers(group), HttpStatus.OK);
+        return new ResponseEntity<Set<Person>>(this.service.getMissingUsers(group), HttpStatus.OK);
+    }
+    
+    public void setDirectoryService(DirectoryService dService) {
+    		this.service = dService;
     }
 }

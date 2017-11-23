@@ -33,14 +33,14 @@ import edu.wgu.security.authz.annotation.Secured;
 public class UserManagementController {
 
 	@Autowired
-	private UserManagementService userService;
+	private UserManagementService service;
 
 	@Audit
 	@Secured(strategies = { SecureByPermissionStrategy.class })
 	@HasAnyRole(Permissions.USER_SEARCH)
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<UserResponse> getUser(@PathVariable final String userId) {
-		UserResponse result = new UserResponse(this.userService.getUser(userId));
+		UserResponse result = new UserResponse(this.service.getUser(userId));
 		return new ResponseEntity<UserResponse>(result, HttpStatus.OK);
 	}
 
@@ -50,7 +50,7 @@ public class UserManagementController {
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void addUsers(@RequestBody User[] users) {
-		this.userService.addUsers(Arrays.asList(users));
+		this.service.addUsers(Arrays.asList(users));
 	}
 
 	@Audit
@@ -58,7 +58,7 @@ public class UserManagementController {
 	@HasAnyRole(Permissions.USER_CREATE)
 	@RequestMapping(value = "/users/{username}", method = RequestMethod.POST)
 	public ResponseEntity<User> createUser(@PathVariable String username) {
-		User result = new User(this.userService.createUser(username));
+		User result = new User(this.service.createUser(username));
 		return new ResponseEntity<User>(result, HttpStatus.OK);
 	}
 
@@ -67,8 +67,8 @@ public class UserManagementController {
 	@HasAnyRole(Permissions.USER_DELETE)
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void deleteEvaluator(@PathVariable final String userId) {
-		this.userService.deleteUser(userId);
+	public void deleteUser(@PathVariable final String userId) {
+		this.service.deleteUser(userId);
 	}
 
 	@Audit
@@ -76,7 +76,7 @@ public class UserManagementController {
 	@HasAnyRole(Permissions.USER_SEARCH)
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	public ResponseEntity<UserListResponse> getAllUsers() {
-		UserListResponse result = new UserListResponse(this.userService.getUsers());
+		UserListResponse result = new UserListResponse(this.service.getUsers());
 		return new ResponseEntity<UserListResponse>(result, HttpStatus.OK);
 	}
 
@@ -85,7 +85,11 @@ public class UserManagementController {
 	@HasAnyRole(Permissions.USER_SEARCH)
 	@RequestMapping(value = "/users/task/{taskId}", method = RequestMethod.GET)
 	public ResponseEntity<UserListResponse> getUsersForTask(@PathVariable final UUID taskId) {
-		UserListResponse result = new UserListResponse(this.userService.getUsersForTask(taskId));
+		UserListResponse result = new UserListResponse(this.service.getUsersForTask(taskId));
 		return new ResponseEntity<UserListResponse>(result, HttpStatus.OK);
+	}
+	
+	public void setUserManagementService(UserManagementService umService) {
+		this.service = umService;
 	}
 }

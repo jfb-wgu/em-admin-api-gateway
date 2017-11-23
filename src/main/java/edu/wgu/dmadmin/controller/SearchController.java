@@ -27,14 +27,18 @@ import edu.wgu.security.authz.annotation.Secured;
 public class SearchController {
 
 	@Autowired
-	private SearchService searchService;
+	private SearchService service;
 
 	@Audit
 	@Secured(strategies = { SecureByPermissionStrategy.class })
 	@HasAnyRole(Permissions.SUBMISSION_SEARCH)
 	@RequestMapping(value = { "/submissions" }, method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public ResponseEntity<SearchResponse> getSubmissionsByCriteria(@RequestBody final SearchCriteria criteria) {
-		SearchResponse response = new SearchResponse(criteria, this.searchService.search(criteria));
+		SearchResponse response = new SearchResponse(criteria, this.service.search(criteria));
 		return new ResponseEntity<SearchResponse>(response, HttpStatus.OK);
+	}
+	
+	public void setSearchService(SearchService sService) {
+		this.service = sService;
 	}
 }

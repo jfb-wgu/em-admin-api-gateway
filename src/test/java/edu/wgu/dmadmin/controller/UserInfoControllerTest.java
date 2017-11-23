@@ -129,7 +129,7 @@ public class UserInfoControllerTest {
 
     @Test
     public void testGetPerson1() throws Exception {
-        String url = "/v1/person/bannerId/" + this.userId;
+        String url = "/v1/person/" + this.userId;
 
         when(this.userService.getPersonByUserId(this.userId)).thenReturn(this.person);
 
