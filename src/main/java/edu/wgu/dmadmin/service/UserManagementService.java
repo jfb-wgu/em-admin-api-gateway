@@ -1,5 +1,7 @@
 package edu.wgu.dmadmin.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -10,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.wgu.dmadmin.domain.security.BulkCreateResponse;
+import edu.wgu.dmadmin.domain.security.BulkUsers;
 import edu.wgu.dmadmin.domain.user.Person;
 import edu.wgu.dmadmin.exception.UserNotFoundException;
 import edu.wgu.dmadmin.repo.CassandraRepo;
@@ -99,5 +103,30 @@ public class UserManagementService {
 		this.cassandraRepo.saveUser(model);
 		
 		return this.cassandraRepo.getUser(model.getUserId()).get();
+	}
+	
+	public BulkCreateResponse createUsers(BulkUsers users) {
+		List<User> result = new ArrayList<>();
+		List<String> failed = new ArrayList<>();
+		
+		users.getUsernames().forEach(name -> {
+			try {
+				Person person = this.personService.getPersonByUsername(name);
+				UserByIdModel model = new UserByIdModel();
+				model.setUserId(person.getUserId());
+				model.setFirstName(person.getFirstName());
+				model.setLastName(person.getLastName());
+				model.setEmployeeId(person.getUsername());
+				model.setRoles(users.getRoles());
+				model.setTasks(users.getTasks());
+				model = this.cassandraRepo.saveUser(model);
+				result.add(new User(model));
+			} catch (Exception e) {
+				logger.error(Arrays.toString(e.getStackTrace()));
+				failed.add(name);
+			}
+		});
+		
+		return new BulkCreateResponse(result, failed);
 	}
 }

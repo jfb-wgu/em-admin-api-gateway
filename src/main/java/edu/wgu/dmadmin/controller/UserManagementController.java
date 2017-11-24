@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.wgu.dmadmin.domain.security.BulkCreateResponse;
+import edu.wgu.dmadmin.domain.security.BulkUsers;
 import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
 import edu.wgu.dmadmin.domain.user.UserListResponse;
 import edu.wgu.dmadmin.domain.user.UserResponse;
@@ -41,7 +43,7 @@ public class UserManagementController {
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<UserResponse> getUser(@PathVariable final String userId) {
 		UserResponse result = new UserResponse(this.service.getUser(userId));
-		return new ResponseEntity<UserResponse>(result, HttpStatus.OK);
+		return ResponseEntity.ok().body(result);
 	}
 
 	@Audit
@@ -59,7 +61,16 @@ public class UserManagementController {
 	@RequestMapping(value = "/users/{username}", method = RequestMethod.POST)
 	public ResponseEntity<User> createUser(@PathVariable String username) {
 		User result = new User(this.service.createUser(username));
-		return new ResponseEntity<User>(result, HttpStatus.OK);
+		return ResponseEntity.ok().body(result);
+	}
+	
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.USER_CREATE)
+	@RequestMapping(value = "/users/bulk", method = RequestMethod.POST)
+	public ResponseEntity<BulkCreateResponse> createUsers(@RequestBody BulkUsers users) {
+		BulkCreateResponse result = this.service.createUsers(users);
+		return ResponseEntity.ok().body(result);
 	}
 
 	@Audit
@@ -77,7 +88,7 @@ public class UserManagementController {
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	public ResponseEntity<UserListResponse> getAllUsers() {
 		UserListResponse result = new UserListResponse(this.service.getUsers());
-		return new ResponseEntity<UserListResponse>(result, HttpStatus.OK);
+		return ResponseEntity.ok().body(result);
 	}
 
 	@Audit
@@ -86,7 +97,7 @@ public class UserManagementController {
 	@RequestMapping(value = "/users/task/{taskId}", method = RequestMethod.GET)
 	public ResponseEntity<UserListResponse> getUsersForTask(@PathVariable final UUID taskId) {
 		UserListResponse result = new UserListResponse(this.service.getUsersForTask(taskId));
-		return new ResponseEntity<UserListResponse>(result, HttpStatus.OK);
+		return ResponseEntity.ok().body(result);
 	}
 	
 	public void setUserManagementService(UserManagementService umService) {
