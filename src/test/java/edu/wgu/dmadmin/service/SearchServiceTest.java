@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 import org.junit.Before;
 
 import edu.wgu.dmadmin.domain.search.SearchCriteria;
-import edu.wgu.dmadmin.model.user.UserByFirstNameModel;
-import edu.wgu.dmadmin.model.user.UserByLastNameModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.test.TestObjectFactory;
+import edu.wgu.dreammachine.model.security.UserByFirstNameModel;
+import edu.wgu.dreammachine.model.security.UserByLastNameModel;
 import edu.wgu.dreammachine.model.submission.SubmissionModel;
 import edu.wgu.dreammachine.util.StatusUtil;
 

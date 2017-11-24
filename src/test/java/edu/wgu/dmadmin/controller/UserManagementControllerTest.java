@@ -33,12 +33,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.wgu.dmadmin.domain.security.IdentityUtil;
 import edu.wgu.dmadmin.domain.user.Person;
-import edu.wgu.dmadmin.domain.user.User;
 import edu.wgu.dmadmin.domain.user.UserListResponse;
 import edu.wgu.dmadmin.domain.user.UserResponse;
-import edu.wgu.dmadmin.model.user.UserModel;
 import edu.wgu.dmadmin.service.UserManagementService;
 import edu.wgu.dmadmin.test.TestObjectFactory;
+import edu.wgu.dreammachine.domain.security.User;
+import edu.wgu.dreammachine.model.security.UserModel;
 import edu.wgu.dreammachine.util.DateUtil;
 
 @RunWith(MockitoJUnitRunner.class)

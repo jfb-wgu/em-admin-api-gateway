@@ -19,11 +19,11 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import edu.wgu.dmadmin.domain.user.Person;
 import edu.wgu.dmadmin.exception.UserNotFoundException;
-import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.user.UserByIdModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 import edu.wgu.dreammachine.model.publish.TaskByCourseModel;
+import edu.wgu.dreammachine.model.security.RoleModel;
+import edu.wgu.dreammachine.model.security.UserByIdModel;
 
 public class UserInfoServiceTest {
 	

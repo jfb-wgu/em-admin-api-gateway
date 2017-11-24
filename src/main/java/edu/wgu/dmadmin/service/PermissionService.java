@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.wgu.dmadmin.domain.security.Permission;
-import edu.wgu.dmadmin.model.security.PermissionModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
+import edu.wgu.dreammachine.domain.security.Permission;
+import edu.wgu.dreammachine.model.security.PermissionModel;
 import edu.wgu.dreammachine.util.DateUtil;
 
 @Service

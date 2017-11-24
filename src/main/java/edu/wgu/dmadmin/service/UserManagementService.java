@@ -11,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.wgu.dmadmin.domain.user.Person;
-import edu.wgu.dmadmin.domain.user.User;
 import edu.wgu.dmadmin.exception.UserNotFoundException;
-import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.user.UserByIdModel;
-import edu.wgu.dmadmin.model.user.UserModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
+import edu.wgu.dreammachine.domain.security.User;
 import edu.wgu.dreammachine.model.publish.TaskModel;
+import edu.wgu.dreammachine.model.security.RoleModel;
+import edu.wgu.dreammachine.model.security.UserByIdModel;
+import edu.wgu.dreammachine.model.security.UserModel;
 
 @Service
 public class UserManagementService {

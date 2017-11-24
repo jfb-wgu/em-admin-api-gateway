@@ -22,12 +22,12 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 
-import edu.wgu.dmadmin.domain.security.Role;
 import edu.wgu.dmadmin.exception.RoleNotFoundException;
-import edu.wgu.dmadmin.model.security.PermissionModel;
-import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.user.UserByIdModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
+import edu.wgu.dreammachine.domain.security.Role;
+import edu.wgu.dreammachine.model.security.PermissionModel;
+import edu.wgu.dreammachine.model.security.RoleModel;
+import edu.wgu.dreammachine.model.security.UserByIdModel;
 import edu.wgu.dreammachine.util.DateUtil;
 
 public class RoleServiceTest {

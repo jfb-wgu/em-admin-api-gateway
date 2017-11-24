@@ -26,11 +26,11 @@ import edu.wgu.dmadmin.domain.security.LdapGroup;
 import edu.wgu.dmadmin.domain.security.LdapLookup;
 import edu.wgu.dmadmin.domain.security.LdapUser;
 import edu.wgu.dmadmin.domain.user.Person;
-import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.user.UserByIdModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 import edu.wgu.dreammachine.model.publish.TaskByCourseModel;
+import edu.wgu.dreammachine.model.security.RoleModel;
+import edu.wgu.dreammachine.model.security.UserByIdModel;
 
 public class DirectoryServiceTest {
 	

@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.wgu.dmadmin.domain.search.SearchCriteria;
 import edu.wgu.dmadmin.domain.search.SearchResponse;
-import edu.wgu.dmadmin.domain.security.Permissions;
 import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
 import edu.wgu.dmadmin.service.SearchService;
 import edu.wgu.dmaudit.audit.Audit;
+import edu.wgu.dreammachine.domain.security.Permissions;
 import edu.wgu.security.authz.annotation.HasAnyRole;
 import edu.wgu.security.authz.annotation.Secured;
 

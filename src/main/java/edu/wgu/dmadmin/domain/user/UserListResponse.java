@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 
+import edu.wgu.dreammachine.domain.security.User;
+
 /**
  * @author Jessica Pamdeth
  */

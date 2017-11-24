@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import edu.wgu.dmadmin.model.user.UserByIdModel;
+import edu.wgu.dreammachine.model.security.UserByIdModel;
 import lombok.Data;
 
 @Data
