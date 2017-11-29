@@ -2,6 +2,7 @@ package edu.wgu.dmadmin.repo;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,8 +19,10 @@ import edu.wgu.dreammachine.model.assessment.EvaluationAccessor;
 import edu.wgu.dreammachine.model.assessment.EvaluationByIdModel;
 import edu.wgu.dreammachine.model.assessment.EvaluationBySubmissionModel;
 import edu.wgu.dreammachine.model.audit.ActivityLogByUserModel;
+import edu.wgu.dreammachine.model.audit.StatusLogByAssessmentModel;
 import edu.wgu.dreammachine.model.publish.TaskAccessor;
 import edu.wgu.dreammachine.model.publish.TaskByCourseModel;
+import edu.wgu.dreammachine.model.publish.TaskByIdModel;
 import edu.wgu.dreammachine.model.security.PermissionModel;
 import edu.wgu.dreammachine.model.security.RoleModel;
 import edu.wgu.dreammachine.model.security.SecurityAccessor;
@@ -45,6 +48,7 @@ public class CassandraRepo {
 	EvaluationAccessor evaluationAccessor;
 	TaskAccessor taskAccessor;
 	SubmissionAccessor submissionAccessor;
+	CassandraAccessor cassandraAccessor;
 	Mapper<UserByIdModel> userMapper;
 	Mapper<RoleModel> roleMapper;
 	Mapper<PermissionModel> permissionMapper;
@@ -59,6 +63,7 @@ public class CassandraRepo {
 		this.evaluationAccessor = this.mappingManager.createAccessor(EvaluationAccessor.class);
 		this.taskAccessor = this.mappingManager.createAccessor(TaskAccessor.class);
 		this.submissionAccessor = this.mappingManager.createAccessor(SubmissionAccessor.class);
+		this.cassandraAccessor = this.mappingManager.createAccessor(CassandraAccessor.class);
 		this.userMapper = this.mappingManager.mapper(UserByIdModel.class);
 		this.permissionMapper = this.mappingManager.mapper(PermissionModel.class);
 		this.roleMapper = this.mappingManager.mapper(RoleModel.class);
@@ -217,6 +222,10 @@ public class CassandraRepo {
 	public List<TaskByCourseModel> getTaskBasics() {
 		return this.taskAccessor.getAllBasics().all();
 	}
+	
+	public Optional<TaskByIdModel> getTask(UUID taskId) {
+		return Optional.ofNullable(this.taskAccessor.getTaskById(taskId));
+	}
 
 	public void deleteSubmission(SubmissionByIdModel byId) {
 		this.submissionMapper.delete(byId);
@@ -232,5 +241,13 @@ public class CassandraRepo {
 	
 	public List<EvaluationBySubmissionModel> getEvaluationsBySubmission(UUID submissionId) {
 		return this.evaluationAccessor.getEvaluationsBySubmission(submissionId).all();
+	}
+
+    public List<StatusLogByAssessmentModel> getAssessmentStatus(List<UUID> assessmentIds) {
+		return this.cassandraAccessor.getAssessmentStatus(assessmentIds).all();
+	}
+    
+    public List<StatusLogByAssessmentModel> getAssessmentStatus(Date activityDate) {
+		return this.cassandraAccessor.getAssessmentStatusByDate(activityDate).all();
 	}
 }
