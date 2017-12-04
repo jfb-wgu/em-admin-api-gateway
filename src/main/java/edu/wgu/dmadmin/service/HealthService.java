@@ -167,15 +167,16 @@ public class HealthService {
 		Map<String, Object> map = new HashMap();
         for(Iterator it = ((AbstractEnvironment) this.env).getPropertySources().iterator(); it.hasNext(); ) {
             PropertySource propertySource = (PropertySource) it.next();
-            logger.info(propertySource.getName());
-            if (propertySource instanceof MapPropertySource) {
+            logger.debug(propertySource.getName());
+            if (propertySource instanceof MapPropertySource && propertySource.getName().startsWith("applicationConfig")) {
                 map.putAll(((MapPropertySource) propertySource).getSource());
             }
         }
         
         Map<String, String> properties = new HashMap<>();
         map.keySet().forEach(key -> {
-        		properties.put(key, this.env.getProperty(key));
+        		if (!key.contains("password")) 
+        			properties.put(key, this.env.getProperty(key));
         });
         
         return properties;
