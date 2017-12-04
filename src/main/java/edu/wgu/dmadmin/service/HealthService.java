@@ -168,9 +168,10 @@ public class HealthService {
 		List<String> propertyNames = new ArrayList<>();
         for(Iterator<?> it = ((AbstractEnvironment) this.env).getPropertySources().iterator(); it.hasNext(); ) {
             PropertySource<?> propertySource = (PropertySource<?>) it.next();
-            logger.info(propertySource.getName());
             if (propertySource instanceof EnumerablePropertySource) {
-                propertyNames.addAll(Arrays.asList(((EnumerablePropertySource<?>) propertySource).getPropertyNames()));
+            		String[] names = ((EnumerablePropertySource<?>) propertySource).getPropertyNames();
+                propertyNames.addAll(Arrays.asList(names));
+                logger.info("Properties for " + propertySource.getName() + ": " + Arrays.asList(names));
             }
         }
 
