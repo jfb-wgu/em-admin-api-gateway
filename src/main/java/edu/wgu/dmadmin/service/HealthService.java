@@ -1,6 +1,7 @@
 package edu.wgu.dmadmin.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,8 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.AbstractEnvironment;
+import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.stereotype.Service;
 
@@ -164,17 +165,18 @@ public class HealthService {
 	}
 	
 	public Map<String, String> getEnvironment() {
-		Map<String, Object> map = new HashMap();
-        for(Iterator it = ((AbstractEnvironment) this.env).getPropertySources().iterator(); it.hasNext(); ) {
-            PropertySource propertySource = (PropertySource) it.next();
-            logger.debug(propertySource.getName());
-            if (propertySource instanceof MapPropertySource && propertySource.getName().startsWith("applicationConfig")) {
-                map.putAll(((MapPropertySource) propertySource).getSource());
+		List<String> propertyNames = new ArrayList<>();
+        for(Iterator<?> it = ((AbstractEnvironment) this.env).getPropertySources().iterator(); it.hasNext(); ) {
+            PropertySource<?> propertySource = (PropertySource<?>) it.next();
+            logger.info(propertySource.getName());
+            if (propertySource instanceof EnumerablePropertySource) {
+                propertyNames.addAll(Arrays.asList(((EnumerablePropertySource<?>) propertySource).getPropertyNames()));
             }
         }
-        
+
+        // this ensures property precedence is respected.
         Map<String, String> properties = new HashMap<>();
-        map.keySet().forEach(key -> {
+        propertyNames.forEach(key -> {
         		if (!key.contains("password")) 
         			properties.put(key, this.env.getProperty(key));
         });
