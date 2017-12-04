@@ -2,6 +2,7 @@ package edu.wgu.dmadmin.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
+import edu.wgu.dmadmin.repo.oracle.StatusEntry;
 import edu.wgu.dmadmin.service.HealthService;
 import edu.wgu.dmaudit.audit.Audit;
 import edu.wgu.dreamcatcher.domain.model.AssessmentModel;
@@ -38,7 +40,7 @@ public class HealthController {
 	@Secured(strategies = { SecureByPermissionStrategy.class })
 	@HasAnyRole(Permissions.SYSTEM)
 	@RequestMapping(value = { "/assessments" }, method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public ResponseEntity<List<AssessmentModel>> getMissingAssessmentRecords(@RequestBody final List<UUID> assessmentIds) {
+	public ResponseEntity<List<StatusEntry>> getMissingAssessmentRecords(@RequestBody final List<UUID> assessmentIds) {
 		return ResponseEntity.ok(this.service.compareDRFData(assessmentIds));
 	}
 	
@@ -46,7 +48,23 @@ public class HealthController {
 	@Secured(strategies = { SecureByPermissionStrategy.class })
 	@HasAnyRole(Permissions.SYSTEM)
 	@RequestMapping(value = { "/assessments/{date}" }, method = RequestMethod.GET, produces = "application/json; charset=utf-8")
-	public ResponseEntity<List<AssessmentModel>> getMissingAssessmentRecords(@PathVariable @DateTimeFormat(iso=ISO.DATE) final Date date) {
+	public ResponseEntity<List<StatusEntry>> getMissingAssessmentRecords(@PathVariable @DateTimeFormat(iso=ISO.DATE) final Date date) {
 		return ResponseEntity.ok(this.service.compareDRFData(date));
+	}
+	
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.SYSTEM)
+	@RequestMapping(value = { "/assessments/{assessmentId}/student/{studentId}" }, method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+	public ResponseEntity<AssessmentModel> sendAssessmentUpdate(@PathVariable final UUID assessmentId, @PathVariable final String studentId) {
+		return ResponseEntity.ok(this.service.resendAssessmentUpdate(studentId, assessmentId));
+	}
+	
+	@Audit
+	@Secured(strategies = { SecureByPermissionStrategy.class })
+	@HasAnyRole(Permissions.SYSTEM)
+	@RequestMapping(value = { "/environment" }, method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	public ResponseEntity<Map<String, String>> getEnvironment() {
+		return ResponseEntity.ok(this.service.getEnvironment());
 	}
 }

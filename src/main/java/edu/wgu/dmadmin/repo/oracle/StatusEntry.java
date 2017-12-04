@@ -13,9 +13,10 @@ import lombok.Data;
 
 @Data
 public class StatusEntry implements Comparable<StatusEntry> {
+
+	String studentId;
 	UUID assessmentId;
 	UUID taskId;
-	String studentId;
 	String status;
 	Date activityDate;
 	String evaluatorId;
@@ -27,7 +28,7 @@ public class StatusEntry implements Comparable<StatusEntry> {
 		this.taskId = UUID.fromString(task.getTaskId());
 		this.studentId = drf.getWguainf().getSpriden().getBannerId();
 		this.status = task.getStatus();
-		this.activityDate = DateUtils.truncate(DateUtils.addHours(new Date(task.getActivityDate().getTime()), -1), Calendar.SECOND);
+		this.activityDate = DateUtils.truncate(DateUtils.addHours(new Date(task.getActivityDate().getTime()), -8), Calendar.SECOND);
 		this.evaluatorId = task.getEvaluatorId();
 		this.date = task.getActivityDate().getTime();
 	}
@@ -66,7 +67,7 @@ public class StatusEntry implements Comparable<StatusEntry> {
 		
 		boolean dateEqual = this.getActivityDate().after(DateUtils.addSeconds(compare.getActivityDate(), -10)) &&
 				this.getActivityDate().before(DateUtils.addSeconds(compare.getActivityDate(), 10));
-		
+
 		return assessmentEqual && statusEqual && studentIdEqual && taskEqual && dateEqual;
 	}
 	

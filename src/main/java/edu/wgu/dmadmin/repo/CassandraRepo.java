@@ -20,7 +20,9 @@ import edu.wgu.dreammachine.model.assessment.EvaluationByIdModel;
 import edu.wgu.dreammachine.model.assessment.EvaluationBySubmissionModel;
 import edu.wgu.dreammachine.model.audit.ActivityLogByUserModel;
 import edu.wgu.dreammachine.model.audit.StatusLogByAssessmentModel;
+import edu.wgu.dreammachine.model.audit.StatusLogByStudentModel;
 import edu.wgu.dreammachine.model.publish.TaskAccessor;
+import edu.wgu.dreammachine.model.publish.TaskByAssessmentModel;
 import edu.wgu.dreammachine.model.publish.TaskByCourseModel;
 import edu.wgu.dreammachine.model.publish.TaskByIdModel;
 import edu.wgu.dreammachine.model.security.PermissionModel;
@@ -249,5 +251,17 @@ public class CassandraRepo {
     
     public List<StatusLogByAssessmentModel> getAssessmentStatus(Date activityDate) {
 		return this.cassandraAccessor.getAssessmentStatusByDate(activityDate).all();
+	}
+
+	public List<TaskByAssessmentModel> getBasicTasksByAssessment(UUID assessmentId) {
+		return this.cassandraAccessor.getBasicTasksByAssessment(assessmentId).all();
+	}
+	
+	public Optional<SubmissionByStudentAndTaskModel> getLastSubmissionForTask(String studentId, UUID taskId) {
+		return Optional.ofNullable(this.cassandraAccessor.getLastSubmissionByStudentAndTask(studentId, taskId));
+	}
+	
+	public Optional<StatusLogByStudentModel> getLastStatus(String studentId, UUID taskId) {
+		return Optional.ofNullable(this.cassandraAccessor.getLastStatusEntry(studentId, taskId));
 	}
 }
