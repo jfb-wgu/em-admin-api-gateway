@@ -13,5 +13,5 @@ public interface OracleRepo extends CrudRepository<DRF, Long> {
 	List<DRF> findByAssessmentCode(String assessmentCode);
 	List<DRF> findByTitleIn(List<String> title);
 	List<DRF> findByVendorIdAndTasksActivityDateGreaterThanEqual(Long vendorId, Date activityDate);
-	List<DRF> findByWguainfSpridenBannerIdAndTasksTaskIdAndTasksStatus(String bannerId, String taskId, String status);
+	List<DRF> findByWguainfSpridenBannerIdAndTasksTaskId(String bannerId, String taskId);
 }

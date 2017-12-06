@@ -15,7 +15,7 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name="TBL_TASKSTREAM_DRF_TASKS", schema="WGURESULTS")
-public class DRFTask implements Serializable {
+public class DRFTask implements Serializable, Comparable<DRFTask> {
 
 	private static final long serialVersionUID = 7080639488029405743L;
 
@@ -56,4 +56,9 @@ public class DRFTask implements Serializable {
 	
 	@Column(name="TSTASK_TSTASK_REPLACE_FK")
 	Long taskReplaceFK;
+
+	@Override
+	public int compareTo(DRFTask o) {
+		return o.getActivityDate().compareTo(this.getActivityDate());
+	}
 }

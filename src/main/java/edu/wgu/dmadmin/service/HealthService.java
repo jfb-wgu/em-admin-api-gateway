@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.repo.OracleRepo;
 import edu.wgu.dmadmin.repo.oracle.DRF;
+import edu.wgu.dmadmin.repo.oracle.DRFTask;
 import edu.wgu.dmadmin.repo.oracle.StatusEntry;
 import edu.wgu.dreamcatcher.domain.model.AssessmentModel;
 import edu.wgu.dreamcatcher.domain.model.TaskModel;
@@ -37,13 +38,13 @@ import edu.wgu.dreammachine.util.DateUtil;
 
 @Service
 public class HealthService {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(HealthService.class);
 
 	private CassandraRepo cassandraRepo;
 	private OracleRepo oracleRepo;
 	RabbitTemplate rabbitTemplate;
-	
+
 	@Autowired
 	private Environment env;
 
@@ -72,22 +73,22 @@ public class HealthService {
 
 	public List<StatusEntry> compareDRFData(Date activityDate) {
 		List<StatusLogByAssessmentModel> stats = this.cassandraRepo.getAssessmentStatus(activityDate);
-		List<DRF> drfs = this.oracleRepo.findByVendorIdAndTasksActivityDateGreaterThanEqual(
-				new Long(57), new java.sql.Date(activityDate.getTime()));
+		List<DRF> drfs = this.oracleRepo.findByVendorIdAndTasksActivityDateGreaterThanEqual(new Long(57),
+				new java.sql.Date(activityDate.getTime()));
 
 		return compareEntries(stats, drfs);
 	}
 
 	private static List<StatusEntry> compareEntries(List<StatusLogByAssessmentModel> stats, List<DRF> drfs) {
 		List<StatusEntry> cassandra = stats.stream().map(s -> new StatusEntry(s)).collect(Collectors.toList());
-		
+
 		List<StatusEntry> oracle = new ArrayList<>();
 		drfs.forEach(drf -> {
 			drf.getTasks().forEach(task -> {
 				oracle.add(new StatusEntry(drf, task));
 			});
 		});
-		
+
 		List<StatusEntry> result = new ArrayList<>();
 
 		cassandra.forEach(e -> {
@@ -119,6 +120,16 @@ public class HealthService {
 			taskModel.setTaskId(task.getTaskId().toString());
 			taskModel.setTaskName(task.getTaskName());
 			taskModel.setNumber(task.getTaskOrder());
+			
+			// Find the latest status record in Oracle
+			List<DRF> drfs = this.oracleRepo.findByWguainfSpridenBannerIdAndTasksTaskId(studentId,
+					task.getTaskId().toString());
+			DRFTask latest = null;
+			if (drfs.size() > 0) {
+				Collections.sort(drfs);
+				DRF drf = drfs.get(0);
+				latest = drf.getTasks().get(0);
+			}
 
 			Optional<SubmissionByStudentAndTaskModel> optSubmission = this.cassandraRepo
 					.getLastSubmissionForTask(studentId, task.getTaskId());
@@ -130,58 +141,49 @@ public class HealthService {
 						submission.getSubmissionId());
 				if (optStatus.isPresent()) {
 					StatusLogByStudentModel status = optStatus.get();
-					taskModel.setDateUpdated(status.getActivityDate());
+					if (latest == null || !status.getNewStatus().equals(latest.getStatus())) {
+						taskModel.setDateUpdated(status.getActivityDate());
 
-					if (!status.getStudentId().equals(status.getUserId())) {
-						taskModel.setEvaluatorId(status.getUserId());
+						if (!status.getStudentId().equals(status.getUserId())) {
+							taskModel.setEvaluatorId(status.getUserId());
+						}
+
+						taskModel.setStatus(Integer.valueOf(status.getNewStatus()));
+						tasks.add(taskModel);
 					}
-
-					taskModel.setStatus(Integer.valueOf(status.getNewStatus()));
-				} else {
-					taskModel.setDateUpdated(submission.getDateUpdated());
-					taskModel.setStatus(Integer.valueOf(submission.getStatus()));
 				}
-			} else {
+			} else if (latest == null || !latest.getStatus().equals("0")) {
 				taskModel.setStatus(new Integer(0));
 				taskModel.setDateUpdated(DateUtil.getZonedNow());
-			}
-
-			// check to see if the right record is already in Oracle
-			List<DRF> drfs = this.oracleRepo.findByWguainfSpridenBannerIdAndTasksTaskIdAndTasksStatus(studentId,
-					task.getTaskId().toString(), taskModel.getStatus().toString());
-			
-			if (drfs.size() == 0)
 				tasks.add(taskModel);
+			}
 		}
 
 		model.setTasks(tasks);
+		if (model.getTasks().size() == 0) return null;
 
-		if (model.getTasks().size() > 0) {
-			sender.sendUpdate(model);
-			return model;
-		}
-		
-		return null;
+		sender.sendUpdate(model);
+		return model;
 	}
-	
+
 	public Map<String, String> getEnvironment() {
 		List<String> propertyNames = new ArrayList<>();
-        for(Iterator<?> it = ((AbstractEnvironment) this.env).getPropertySources().iterator(); it.hasNext(); ) {
-            PropertySource<?> propertySource = (PropertySource<?>) it.next();
-            if (propertySource instanceof EnumerablePropertySource) {
-            		String[] names = ((EnumerablePropertySource<?>) propertySource).getPropertyNames();
-                propertyNames.addAll(Arrays.asList(names));
-                logger.info("Properties for " + propertySource.getName() + ": " + Arrays.asList(names));
-            }
-        }
+		for (Iterator<?> it = ((AbstractEnvironment) this.env).getPropertySources().iterator(); it.hasNext();) {
+			PropertySource<?> propertySource = (PropertySource<?>) it.next();
+			if (propertySource instanceof EnumerablePropertySource) {
+				String[] names = ((EnumerablePropertySource<?>) propertySource).getPropertyNames();
+				propertyNames.addAll(Arrays.asList(names));
+				logger.debug("Properties for " + propertySource.getName() + ": " + Arrays.asList(names));
+			}
+		}
 
-        // this ensures property precedence is respected.
-        Map<String, String> properties = new HashMap<>();
-        propertyNames.forEach(key -> {
-        		if (!key.contains("password")) 
-        			properties.put(key, this.env.getProperty(key));
-        });
-        
-        return properties;
+		// this ensures property precedence is respected.
+		Map<String, String> properties = new HashMap<>();
+		propertyNames.forEach(key -> {
+			if (!key.contains("password"))
+				properties.put(key, this.env.getProperty(key));
+		});
+
+		return properties;
 	}
 }

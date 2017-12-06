@@ -2,7 +2,8 @@ package edu.wgu.dmadmin.repo.oracle;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name="TBL_TASKSTREAM_DRF", schema="WGURESULTS")
-public class DRF implements Serializable {
+public class DRF implements Serializable, Comparable<DRF> {
 
 	private static final long serialVersionUID = 3928420037626249967L;
 	
@@ -49,5 +50,15 @@ public class DRF implements Serializable {
 	Long vendorId;
 	
 	@OneToMany(mappedBy="drf",targetEntity=DRFTask.class,fetch=FetchType.EAGER)
-	private Collection<DRFTask> tasks;
+	private List	<DRFTask> tasks;
+	
+	public List<DRFTask> getTasks() {
+		Collections.sort(this.tasks);
+		return this.tasks;
+	}
+
+	@Override
+	public int compareTo(DRF o) {
+		return o.getActivityDate().compareTo(this.getActivityDate());
+	}
 }
