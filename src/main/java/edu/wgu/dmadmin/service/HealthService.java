@@ -2,7 +2,7 @@ package edu.wgu.dmadmin.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -79,8 +80,23 @@ public class HealthService {
 		return compareEntries(stats, drfs);
 	}
 
+	/**
+	 * Find the most recent status entry from Cassandra and Oracle for each student
+	 * and task.  Return a list of all entries whose status does not match.
+	 * 
+	 * @param stats
+	 * @param drfs
+	 * @return
+	 */
 	private static List<StatusEntry> compareEntries(List<StatusLogByAssessmentModel> stats, List<DRF> drfs) {
 		List<StatusEntry> cassandra = stats.stream().map(s -> new StatusEntry(s)).collect(Collectors.toList());
+		
+	    Map<Pair<String, UUID>, StatusEntry> cassandraMap =  
+	    	    cassandra.stream().collect(
+	    	        Collectors.groupingBy(e -> Pair.of(e.getStudentId(), e.getTaskId()),
+	    	            Collectors.collectingAndThen(
+	    	                Collectors.maxBy(Comparator.naturalOrder()),
+	    	                    Optional::get)));
 
 		List<StatusEntry> oracle = new ArrayList<>();
 		drfs.forEach(drf -> {
@@ -88,31 +104,37 @@ public class HealthService {
 				oracle.add(new StatusEntry(drf, task));
 			});
 		});
+		
+	    Map<Pair<String, UUID>, StatusEntry> oracleMap =  
+	    		oracle.stream().collect(
+	    			Collectors.groupingBy(e -> Pair.of(e.getStudentId(), e.getTaskId()),
+	    	            Collectors.collectingAndThen(
+	    	            		Collectors.maxBy(Comparator.naturalOrder()),
+	    	                    Optional::get)));
 
 		List<StatusEntry> result = new ArrayList<>();
 
-		cassandra.forEach(e -> {
-			if (!oracle.contains(e)) {
-				result.add(e);
+		cassandraMap.forEach((key, entry) -> {
+			StatusEntry o = oracleMap.get(key);
+			if (o == null || !o.getStatus().equals(entry.getStatus())) {
+				result.add(entry);
 			}
 		});
-
-		Collections.sort(result);
+		
 		return result;
 	}
 
-	public AssessmentModel resendAssessmentUpdate(String studentId, UUID assessmentId) {
-		MessageSender sender = new MessageSender();
-		sender.setRabbitTemplate(this.rabbitTemplate);
-
+	public AssessmentModel processAssessmentUpdate(String studentId, UUID assessmentId) {
 		List<TaskByAssessmentModel> basicTasks = this.cassandraRepo.getBasicTasksByAssessment(assessmentId);
+		List<DRF> drfs = this.oracleRepo.findByWguainfSpridenBannerIdAndTitle(studentId,	assessmentId.toString());
+		List<DRFTask> drfTasks = drfs.stream().map(drf -> drf.getTasks()).collect(ArrayList::new, ArrayList::addAll, ArrayList::addAll);
 
 		AssessmentModel model = new AssessmentModel();
 		model.setAssessmentCode(basicTasks.get(0).getAssessmentCode());
 		model.setAssessmentId(assessmentId.toString());
 		model.setStudentId(studentId);
 
-		List<TaskModel> tasks = new ArrayList<TaskModel>();
+		List<TaskModel> tasks = new ArrayList<>();
 		SubmissionByStudentAndTaskModel submission = null;
 
 		for (TaskByAssessmentModel task : basicTasks) {
@@ -121,27 +143,18 @@ public class HealthService {
 			taskModel.setTaskName(task.getTaskName());
 			taskModel.setNumber(task.getTaskOrder());
 			
-			// Find the latest status record in Oracle
-			List<DRF> drfs = this.oracleRepo.findByWguainfSpridenBannerIdAndTasksTaskId(studentId,
-					task.getTaskId().toString());
-			DRFTask latest = null;
-			if (drfs.size() > 0) {
-				Collections.sort(drfs);
-				DRF drf = drfs.get(0);
-				latest = drf.getTasks().get(0);
-			}
-
-			Optional<SubmissionByStudentAndTaskModel> optSubmission = this.cassandraRepo
-					.getLastSubmissionForTask(studentId, task.getTaskId());
+			// Find the latest status record from Oracle
+			Optional<DRFTask> latest = drfTasks.stream().filter(t -> t.getTaskId().equals(task.getTaskId().toString())).sorted().findFirst();
+			
+			Optional<SubmissionByStudentAndTaskModel> optSubmission = this.cassandraRepo.getLastSubmissionForTask(studentId, task.getTaskId());
 			if (optSubmission.isPresent()) {
 				submission = optSubmission.get();
 				taskModel.setSubmissionId(submission.getSubmissionId().toString());
 
-				Optional<StatusLogByStudentModel> optStatus = this.cassandraRepo.getLastStatus(studentId,
-						submission.getSubmissionId());
+				Optional<StatusLogByStudentModel> optStatus = this.cassandraRepo.getLastStatus(studentId, submission.getSubmissionId());
 				if (optStatus.isPresent()) {
 					StatusLogByStudentModel status = optStatus.get();
-					if (latest == null || !status.getNewStatus().equals(latest.getStatus())) {
+					if (!latest.isPresent() || !status.getNewStatus().equals(latest.get().getStatus())) {
 						taskModel.setDateUpdated(status.getActivityDate());
 
 						if (!status.getStudentId().equals(status.getUserId())) {
@@ -152,17 +165,28 @@ public class HealthService {
 						tasks.add(taskModel);
 					}
 				}
-			} else if (latest == null || !latest.getStatus().equals("0")) {
+			} else if (!latest.isPresent() || !latest.get().getStatus().equals("0")) {
 				taskModel.setStatus(new Integer(0));
 				taskModel.setDateUpdated(DateUtil.getZonedNow());
 				tasks.add(taskModel);
 			}
 		}
+		
+		if (tasks.size() == 0) return null;
 
 		model.setTasks(tasks);
-		if (model.getTasks().size() == 0) return null;
-
-		sender.sendUpdate(model);
+		return model;
+	}
+	
+	public AssessmentModel resendAssessmentUpdate(String studentId, UUID assessmentId) {
+		AssessmentModel model = this.processAssessmentUpdate(studentId, assessmentId);
+		
+		if (model != null) {
+			MessageSender sender = new MessageSender();
+			sender.setRabbitTemplate(this.rabbitTemplate);
+			sender.sendUpdate(model);
+		}
+		
 		return model;
 	}
 

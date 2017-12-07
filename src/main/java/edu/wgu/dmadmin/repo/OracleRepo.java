@@ -10,8 +10,7 @@ import edu.wgu.dmadmin.repo.oracle.DRF;
 
 @Repository
 public interface OracleRepo extends CrudRepository<DRF, Long> {
-	List<DRF> findByAssessmentCode(String assessmentCode);
+	List<DRF> findByWguainfSpridenBannerIdAndTitle(String bannerId, String title);
 	List<DRF> findByTitleIn(List<String> title);
 	List<DRF> findByVendorIdAndTasksActivityDateGreaterThanEqual(Long vendorId, Date activityDate);
-	List<DRF> findByWguainfSpridenBannerIdAndTasksTaskId(String bannerId, String taskId);
 }
