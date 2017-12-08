@@ -88,7 +88,7 @@ public class HealthService {
 	 * @param drfs
 	 * @return
 	 */
-	private static List<StatusEntry> compareEntries(List<StatusLogByAssessmentModel> stats, List<DRF> drfs) {
+	private List<StatusEntry> compareEntries(List<StatusLogByAssessmentModel> stats, List<DRF> drfs) {
 		List<StatusEntry> cassandra = stats.stream().map(s -> new StatusEntry(s)).collect(Collectors.toList());
 		
 	    Map<Pair<String, UUID>, StatusEntry> cassandraMap =  
