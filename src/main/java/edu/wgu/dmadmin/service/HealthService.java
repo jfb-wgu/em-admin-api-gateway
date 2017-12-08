@@ -96,7 +96,7 @@ public class HealthService {
 	    	        Collectors.groupingBy(e -> Pair.of(e.getStudentId(), e.getTaskId()),
 	    	            Collectors.collectingAndThen(
 	    	                Collectors.maxBy(Comparator.naturalOrder()),
-	    	                    Optional::get)));
+	    	                    Optional<StatusEntry>::get)));
 
 		List<StatusEntry> oracle = new ArrayList<>();
 		drfs.forEach(drf -> {
@@ -110,7 +110,7 @@ public class HealthService {
 	    			Collectors.groupingBy(e -> Pair.of(e.getStudentId(), e.getTaskId()),
 	    	            Collectors.collectingAndThen(
 	    	            		Collectors.maxBy(Comparator.naturalOrder()),
-	    	                    Optional::get)));
+	    	                    Optional<StatusEntry>::get)));
 
 		List<StatusEntry> result = new ArrayList<>();
 
