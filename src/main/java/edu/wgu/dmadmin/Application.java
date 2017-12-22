@@ -7,6 +7,7 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
 import edu.wgu.autoconfigure.WguSoaApplication;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Generic starter project for WGU SOA applications.  Most base functionality is given via the parent POM,
@@ -17,6 +18,7 @@ import edu.wgu.autoconfigure.WguSoaApplication;
  */
 @EnableFeignClients(basePackages = {"edu.wgu.dmadmin.service", "edu.wgu.dreamcatcher.client"})
 @WguSoaApplication
+@EnableSwagger2
 public class Application extends SpringBootServletInitializer {
 
    /**
