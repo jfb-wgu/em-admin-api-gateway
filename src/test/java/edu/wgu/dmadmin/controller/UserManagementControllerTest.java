@@ -151,7 +151,8 @@ public class UserManagementControllerTest {
         assertEquals(this.userId, arg1.getValue());
     }
 
-    @Test
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@Test
     public void testAddUsers() throws Exception {
         String url = "/v1/users";
 
@@ -178,16 +179,13 @@ public class UserManagementControllerTest {
         String url = "/v1/users/" + userName;
 
         this.userModel.setTeams(this.teams);
-
-        User user = new User(this.userModel);
-
         when(this.userService.createUser(userName)).thenReturn(this.userModel);
 
         MvcResult result = this.mockMvc.perform(post(url))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        assertEquals(this.mapper.writeValueAsString(user), result.getResponse().getContentAsString());
+        assertEquals(this.mapper.writeValueAsString(this.user), result.getResponse().getContentAsString());
 
         ArgumentCaptor<String> arg1 = ArgumentCaptor.forClass(String.class);
 

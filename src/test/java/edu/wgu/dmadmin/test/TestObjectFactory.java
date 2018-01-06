@@ -15,7 +15,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-import edu.wgu.dmadmin.domain.search.SearchCriteria;
 import edu.wgu.dreammachine.domain.security.Permissions;
 import edu.wgu.dreammachine.domain.security.User;
 import edu.wgu.dreammachine.model.publish.RubricModel;
@@ -25,7 +24,6 @@ import edu.wgu.dreammachine.model.security.RoleModel;
 import edu.wgu.dreammachine.model.security.UserByIdModel;
 import edu.wgu.dreammachine.model.submission.SubmissionModel;
 import edu.wgu.dreammachine.util.DateUtil;
-import edu.wgu.dreammachine.util.StatusUtil;
 
 public class TestObjectFactory {
 
@@ -40,24 +38,6 @@ public class TestObjectFactory {
 	static Random random = new Random();
 	static UUID evaluationId = UUID.randomUUID();
 	static UUID taskId = UUID.randomUUID();
-
-	public static SearchCriteria getSearchCriteria() {
-		List<UUID> taskList = new ArrayList<>();
-		taskList.add(UUID.randomUUID());
-		taskList.add(UUID.randomUUID());
-		taskList.add(UUID.randomUUID());
-
-		SearchCriteria searchCriteria = new SearchCriteria();
-		searchCriteria.setStatus(StatusUtil.EVALUATION_BEGUN);
-		searchCriteria.setTasks(taskList);
-		searchCriteria.setDateRange(DateUtil.getZonedNow().toString());
-		searchCriteria.setEvaluatorLastName(evaluatorLastName);
-		searchCriteria.setEvaluatorFirstName(evaluatorFirstName);
-		searchCriteria.setStudentId(studentId);
-		searchCriteria.setSubmissionId(submissionId.toString());
-
-		return searchCriteria;
-	}
 
 	public static UserByIdModel getUserModel() {
 		UserByIdModel user = getUserModel(evaluatorFirstName, evaluatorLastName, evaluatorId, new HashSet<UUID>(),
