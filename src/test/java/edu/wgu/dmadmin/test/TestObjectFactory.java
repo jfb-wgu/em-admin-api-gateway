@@ -222,7 +222,6 @@ public class TestObjectFactory {
         taskModel.setAverageTime(34523);
         taskModel.setDescription("Description");
         taskModel.setCompetencies(Collections.emptyList());
-        taskModel.setSupportingDocuments(Collections.emptyMap());
         taskModel.setIntroduction("Introduction");
         taskModel.setScenario("Senario");
         taskModel.setNotes("notes");
