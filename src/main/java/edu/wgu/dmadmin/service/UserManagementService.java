@@ -27,19 +27,9 @@ import edu.wgu.dreammachine.model.security.UserModel;
 public class UserManagementService {
 	PersonService personService;
 	CassandraRepo cassandraRepo;
-	
-	@Autowired
-	public void setCassandraRepo(CassandraRepo repo) {
-		this.cassandraRepo = repo;
-	}
 
-	@Autowired 
-	public void setPersonService(PersonService pService) {
-		this.personService = pService;
-	}
-	
 	private static Logger logger = LoggerFactory.getLogger(UserManagementService.class);
-	
+
 	public User getUser(String userId) {
 		UserModel evaluator = this.cassandraRepo.getUser(userId).orElseThrow(() -> new UserNotFoundException(userId));
 		return new User(evaluator);
@@ -54,12 +44,14 @@ public class UserManagementService {
 	public void deleteUser(String userId) {
 		this.cassandraRepo.deleteUser(userId);
 	}
-		
+
 	public List<User> getUsers() {
 		List<User> users = null;
-		
-		Map<UUID, RoleModel> roles = this.cassandraRepo.getRoles().stream().collect(Collectors.toMap(r -> r.getRoleId(), r -> r));
-		Map<UUID, TaskModel> tasks = this.cassandraRepo.getTaskBasics().stream().collect(Collectors.toMap(t -> t.getTaskId(), t -> t));
+
+		Map<UUID, RoleModel> roles = this.cassandraRepo.getRoles().stream()
+				.collect(Collectors.toMap(r -> r.getRoleId(), r -> r));
+		Map<UUID, TaskModel> tasks = this.cassandraRepo.getTaskBasics().stream()
+				.collect(Collectors.toMap(t -> t.getTaskId(), t -> t));
 		List<UserByIdModel> result = this.cassandraRepo.getUsers();
 
 		users = result.stream().map(evaluator -> new User(evaluator)).collect(Collectors.toList());
@@ -84,49 +76,64 @@ public class UserManagementService {
 
 		return users;
 	}
-	
+
 	public List<User> getUsersForTask(UUID taskId) {
-		return this.cassandraRepo.getUsers().stream()
-				.filter(u -> u.getTasks().contains(taskId))
-				.map(u -> new User(u))
-				.sorted()
-				.collect(Collectors.toList());
+		return this.cassandraRepo.getUsers().stream().filter(u -> u.getTasks().contains(taskId)).map(u -> new User(u))
+				.sorted().collect(Collectors.toList());
 	}
 
 	public UserModel createUser(String username) {
 		Person person = this.personService.getPersonByUsername(username);
-		UserByIdModel model = new UserByIdModel();
-		model.setUserId(person.getUserId());
-		model.setFirstName(person.getFirstName());
-		model.setLastName(person.getLastName());
-		model.setEmployeeId(person.getUsername());
-		this.cassandraRepo.saveUser(model);
-		
-		return this.cassandraRepo.getUser(model.getUserId()).get();
+
+		UserByIdModel user = this.cassandraRepo.getUser(person.getUserId()).orElseGet(() -> {
+			UserByIdModel model = new UserByIdModel();
+			model.setUserId(person.getUserId());
+			model.setFirstName(person.getFirstName());
+			model.setLastName(person.getLastName());
+			model.setEmployeeId(person.getUsername());
+			return this.cassandraRepo.saveUser(model);
+		});
+
+		return user;
 	}
-	
+
 	public BulkCreateResponse createUsers(BulkUsers users) {
 		List<User> result = new ArrayList<>();
 		List<String> failed = new ArrayList<>();
-		
+
 		users.getUsernames().forEach(name -> {
 			try {
 				Person person = this.personService.getPersonByUsername(name);
-				UserByIdModel model = new UserByIdModel();
-				model.setUserId(person.getUserId());
-				model.setFirstName(person.getFirstName());
-				model.setLastName(person.getLastName());
-				model.setEmployeeId(person.getUsername());
-				model.setRoles(users.getRoles());
-				model.setTasks(users.getTasks());
-				model = this.cassandraRepo.saveUser(model);
-				result.add(new User(model));
+				UserByIdModel user = this.cassandraRepo.getUser(person.getUserId()).orElseGet(() -> {
+					UserByIdModel model = new UserByIdModel();
+					model.setUserId(person.getUserId());
+					model.setFirstName(person.getFirstName());
+					model.setLastName(person.getLastName());
+					model.setEmployeeId(person.getUsername());
+					return model;
+				});
+
+				user.getRoles().addAll(users.getRoles());
+				user.getTasks().addAll(users.getTasks());
+				user = this.cassandraRepo.saveUser(user);
+				
+				result.add(new User(user));
 			} catch (Exception e) {
 				logger.error(Arrays.toString(e.getStackTrace()));
 				failed.add(name);
 			}
 		});
-		
+
 		return new BulkCreateResponse(result, failed);
+	}
+
+	@Autowired
+	public void setCassandraRepo(CassandraRepo repo) {
+		this.cassandraRepo = repo;
+	}
+
+	@Autowired
+	public void setPersonService(PersonService pService) {
+		this.personService = pService;
 	}
 }
