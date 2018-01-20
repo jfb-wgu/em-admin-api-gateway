@@ -72,19 +72,7 @@
 		<dependency>
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-rabbit</artifactId>
-			<version>2.0.1.RELEASE</version>
-		</dependency>
-
-		<!-- Swagger -->
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.2.2</version><!--$NO-MVN-MAN-VER$ -->
+			<version>2.0.1.RELEASE</version><!--$NO-MVN-MAN-VER$ -->
 		</dependency>
 
 		<dependency>
@@ -102,14 +90,14 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.16.16</version><!--$NO-MVN-MAN-VER$ -->
+			<version>1.16.20</version><!--$NO-MVN-MAN-VER$ -->
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>edu.wgu</groupId>
 			<artifactId>dream-machine</artifactId>
-			<version>1.6.0.1</version>
+			<version>1.6.0.2</version>
 		</dependency>
 
 		<dependency>
@@ -197,5 +185,5 @@
 			<url>https://nexus.wgu.edu/content/repositories/WGU</url>
 		</repository>
 	</repositories>
-	<version>1.1.0</version>
+	<version>1.2.0</version>
 </project>
