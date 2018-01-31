@@ -109,7 +109,7 @@
 		<dependency>
 			<groupId>edu.wgu</groupId>
 			<artifactId>dream-machine</artifactId>
-			<version>1.6.0.4</version>
+			<version>1.6.0</version>
 		</dependency>
 
 		<dependency>
