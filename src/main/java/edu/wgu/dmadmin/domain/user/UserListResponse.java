@@ -1,6 +1,5 @@
 package edu.wgu.dmadmin.domain.user;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
@@ -20,8 +19,7 @@ public class UserListResponse {
    }
    
    @JsonGetter("evaluators") 
-   public List<User> getEvaluators() {
-	   Collections.sort(this.evaluators);
+   public List<User> getUsers() {
 	   return this.evaluators;
    }
 }
