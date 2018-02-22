@@ -72,6 +72,13 @@ public class CassandraRepo {
 		this.activityMapper = this.mappingManager.mapper(ActivityLogByUserModel.class);
 		this.submissionMapper = this.mappingManager.mapper(SubmissionByIdModel.class);
 		this.evaluationMapper = this.mappingManager.mapper(EvaluationByIdModel.class);
+		
+		this.userMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
+		this.roleMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
+		this.permissionMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
+		this.activityMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
+		this.submissionMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
+		this.evaluationMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 	}
 
 	public Optional<UserByIdModel> getUser(String userId) {
