@@ -90,13 +90,13 @@
 		<dependency>
 			<groupId>com.datastax.cassandra</groupId>
 			<artifactId>cassandra-driver-core</artifactId>
-			<version>3.3.0</version><!--$NO-MVN-MAN-VER$ -->
+			<version>3.4.0</version><!--$NO-MVN-MAN-VER$ -->
 		</dependency>
 
 		<dependency>
 			<groupId>com.datastax.cassandra</groupId>
 			<artifactId>cassandra-driver-mapping</artifactId>
-			<version>3.3.0</version><!--$NO-MVN-MAN-VER$ -->
+			<version>3.4.0</version><!--$NO-MVN-MAN-VER$ -->
 		</dependency>
 
 		<dependency>
