@@ -58,7 +58,8 @@ public class UserManagementService {
 		users.forEach(user -> {
 			user.getRoles().forEach(role -> {
 				try {
-					user.getRoleNames().add(roles.get(role).getRole());
+					String roleName = roles.get(role).getRole();
+					user.getRoleNames().add(roleName);
 				} catch (NullPointerException e) {
 					logger.error("Role [" + role + "] was not found.", e.getMessage());
 				}

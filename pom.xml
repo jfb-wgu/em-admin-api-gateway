@@ -84,7 +84,7 @@
 		<dependency>
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-amqp</artifactId>
-			<version>2.0.1.RELEASE</version><!--$NO-MVN-MAN-VER$-->
+			<version>2.0.1.RELEASE</version><!--$NO-MVN-MAN-VER$ -->
 		</dependency>
 
 		<dependency>
@@ -109,7 +109,7 @@
 		<dependency>
 			<groupId>edu.wgu</groupId>
 			<artifactId>dream-machine</artifactId>
-			<version>1.7.0</version>
+			<version>1.8.0.develop.3</version>
 		</dependency>
 
 		<dependency>

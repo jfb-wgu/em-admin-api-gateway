@@ -15,9 +15,9 @@ import com.datastax.driver.core.Session;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
 
-import edu.wgu.dreammachine.model.assessment.EvaluationAccessor;
-import edu.wgu.dreammachine.model.assessment.EvaluationByIdModel;
-import edu.wgu.dreammachine.model.assessment.EvaluationBySubmissionModel;
+import edu.wgu.dreammachine.model.evaluation.EvaluationAccessor;
+import edu.wgu.dreammachine.model.evaluation.EvaluationByIdModel;
+import edu.wgu.dreammachine.model.evaluation.EvaluationByStudentAndTaskModel;
 import edu.wgu.dreammachine.model.audit.ActivityLogByUserModel;
 import edu.wgu.dreammachine.model.audit.StatusLogByAssessmentModel;
 import edu.wgu.dreammachine.model.audit.StatusLogByStudentModel;
@@ -248,8 +248,8 @@ public class CassandraRepo {
 		return this.submissionAccessor.getAttachmentsForSubmission(submissionId).all();
 	}
 	
-	public List<EvaluationBySubmissionModel> getEvaluationsBySubmission(UUID submissionId) {
-		return this.evaluationAccessor.getEvaluationsBySubmission(submissionId).all();
+	public List<EvaluationByStudentAndTaskModel> getEvaluationsBySubmission(String studentId, UUID taskId, UUID submissionId) {
+		return this.evaluationAccessor.getEvaluations(studentId, taskId, submissionId).all();
 	}
 
     public List<StatusLogByAssessmentModel> getAssessmentStatus(List<UUID> assessmentIds) {
