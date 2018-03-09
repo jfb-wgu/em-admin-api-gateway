@@ -71,7 +71,7 @@ public class DirectoryServiceTest {
 		when(this.repo.getRoles()).thenReturn(Arrays.asList(this.role1, this.role2));
 		when(this.repo.getTaskBasics()).thenReturn(Arrays.asList(this.task1, this.task2));
 		when(this.repo.getUsers()).thenReturn(Arrays.asList(this.user1, this.user2));
-		when(this.repo.getUser(this.user1.getUserId())).thenReturn(Optional.of(this.user1));
+		when(this.repo.getUserModel(this.user1.getUserId())).thenReturn(Optional.of(this.user1));
 		
 		this.person1 = new Person();
 		this.person1.setFirstName("Bruce");
@@ -118,7 +118,7 @@ public class DirectoryServiceTest {
 		when(this.lookup.getGroup(anyString())).thenReturn(group);
 		when(this.lookup.getUsers(anyString())).thenReturn(ldapUsers);
 		when(this.pService.getPersonByUsername("ldap2")).thenReturn(person2);
-		when(this.repo.getUser(this.user2.getUserId())).thenReturn(Optional.empty());
+		when(this.repo.getUserModel(this.user2.getUserId())).thenReturn(Optional.empty());
 		
 		Set<Person> result = this.service.getMissingUsers("test");
 		assertEquals(1, result.size());

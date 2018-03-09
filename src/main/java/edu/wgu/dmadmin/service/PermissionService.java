@@ -15,12 +15,8 @@ import edu.wgu.dreammachine.util.DateUtil;
 @Service
 public class PermissionService {
 
-	CassandraRepo cassandraRepo;
-	
 	@Autowired
-	public void setCassandraRepo(CassandraRepo repo) {
-		this.cassandraRepo = repo;
-	}
+	private CassandraRepo cassandraRepo;
 
 	public List<Permission> getPermissions() {
 		return this.cassandraRepo.getPermissions().stream().map(p -> new Permission(p)).collect(Collectors.toList());
@@ -56,5 +52,9 @@ public class PermissionService {
 				}
 			}
 		}
+	}
+
+	public void setCassandraRepo(CassandraRepo repo) {
+		this.cassandraRepo = repo;
 	}
 }

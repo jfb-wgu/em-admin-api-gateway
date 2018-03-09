@@ -1,6 +1,7 @@
 package edu.wgu.dmadmin.controller;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -159,7 +160,7 @@ public class UserManagementControllerTest {
         User[] userArray = new User[1];
         userArray[0] = this.user;
 
-        doNothing().when(this.userService).addUsers(Arrays.asList(userArray));
+        doNothing().when(this.userService).addUsers("test", Arrays.asList(userArray));
 
         this.mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -169,7 +170,7 @@ public class UserManagementControllerTest {
 
         ArgumentCaptor<List> arg1 = ArgumentCaptor.forClass(List.class);
 
-        verify(this.userService).addUsers(arg1.capture());
+        verify(this.userService).addUsers(eq(this.userId), arg1.capture());
         assertEquals(Arrays.asList(userArray), arg1.getValue());
     }
 

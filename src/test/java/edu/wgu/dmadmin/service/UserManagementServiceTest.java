@@ -2,14 +2,18 @@ package edu.wgu.dmadmin.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.times;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.junit.Before;
@@ -17,6 +21,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -26,6 +31,7 @@ import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 import edu.wgu.dreammachine.domain.security.User;
 import edu.wgu.dreammachine.model.publish.TaskByCourseModel;
+import edu.wgu.dreammachine.model.publish.TaskModel;
 import edu.wgu.dreammachine.model.security.RoleModel;
 import edu.wgu.dreammachine.model.security.UserByIdModel;
 
@@ -38,6 +44,9 @@ public class UserManagementServiceTest {
 	
 	@Mock
 	PersonService pService;
+	
+	 @Captor
+	 ArgumentCaptor<ArrayList<User>> captor;
 	
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
@@ -64,7 +73,7 @@ public class UserManagementServiceTest {
 		when(this.repo.getRoles()).thenReturn(Arrays.asList(this.role1, this.role2));
 		when(this.repo.getTaskBasics()).thenReturn(Arrays.asList(this.task1, this.task2));
 		when(this.repo.getUsers()).thenReturn(Arrays.asList(this.user1, this.user2));
-		when(this.repo.getUser(this.user1.getUserId())).thenReturn(Optional.of(this.user1));
+		when(this.repo.getUserModel(this.user1.getUserId())).thenReturn(Optional.of(this.user1));
 		
 		this.person1 = new Person();
 		this.person1.setFirstName("Bruce");
@@ -74,18 +83,24 @@ public class UserManagementServiceTest {
 		this.person1.setStudentId(this.user1.getUserId());
 		when(this.pService.getPersonByBannerId(this.user1.getUserId())).thenReturn(this.person1);
 		when(this.pService.getPersonByUsername("testing")).thenReturn(this.person1);
+		
+		Map<UUID, RoleModel> roleMap = Arrays.asList(this.role1, this.role2).stream().collect(Collectors.toMap(r -> r.getRoleId(), r -> r));
+		when(this.repo.getRoleMap(Arrays.asList(this.user1, this.user2))).thenReturn(roleMap);
+		
+		Map<UUID, TaskModel> taskMap = Arrays.asList(this.task1, this.task2).stream().collect(Collectors.toMap(t -> t.getTaskId(), t -> t));
+		when(this.repo.getTaskMap()).thenReturn(taskMap);
 	}
 	
 	@Test
 	public void testGetUser() {
-		when(this.repo.getUser("123")).thenReturn(Optional.of(this.user1));
+		when(this.repo.getUserModel("123")).thenReturn(Optional.of(this.user1));
 		this.service.getUser("123");
-		verify(this.repo).getUser("123");
+		verify(this.repo).getUserModel("123");
 	}
 	
 	@Test
 	public void testGetUserFail() {
-		when(this.repo.getUser("none")).thenReturn(Optional.empty());
+		when(this.repo.getUserModel("none")).thenReturn(Optional.empty());
 		
 		this.thrown.expect(UserNotFoundException.class);
 		this.service.getUser("none");
@@ -94,19 +109,18 @@ public class UserManagementServiceTest {
 	@Test
 	public void testAddUser() {
 		User evaluator = new User(this.user1);
-		this.service.addUsers(Arrays.asList(evaluator));
-		verify(this.repo).saveUser(new UserByIdModel(evaluator));
+		this.service.addUsers(this.user1.getUserId(), Arrays.asList(evaluator));
+		verify(this.repo).saveUsers(anyString(), any(), eq(true), eq(true));
 	}
 
 	@Test
 	public void testAddUsers() {
 		List<User> users = Arrays.asList(this.user1, this.user2).stream().map(u -> new User(u)).collect(Collectors.toList());
-		this.service.addUsers(users);
-		
-		ArgumentCaptor<UserByIdModel> argument = ArgumentCaptor.forClass(UserByIdModel.class);
-		verify(this.repo, times(2)).saveUser(argument.capture());
-		assertEquals("testing1", argument.getAllValues().get(0).getEmployeeId());
-		assertEquals("testing2", argument.getAllValues().get(1).getEmployeeId());
+		this.service.addUsers(this.user1.getUserId(), users);
+
+		verify(this.repo).saveUsers(eq(this.user1.getUserId()), this.captor.capture(), eq(true), eq(true));
+		assertEquals("testing1", this.captor.getValue().get(0).getEmployeeId());
+		assertEquals("testing2", this.captor.getValue().get(1).getEmployeeId());
 	}
 
 	@Test
@@ -143,7 +157,7 @@ public class UserManagementServiceTest {
 	
 	@Test
 	public void testCreateUser() {
-		when(this.repo.getUser(anyString())).thenReturn(Optional.empty());
+		when(this.repo.getUserModel(anyString())).thenReturn(Optional.empty());
 		this.service.createUser("testing");
 		
 		ArgumentCaptor<UserByIdModel> argument = ArgumentCaptor.forClass(UserByIdModel.class);

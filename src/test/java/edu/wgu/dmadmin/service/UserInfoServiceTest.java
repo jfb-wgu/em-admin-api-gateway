@@ -60,7 +60,7 @@ public class UserInfoServiceTest {
 		when(this.repo.getRoles()).thenReturn(Arrays.asList(this.role1, this.role2));
 		when(this.repo.getTaskBasics()).thenReturn(Arrays.asList(this.task1, this.task2));
 		when(this.repo.getUsers()).thenReturn(Arrays.asList(this.user1, this.user2));
-		when(this.repo.getUser(this.user1.getUserId())).thenReturn(Optional.of(this.user1));
+		when(this.repo.getUserModel(this.user1.getUserId())).thenReturn(Optional.of(this.user1));
 		
 		this.person1 = new Person();
 		this.person1.setFirstName("Bruce");
@@ -77,7 +77,7 @@ public class UserInfoServiceTest {
 		String authToken = "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImFjY2Vzcy5kZXYud2d1LmVkdSJ9.eyJzY29wZSI6W10sImNsaWVudF9pZCI6IndndV9tb2JpbGUiLCJ3Z3VVVUlEIjoiZjI3M2IzYTQtMWM2OC00MDdiLTllZTEtMmQxNDM2MTdkOTc5Iiwid2d1QmFubmVySUQiOiJFMDAxMDc0NDgiLCJiYW5uZXJfaWQiOiJFMDAxMDc0NDgiLCJwaWRtIjoiNTQ2NDQxIiwiZ2l2ZW5OYW1lIjoiSmVzc2ljYSIsIndndUxldmVsT25lUm9sZSI6IkVtcGxveWVlIiwid2d1UElETSI6IjU0NjQ0MSIsIndndV9yb2xlX29uZSI6IkVtcGxveWVlIiwiY24iOiJKZXNzaWNhIFBhbWRldGgiLCJzbiI6IlBhbWRldGgiLCJ1c2VybmFtZSI6Implc3NpY2EucGFtZGV0aCIsImV4cCI6MTUwNjY0MDUwOH0.BgidTYhM-9hMTDhOjqjoo2wfybqsuhH7WuRsAGty-edY6l162LNVIoOFZboo1jCtb-hxbZYIDHXe_efa1K9fqTQJQ1lbq8TpgGbyTOJ3jjffj7YHw0n-qLR1c2DcwMi1d_N3ytd7kCC65E9-SUbr2dcGx5fsbIhNW5Zqpu3P9IIIjuueNbbBqMFxK4sTgiCStaLPJH2qH3iNGUTi29zaulV5zhIXQmtjsJrp54K62PR8wOKN4FUNDDPwLLbOr8R2abOtGV_SVkTcWHs500KnTFXhkgVO9HtBj-sz10HONUIPU3OlPh3jjWnwt6SyXc-1otY71oEDK4X5bK7HFRmScw";
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("authorization", authToken);
-		when(this.repo.getUser("E00107448")).thenReturn(Optional.of(this.user1));
+		when(this.repo.getUserModel("E00107448")).thenReturn(Optional.of(this.user1));
 		Person result = this.service.getPersonFromRequest(request, this.user1.getUserId());
 		assertEquals("Jessica", result.getFirstName());
 	}
@@ -96,14 +96,14 @@ public class UserInfoServiceTest {
 		this.person1.setIsEmployee(Boolean.FALSE);
 		
 		Person result = this.service.getPersonByUserId(this.user1.getUserId());
-		verify(this.repo, never()).getUser(this.user1.getUserId());
+		verify(this.repo, never()).getUserModel(this.user1.getUserId());
 		assertEquals(result.getPidm(), this.person1.getPidm());
 	}
 	
 	@Test
 	public void testGetPersonByUserIdNotFound() {
 		this.person1.setIsEmployee(Boolean.TRUE);
-		when(this.repo.getUser(this.user1.getUserId())).thenReturn(Optional.empty());
+		when(this.repo.getUserModel(this.user1.getUserId())).thenReturn(Optional.empty());
 		
 		this.thrown.expect(UserNotFoundException.class);
 		this.service.getPersonByUserId(this.user1.getUserId());
@@ -114,7 +114,7 @@ public class UserInfoServiceTest {
 		this.person1.setIsEmployee(Boolean.TRUE);
 		
 		Person result = this.service.getPersonByUserId(this.user1.getUserId());
-		verify(this.repo).getUser(this.user1.getUserId());
+		verify(this.repo).getUserModel(this.user1.getUserId());
 		assertEquals(result.getPidm(), this.person1.getPidm());
 	}
 }

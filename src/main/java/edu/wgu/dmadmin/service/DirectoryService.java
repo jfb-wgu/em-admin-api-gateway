@@ -92,7 +92,7 @@ public class DirectoryService {
 				Optional<Person> user = Optional.of(this.personService.getPersonByUsername(account));
 				if (user.isPresent()) {
 					Person person = user.get();
-					if (!this.cassandraRepo.getUser(person.getUserId()).isPresent()) 
+					if (!this.cassandraRepo.getUserModel(person.getUserId()).isPresent()) 
 						missing.add(person);
 				}
 			} catch(Exception e) {

@@ -31,14 +31,13 @@ public class UserManagementService {
 	private static Logger logger = LoggerFactory.getLogger(UserManagementService.class);
 
 	public User getUser(String userId) {
-		UserModel evaluator = this.cassandraRepo.getUser(userId).orElseThrow(() -> new UserNotFoundException(userId));
+		UserModel evaluator = this.cassandraRepo.getUserModel(userId)
+				.orElseThrow(() -> new UserNotFoundException(userId));
 		return new User(evaluator);
 	}
 
-	public void addUsers(List<User> users) {
-		for (User user : users) {
-			this.cassandraRepo.saveUser(new UserByIdModel(user));
-		}
+	public void addUsers(String userId, List<User> users) {
+		this.cassandraRepo.saveUsers(userId, users, true, true);
 	}
 
 	public void deleteUser(String userId) {
@@ -47,14 +46,13 @@ public class UserManagementService {
 
 	public List<User> getUsers() {
 		List<User> users = null;
+		
+		List<UserByIdModel> models = this.cassandraRepo.getUsers();
+		Map<UUID, RoleModel> roles = this.cassandraRepo.getRoleMap(models);
+		Map<UUID, TaskModel> tasks = this.cassandraRepo.getTaskMap();
+		
 
-		Map<UUID, RoleModel> roles = this.cassandraRepo.getRoles().stream()
-				.collect(Collectors.toMap(r -> r.getRoleId(), r -> r));
-		Map<UUID, TaskModel> tasks = this.cassandraRepo.getTaskBasics().stream()
-				.collect(Collectors.toMap(t -> t.getTaskId(), t -> t));
-		List<UserByIdModel> result = this.cassandraRepo.getUsers();
-
-		users = result.stream().map(evaluator -> new User(evaluator)).collect(Collectors.toList());
+		users = models.stream().map(evaluator -> new User(evaluator)).collect(Collectors.toList());
 		users.forEach(user -> {
 			user.getRoles().forEach(role -> {
 				try {
@@ -86,7 +84,7 @@ public class UserManagementService {
 	public UserModel createUser(String username) {
 		Person person = this.personService.getPersonByUsername(username);
 
-		UserByIdModel user = this.cassandraRepo.getUser(person.getUserId()).orElseGet(() -> {
+		UserByIdModel user = this.cassandraRepo.getUserModel(person.getUserId()).orElseGet(() -> {
 			UserByIdModel model = new UserByIdModel();
 			model.setUserId(person.getUserId());
 			model.setFirstName(person.getFirstName());
@@ -98,14 +96,14 @@ public class UserManagementService {
 		return user;
 	}
 
-	public BulkCreateResponse createUsers(BulkUsers users) {
-		List<User> result = new ArrayList<>();
+	public BulkCreateResponse createUsers(String userId, BulkUsers users) {
+		List<UserByIdModel> toCreate = new ArrayList<>();
 		List<String> failed = new ArrayList<>();
 
 		users.getUsernames().forEach(name -> {
 			try {
 				Person person = this.personService.getPersonByUsername(name);
-				UserByIdModel user = this.cassandraRepo.getUser(person.getUserId()).orElseGet(() -> {
+				UserByIdModel user = this.cassandraRepo.getUserModel(person.getUserId()).orElseGet(() -> {
 					UserByIdModel model = new UserByIdModel();
 					model.setUserId(person.getUserId());
 					model.setFirstName(person.getFirstName());
@@ -116,16 +114,15 @@ public class UserManagementService {
 
 				user.getRoles().addAll(users.getRoles());
 				user.getTasks().addAll(users.getTasks());
-				user = this.cassandraRepo.saveUser(user);
-				
-				result.add(new User(user));
+				toCreate.add(user);
 			} catch (Exception e) {
 				logger.error(Arrays.toString(e.getStackTrace()));
 				failed.add(name);
 			}
 		});
-
-		return new BulkCreateResponse(result, failed);
+		
+		List<User> created = this.cassandraRepo.saveUsers(toCreate, userId, true, false);
+		return new BulkCreateResponse(created, failed);
 	}
 
 	@Autowired
