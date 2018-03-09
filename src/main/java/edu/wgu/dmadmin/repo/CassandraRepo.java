@@ -22,6 +22,7 @@ import edu.wgu.dmadmin.domain.security.Permissions;
 import edu.wgu.dmadmin.domain.security.RequestBean;
 import edu.wgu.dmadmin.exception.UserNotFoundException;
 import edu.wgu.dmadmin.model.audit.ActivityLogByUserModel;
+import edu.wgu.dmadmin.model.audit.StatusLogAccessor;
 import edu.wgu.dmadmin.model.audit.StatusLogByAssessmentModel;
 import edu.wgu.dmadmin.model.audit.StatusLogByStudentModel;
 import edu.wgu.dmadmin.model.publish.TaskAccessor;
@@ -36,6 +37,7 @@ import edu.wgu.dmadmin.model.security.UserByIdModel;
 import edu.wgu.dmadmin.model.security.UserByLastNameModel;
 import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dmadmin.domain.security.User;
+import edu.wgu.dmadmin.model.submission.SubmissionAccessor;
 import edu.wgu.dmadmin.model.submission.SubmissionByIdModel;
 import edu.wgu.dmadmin.model.submission.SubmissionByStudentAndTaskModel;
 
@@ -51,7 +53,8 @@ public class CassandraRepo {
 	MappingManager mappingManager;
 	SecurityAccessor securityAccessor;
 	TaskAccessor taskAccessor;
-	CassandraAccessor cassandraAccessor;
+	SubmissionAccessor submissionAccessor;
+	StatusLogAccessor statusAccessor;
 	Mapper<UserByIdModel> userMapper;
 	Mapper<RoleModel> roleMapper;
 	Mapper<PermissionModel> permissionMapper;
@@ -63,7 +66,8 @@ public class CassandraRepo {
 		this.mappingManager = new MappingManager(session);
 		this.securityAccessor = this.mappingManager.createAccessor(SecurityAccessor.class);
 		this.taskAccessor = this.mappingManager.createAccessor(TaskAccessor.class);
-		this.cassandraAccessor = this.mappingManager.createAccessor(CassandraAccessor.class);
+		this.submissionAccessor = this.mappingManager.createAccessor(SubmissionAccessor.class);
+		this.statusAccessor = this.mappingManager.createAccessor(StatusLogAccessor.class);
 		this.userMapper = this.mappingManager.mapper(UserByIdModel.class);
 		this.permissionMapper = this.mappingManager.mapper(PermissionModel.class);
 		this.roleMapper = this.mappingManager.mapper(RoleModel.class);
@@ -173,11 +177,11 @@ public class CassandraRepo {
 	}
 
 	public List<StatusLogByAssessmentModel> getAssessmentStatus(List<UUID> assessmentIds) {
-		return this.cassandraAccessor.getAssessmentStatus(assessmentIds).all();
+		return this.statusAccessor.getAssessmentStatus(assessmentIds).all();
 	}
 
 	public List<StatusLogByAssessmentModel> getAssessmentStatus(Date activityDate) {
-		return this.cassandraAccessor.getAssessmentStatusByDate(activityDate).all();
+		return this.statusAccessor.getAssessmentStatusByDate(activityDate).all();
 	}
 
 	public List<TaskByAssessmentModel> getBasicTasksByAssessment(UUID assessmentId) {
@@ -185,11 +189,11 @@ public class CassandraRepo {
 	}
 
 	public Optional<SubmissionByStudentAndTaskModel> getLastSubmissionForTask(String studentId, UUID taskId) {
-		return Optional.ofNullable(this.cassandraAccessor.getLastSubmissionByStudentAndTask(studentId, taskId));
+		return Optional.ofNullable(this.submissionAccessor.getLastSubmissionByStudentAndTask(studentId, taskId));
 	}
 
 	public Optional<StatusLogByStudentModel> getLastStatus(String studentId, UUID taskId) {
-		return Optional.ofNullable(this.cassandraAccessor.getLastStatusEntry(studentId, taskId));
+		return Optional.ofNullable(this.statusAccessor.getLastStatusEntry(studentId, taskId));
 	}
 
 	public List<User> saveUsers(String userId, List<User> users, boolean checkSystem) {

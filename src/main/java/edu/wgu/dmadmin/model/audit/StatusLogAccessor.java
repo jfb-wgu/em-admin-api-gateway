@@ -1,4 +1,4 @@
-package edu.wgu.dmadmin.repo;
+package edu.wgu.dmadmin.model.audit;
 
 import java.util.Date;
 import java.util.List;
@@ -8,20 +8,13 @@ import com.datastax.driver.mapping.Result;
 import com.datastax.driver.mapping.annotations.Accessor;
 import com.datastax.driver.mapping.annotations.Query;
 
-import edu.wgu.dmadmin.model.audit.StatusLogByAssessmentModel;
-import edu.wgu.dmadmin.model.audit.StatusLogByStudentModel;
-import edu.wgu.dmadmin.model.submission.SubmissionByStudentAndTaskModel;
-
 @Accessor
-public interface CassandraAccessor {
+public interface StatusLogAccessor {
     @Query("select * from dm.status_log_by_assessment where assessment_id IN :assessmentIds")
     Result<StatusLogByAssessmentModel> getAssessmentStatus(List<UUID> assessmentIds);
     
     @Query("select * from dm.status_log_by_assessment where activity_date >= ? allow filtering")
     Result<StatusLogByAssessmentModel> getAssessmentStatusByDate(Date activityDate);
-    
-    @Query("SELECT * FROM dm.submission_by_student_and_task WHERE student_id = ? AND task_id = ? limit 1")
-    SubmissionByStudentAndTaskModel getLastSubmissionByStudentAndTask(String studentId, UUID taskId);
     
     @Query("SELECT * FROM dm.status_log_by_student WHERE student_id = ? AND submission_id = ? limit 1")
     StatusLogByStudentModel getLastStatusEntry(String studentId, UUID submissionId);
