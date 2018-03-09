@@ -14,35 +14,31 @@ public class StatusLogByStudentModel extends StatusLogModel {
 	
 	@PartitionKey(0)
 	public String getStudentId() {
-		return studentId;
+		return this.studentId;
 	}
 	
 	@PartitionKey(1)
 	public UUID getSubmissionId() {
-		return submissionId;
+		return this.submissionId;
 	}
 
 	@PartitionKey(2)
 	public Date getActivityDate() {
-		return activityDate;
+		return this.activityDate;
 	}
 	
 	@PartitionKey(3)
 	public UUID getAssessmentId() {
-		return assessmentId;
+		return this.assessmentId;
 	}
 	
 	@PartitionKey(4)
 	public UUID getTaskId() {
-		return taskId;
+		return this.taskId;
 	}
 	
 	@PartitionKey(5)
 	public UUID getLogId() {
-		return logId;
-	}
-	
-	public StatusLogByStudentModel(StatusLogModel model) {
-		this.populate(model);
+		return this.logId;
 	}
 }

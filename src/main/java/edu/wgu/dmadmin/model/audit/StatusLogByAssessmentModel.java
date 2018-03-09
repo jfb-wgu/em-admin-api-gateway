@@ -41,8 +41,4 @@ public class StatusLogByAssessmentModel extends StatusLogModel {
 	public UUID getLogId() {
 		return this.logId;
 	}
-	
-	public StatusLogByAssessmentModel(StatusLogModel model) {
-		this.populate(model);
-	}
 }

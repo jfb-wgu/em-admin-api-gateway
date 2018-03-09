@@ -39,17 +39,4 @@ public class StatusLogModel {
 	
 	@Column(name="new_status")
 	String newStatus;
-
-	public void populate(StatusLogModel model) {
-		this.setLogId(model.getLogId());
-		this.setActivityDate(model.getActivityDate());
-		this.setAssessmentId(model.getAssessmentId());
-		this.setCourseCode(model.getCourseCode());
-		this.setStudentId(model.getStudentId());
-		this.setSubmissionId(model.getSubmissionId());
-		this.setOldStatus(model.getOldStatus());
-		this.setNewStatus(model.getNewStatus());
-		this.setTaskId(model.getTaskId());
-		this.setUserId(model.getUserId());
-	}
 }
