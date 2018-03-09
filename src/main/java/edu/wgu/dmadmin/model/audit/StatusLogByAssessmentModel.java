@@ -6,9 +6,6 @@ import java.util.UUID;
 import com.datastax.driver.mapping.annotations.PartitionKey;
 import com.datastax.driver.mapping.annotations.Table;
 
-import edu.wgu.dmadmin.domain.audit.StatusLogEntry;
-import edu.wgu.dmadmin.model.submission.SubmissionByIdModel;
-import edu.wgu.dmadmin.util.DateUtil;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -17,61 +14,35 @@ public class StatusLogByAssessmentModel extends StatusLogModel {
 	
 	@PartitionKey(0)
 	public UUID getAssessmentId() {
-		return assessmentId;
+		return this.assessmentId;
 	}
 	
 	@PartitionKey(1)
 	public Date getActivityDate() {
-		return activityDate;
+		return this.activityDate;
 	}
 
 	@PartitionKey(2)
 	public UUID getTaskId() {
-		return taskId;
+		return this.taskId;
 	}
 			
 	@PartitionKey(3)
 	public String getStudentId() {
-		return studentId;
+		return this.studentId;
 	}
 
 	@PartitionKey(4)
 	public UUID getSubmissionId() {
-		return submissionId;
+		return this.submissionId;
 	}
 	
 	@PartitionKey(5)
 	public UUID getLogId() {
-		return logId;
+		return this.logId;
 	}
 	
 	public StatusLogByAssessmentModel(StatusLogModel model) {
 		this.populate(model);
-	}
-
-	public StatusLogByAssessmentModel(StatusLogEntry logEntry) {
-		this.logId = logEntry.getLogId();
-		this.studentId = logEntry.getStudentId();
-		this.activityDate = logEntry.getActivityDate();
-		this.courseCode = logEntry.getCourseCode();
-		this.assessmentId = logEntry.getAssessmentId();
-		this.taskId = logEntry.getTaskId();
-		this.submissionId = logEntry.getSubmissionId();
-		this.userId = logEntry.getUserId();
-		this.oldStatus = logEntry.getOldStatus();
-		this.newStatus = logEntry.getNewStatus();
-	}
-
-	public StatusLogByAssessmentModel(String oldStatus, SubmissionByIdModel newSub, String userId) {
-		this.logId = UUID.randomUUID();
-		this.studentId = newSub.getStudentId();
-		this.activityDate = DateUtil.getZonedNow();
-		this.courseCode = newSub.getCourseCode();
-		this.assessmentId = newSub.getAssessmentId();
-		this.taskId = newSub.getTaskId();
-		this.submissionId = newSub.getSubmissionId();
-		this.userId = userId;
-		this.oldStatus = oldStatus;
-		this.newStatus = newSub.getStatus();
 	}
 }
