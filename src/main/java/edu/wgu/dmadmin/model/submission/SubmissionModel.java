@@ -103,40 +103,7 @@ public class SubmissionModel implements Comparable<SubmissionModel> {
 
 	@Column(name = "review_evaluation_id")
 	UUID reviewEvaluationId;
-
-	public void populate(SubmissionModel model) {
-		this.setSubmissionId(model.getSubmissionId());
-		this.setStudentId(model.getStudentId());
-		this.setAttempt(model.getAttempt());
-		this.setTaskId(model.getTaskId());
-		this.setPidm(model.getPidm());
-		this.setTaskName(model.getTaskName());
-		this.setAspectCount(model.getAspectCount());
-		this.setCourseCode(model.getCourseCode());
-		this.setCourseName(model.getCourseName());
-		this.setAssessmentId(model.getAssessmentId());
-		this.setAssessmentCode(model.getAssessmentCode());
-		this.setAssessmentName(model.getAssessmentName());
-		this.setComments(model.getComments());
-		this.setInternalComments(model.getInternalComments());
-		this.setStatus(model.getStatus());
-		this.setStatusGroup(model.getStatusGroup());
-		this.setDateCreated(model.getDateCreated());
-		this.setDateSubmitted(model.getDateSubmitted());
-		this.setDateStarted(model.getDateStarted());
-		this.setDateCompleted(model.getDateCompleted());
-		this.setDateUpdated(model.getDateUpdated());
-		this.setDateEstimated(model.getDateEstimated());
-		this.setEvaluatorId(model.getEvaluatorId());
-		this.setEvaluationId(model.getEvaluationId());
-		this.setEvaluatorFirstName(model.getEvaluatorFirstName());
-		this.setEvaluatorLastName(model.getEvaluatorLastName());
-		this.setReferrals(model.getReferrals());
-		this.setPreviousSubmissionId(model.getPreviousSubmissionId());
-		this.setPreviousEvaluationId(model.getPreviousEvaluationId());
-		this.setReviewEvaluationId(model.getReviewEvaluationId());
-	}
-
+	
 	@Override
 	public int compareTo(SubmissionModel o) {
 		return o.getAttempt() - this.getAttempt();

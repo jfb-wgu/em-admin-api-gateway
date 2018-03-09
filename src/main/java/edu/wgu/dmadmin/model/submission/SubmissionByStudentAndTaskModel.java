@@ -30,8 +30,4 @@ public class SubmissionByStudentAndTaskModel extends SubmissionModel {
 	public UUID getSubmissionId() {
 		return this.submissionId;
 	}
-
-	public SubmissionByStudentAndTaskModel(SubmissionModel model) {
-		this.populate(model);
-	}
 }

@@ -30,8 +30,4 @@ public class SubmissionByIdModel extends SubmissionModel {
 	public int getAttempt() {
 		return this.attempt;
 	}
-
-	public SubmissionByIdModel(SubmissionModel model) {
-		this.populate(model);
-	}
 }
