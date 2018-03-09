@@ -5,7 +5,6 @@ import java.util.Date;
 import com.datastax.driver.mapping.annotations.Field;
 import com.datastax.driver.mapping.annotations.UDT;
 
-import edu.wgu.dmadmin.domain.submission.Referral;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -38,17 +37,4 @@ public class ReferralModel {
     
     @Field(name="return_to_creator")
     boolean returnToCreator;
-    
-    public ReferralModel(Referral referral) {
-        this.type = referral.getType();
-        this.URL = referral.getURL();
-        this.status = referral.getStatus();
-        this.createdBy = referral.getCreatedBy();
-        this.dateCreated = referral.getDateCreated();
-        this.creatorComments = referral.getCreatorComments();
-        this.reviewedBy = referral.getReviewedBy();
-        this.dateReviewed = referral.getDateReviewed();
-        this.reviewerComments = referral.getReviewerComments();
-        this.returnToCreator = referral.isReturnToCreator();
-    }
 }

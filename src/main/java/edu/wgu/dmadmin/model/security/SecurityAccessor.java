@@ -19,12 +19,6 @@ public interface SecurityAccessor {
     @Query("SELECT * FROM dm.user_by_id where user_id IN :userIds")
     Result<UserByIdModel> getUsersById(List<String> userIds);
     
-    @Query("SELECT permissions FROM dm.user_by_id WHERE user_id = ?")
-    UserByIdModel getPermissionsForUser(String user_id);
-    
-    @Query("SELECT user_id, tasks, permissions, first_name, last_name FROM dm.user_by_id WHERE user_id = ?")
-    UserByIdModel getUserQualifications(String userId);
-
     @Query("SELECT * FROM dm.permission")
     Result<PermissionModel> getPermissions();
     

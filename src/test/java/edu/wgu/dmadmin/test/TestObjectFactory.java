@@ -10,7 +10,7 @@ import java.util.UUID;
 import edu.wgu.dmadmin.domain.security.Permissions;
 import edu.wgu.dmadmin.domain.security.User;
 import edu.wgu.dmadmin.model.publish.RubricModel;
-import edu.wgu.dmadmin.model.publish.TaskModel;
+import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
 import edu.wgu.dmadmin.model.security.PermissionModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
 import edu.wgu.dmadmin.model.security.UserByIdModel;
@@ -115,8 +115,8 @@ public class TestObjectFactory {
 		return model;
 	}
 	
-    public static TaskModel getTaskModel() {
-        TaskModel taskModel = new TaskModel();
+    public static TaskByCourseModel getTaskModel() {
+        TaskByCourseModel taskModel = new TaskByCourseModel();
         taskModel.setCourseName("Course 1");
         taskModel.setCourseCode("C1C1");
         taskModel.setCourseId(new Long(123345));

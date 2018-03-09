@@ -53,8 +53,8 @@ public class UserManagementServiceTest {
 	
 	RoleModel role1 = TestObjectFactory.getRoleModel("role1");
 	RoleModel role2 = TestObjectFactory.getRoleModel("role2");
-	TaskByCourseModel task1 = new TaskByCourseModel(TestObjectFactory.getTaskModel());
-	TaskByCourseModel task2 = new TaskByCourseModel(TestObjectFactory.getTaskModel());	
+	TaskByCourseModel task1 = TestObjectFactory.getTaskModel();
+	TaskByCourseModel task2 = TestObjectFactory.getTaskModel();	
 	UserByIdModel user1 = TestObjectFactory.getUserModel("test1", "testing1");
 	UserByIdModel user2 = TestObjectFactory.getUserModel("test2", "testing2");
 	Person person1;

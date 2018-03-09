@@ -24,8 +24,6 @@ import edu.wgu.dmadmin.exception.UserNotFoundException;
 import edu.wgu.dmadmin.model.audit.ActivityLogByUserModel;
 import edu.wgu.dmadmin.model.audit.StatusLogByAssessmentModel;
 import edu.wgu.dmadmin.model.audit.StatusLogByStudentModel;
-import edu.wgu.dmadmin.model.evaluation.EvaluationAccessor;
-import edu.wgu.dmadmin.model.evaluation.EvaluationByIdModel;
 import edu.wgu.dmadmin.model.publish.TaskAccessor;
 import edu.wgu.dmadmin.model.publish.TaskByAssessmentModel;
 import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
@@ -38,7 +36,6 @@ import edu.wgu.dmadmin.model.security.UserByIdModel;
 import edu.wgu.dmadmin.model.security.UserByLastNameModel;
 import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dmadmin.domain.security.User;
-import edu.wgu.dmadmin.model.submission.SubmissionAccessor;
 import edu.wgu.dmadmin.model.submission.SubmissionByIdModel;
 import edu.wgu.dmadmin.model.submission.SubmissionByStudentAndTaskModel;
 
@@ -53,38 +50,31 @@ public class CassandraRepo {
 
 	MappingManager mappingManager;
 	SecurityAccessor securityAccessor;
-	EvaluationAccessor evaluationAccessor;
 	TaskAccessor taskAccessor;
-	SubmissionAccessor submissionAccessor;
 	CassandraAccessor cassandraAccessor;
 	Mapper<UserByIdModel> userMapper;
 	Mapper<RoleModel> roleMapper;
 	Mapper<PermissionModel> permissionMapper;
 	Mapper<ActivityLogByUserModel> activityMapper;
 	Mapper<SubmissionByIdModel> submissionMapper;
-	Mapper<EvaluationByIdModel> evaluationMapper;
 
 	@Autowired
 	public CassandraRepo(Session session) {
 		this.mappingManager = new MappingManager(session);
 		this.securityAccessor = this.mappingManager.createAccessor(SecurityAccessor.class);
-		this.evaluationAccessor = this.mappingManager.createAccessor(EvaluationAccessor.class);
 		this.taskAccessor = this.mappingManager.createAccessor(TaskAccessor.class);
-		this.submissionAccessor = this.mappingManager.createAccessor(SubmissionAccessor.class);
 		this.cassandraAccessor = this.mappingManager.createAccessor(CassandraAccessor.class);
 		this.userMapper = this.mappingManager.mapper(UserByIdModel.class);
 		this.permissionMapper = this.mappingManager.mapper(PermissionModel.class);
 		this.roleMapper = this.mappingManager.mapper(RoleModel.class);
 		this.activityMapper = this.mappingManager.mapper(ActivityLogByUserModel.class);
 		this.submissionMapper = this.mappingManager.mapper(SubmissionByIdModel.class);
-		this.evaluationMapper = this.mappingManager.mapper(EvaluationByIdModel.class);
 
 		this.userMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 		this.roleMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 		this.permissionMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 		this.activityMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 		this.submissionMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
-		this.evaluationMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 	}
 
 	public Optional<UserByIdModel> getUserModel(String userId) {
@@ -97,10 +87,6 @@ public class CassandraRepo {
 
 	public void updateLastLogin(String userId) {
 		this.securityAccessor.updateLastLogin(DateUtil.getZonedNow(), userId);
-	}
-
-	public Optional<UserByIdModel> getUserQualifications(String userId) {
-		return Optional.ofNullable(this.securityAccessor.getUserQualifications(userId));
 	}
 
 	public List<UserByIdModel> getUsers() {
@@ -195,7 +181,7 @@ public class CassandraRepo {
 	}
 
 	public List<TaskByAssessmentModel> getBasicTasksByAssessment(UUID assessmentId) {
-		return this.cassandraAccessor.getBasicTasksByAssessment(assessmentId).all();
+		return this.taskAccessor.getBasicTasksByAssessment(assessmentId).all();
 	}
 
 	public Optional<SubmissionByStudentAndTaskModel> getLastSubmissionForTask(String studentId, UUID taskId) {

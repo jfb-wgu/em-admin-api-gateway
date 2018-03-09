@@ -1,6 +1,5 @@
 package edu.wgu.dmadmin.model.publish;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -101,53 +100,6 @@ public class TaskModel implements Comparable<TaskModel> {
 
 	@Column(name="reference_list")
 	String referenceList;
-
-	public List<CompetencyModel> getCompetencies() {
-		if (this.competencies == null)
-			this.competencies = new ArrayList<CompetencyModel>();
-		return this.competencies;
-	}
-
-	public List<HyperlinkModel> getWebLinks() {
-		if (this.webLinks == null)
-			this.webLinks = new ArrayList<HyperlinkModel>();
-		return this.webLinks;
-	}
-
-	public void populate(TaskModel model) {
-		this.courseName = model.getCourseName();
-		this.courseCode = model.getCourseCode();
-		this.courseId = model.getCourseId();
-		this.assessmentName = model.getAssessmentName();
-		this.assessmentCode = model.getAssessmentCode();
-		this.assessmentDate = model.getAssessmentDate();
-		this.assessmentType = model.getAssessmentType();
-		this.assessmentOrder = model.getAssessmentOrder();
-		this.assessmentId = model.getAssessmentId();
-		this.taskName = model.getTaskName();
-		this.taskId = model.getTaskId();
-		this.taskOrder = model.getTaskOrder();
-		this.averageTime = model.getAverageTime();
-		this.description = model.getDescription();
-		this.competencies = model.getCompetencies();
-		this.introduction = model.getIntroduction();
-		this.scenario = model.getScenario();
-		this.notes = model.getNotes();
-		this.requirements = model.getRequirements();
-		this.CRDNotes = model.getCRDNotes();
-		this.rubric = model.getRubric();
-		this.aspectCount = model.getAspectCount();
-		this.webLinks = model.getWebLinks();
-		this.originalityMinimum = model.getOriginalityMinimum();
-		this.originalityWarning = model.getOriginalityWarning();
-		this.dateCreated = model.getDateCreated();
-		this.dateUpdated = model.getDateUpdated();
-		this.datePublished = model.getDatePublished();
-		this.dateRetired = model.getDateRetired();
-		this.publicationStatus = model.getPublicationStatus();
-		this.given = model.getGiven();
-		this.referenceList = model.getReferenceList();
-	}
 
 	@Override
 	public int compareTo(TaskModel o) {

@@ -9,13 +9,12 @@ import com.datastax.driver.mapping.annotations.Column;
 import com.datastax.driver.mapping.annotations.Frozen;
 import com.datastax.driver.mapping.annotations.FrozenValue;
 
-import edu.wgu.dmadmin.domain.submission.QualifyingSubmission;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class SubmissionModel implements Comparable<SubmissionModel>, QualifyingSubmission {
+public class SubmissionModel implements Comparable<SubmissionModel> {
 
 	@Column(name = "submission_id")
 	UUID submissionId;

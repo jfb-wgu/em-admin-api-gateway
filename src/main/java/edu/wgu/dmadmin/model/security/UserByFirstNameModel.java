@@ -11,11 +11,11 @@ public class UserByFirstNameModel extends UserModel {
 
 	@PartitionKey(0)
 	public String getFirstName() {
-		return firstName;
+		return this.firstName;
 	}
 
 	@PartitionKey(1)
 	public String getUserId() {
-		return userId;
+		return this.userId;
 	}
 }

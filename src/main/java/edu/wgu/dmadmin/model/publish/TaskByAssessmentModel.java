@@ -13,20 +13,16 @@ public class TaskByAssessmentModel extends TaskModel {
 
 	@PartitionKey(0)
 	public UUID getAssessmentId() {
-		return assessmentId;
+		return this.assessmentId;
 	}
 
 	@PartitionKey(1)
 	public Long getCourseId() {
-		return courseId;
+		return this.courseId;
 	}
 
 	@PartitionKey(2)
 	public UUID getTaskId() {
-		return taskId;
-	}
-
-	public TaskByAssessmentModel(TaskModel model) {
-		this.populate(model);
+		return this.taskId;
 	}
 }
