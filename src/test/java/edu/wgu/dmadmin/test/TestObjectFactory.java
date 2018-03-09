@@ -7,7 +7,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-import edu.wgu.dmadmin.domain.security.Permissions;
 import edu.wgu.dmadmin.domain.security.User;
 import edu.wgu.dmadmin.model.publish.RubricModel;
 import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
@@ -38,8 +37,8 @@ public class TestObjectFactory {
 		user.getRoles().add(UUID.randomUUID());
 		user.getLandings().add("dashboard");
 		user.getLandings().add("evaluator");
-		user.getPermissions().add(Permissions.TASK_QUEUE);
-		user.getPermissions().add(Permissions.EVALUATION_CLAIM);
+		user.getPermissions().add("test1");
+		user.getPermissions().add("test2");
 
 		return user;
 	}
