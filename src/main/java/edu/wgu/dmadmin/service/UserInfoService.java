@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.nimbusds.jwt.SignedJWT;
 
-import edu.wgu.dmadmin.domain.user.Person;
+import edu.wgu.dmadmin.domain.person.Person;
 import edu.wgu.dmadmin.exception.UserNotFoundException;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import net.minidev.json.JSONObject;
@@ -45,7 +45,7 @@ public class UserInfoService {
 	
 			if ("Employee".equals(json.get("wguLevelOneRole").toString())) {
 				person.setIsEmployee(Boolean.TRUE);
-				person.setUserInfo(this.cassandraRepo.getUser(person.getUserId()).orElseThrow(() -> new UserNotFoundException(userId)));
+				person.setUserInfo(this.cassandraRepo.getUserModel(person.getUserId()).orElseThrow(() -> new UserNotFoundException(userId)));
 			} else {
 				person.setIsEmployee(Boolean.FALSE);
 			}
@@ -60,7 +60,7 @@ public class UserInfoService {
 		Person person = this.personService.getPersonByBannerId(userId);
 		
 		if (person.getIsEmployee()) {
-			person.setUserInfo(this.cassandraRepo.getUser(userId).orElseThrow(() -> new UserNotFoundException(userId)));
+			person.setUserInfo(this.cassandraRepo.getUserModel(userId).orElseThrow(() -> new UserNotFoundException(userId)));
 		}
 		
 		return person;

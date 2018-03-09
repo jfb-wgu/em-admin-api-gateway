@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import edu.wgu.dmadmin.domain.user.Person;
+import edu.wgu.dmadmin.domain.person.Person;
 
 @FeignClient("PERSON-SERVICE-API")
 public interface PersonService {

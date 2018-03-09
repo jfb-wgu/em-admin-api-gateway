@@ -23,19 +23,19 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.stereotype.Service;
 
+import edu.wgu.dmadmin.messaging.MessageSender;
+import edu.wgu.dmadmin.model.audit.StatusLogByAssessmentModel;
+import edu.wgu.dmadmin.model.audit.StatusLogByStudentModel;
+import edu.wgu.dmadmin.model.publish.TaskByAssessmentModel;
+import edu.wgu.dmadmin.model.submission.SubmissionByStudentAndTaskModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.repo.OracleRepo;
 import edu.wgu.dmadmin.repo.oracle.DRF;
 import edu.wgu.dmadmin.repo.oracle.DRFTask;
 import edu.wgu.dmadmin.repo.oracle.StatusEntry;
+import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dreamcatcher.domain.model.AssessmentModel;
 import edu.wgu.dreamcatcher.domain.model.TaskModel;
-import edu.wgu.dreammachine.messaging.MessageSender;
-import edu.wgu.dreammachine.model.audit.StatusLogByAssessmentModel;
-import edu.wgu.dreammachine.model.audit.StatusLogByStudentModel;
-import edu.wgu.dreammachine.model.publish.TaskByAssessmentModel;
-import edu.wgu.dreammachine.model.submission.SubmissionByStudentAndTaskModel;
-import edu.wgu.dreammachine.util.DateUtil;
 
 @Service
 public class HealthService {

@@ -17,10 +17,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Service;
 
+import edu.wgu.dmadmin.domain.person.Person;
 import edu.wgu.dmadmin.domain.security.LdapGroup;
 import edu.wgu.dmadmin.domain.security.LdapLookup;
 import edu.wgu.dmadmin.domain.security.LdapUser;
-import edu.wgu.dmadmin.domain.user.Person;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 
 @Service
@@ -92,7 +92,7 @@ public class DirectoryService {
 				Optional<Person> user = Optional.of(this.personService.getPersonByUsername(account));
 				if (user.isPresent()) {
 					Person person = user.get();
-					if (!this.cassandraRepo.getUser(person.getUserId()).isPresent()) 
+					if (!this.cassandraRepo.getUserModel(person.getUserId()).isPresent()) 
 						missing.add(person);
 				}
 			} catch(Exception e) {

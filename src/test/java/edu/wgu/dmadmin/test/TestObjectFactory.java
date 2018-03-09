@@ -7,15 +7,14 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-import edu.wgu.dreammachine.domain.security.Permissions;
-import edu.wgu.dreammachine.domain.security.User;
-import edu.wgu.dreammachine.model.publish.RubricModel;
-import edu.wgu.dreammachine.model.publish.TaskModel;
-import edu.wgu.dreammachine.model.security.PermissionModel;
-import edu.wgu.dreammachine.model.security.RoleModel;
-import edu.wgu.dreammachine.model.security.UserByIdModel;
-import edu.wgu.dreammachine.model.submission.SubmissionModel;
-import edu.wgu.dreammachine.util.DateUtil;
+import edu.wgu.dmadmin.domain.security.User;
+import edu.wgu.dmadmin.model.publish.RubricModel;
+import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
+import edu.wgu.dmadmin.model.security.PermissionModel;
+import edu.wgu.dmadmin.model.security.RoleModel;
+import edu.wgu.dmadmin.model.security.UserByIdModel;
+import edu.wgu.dmadmin.model.submission.SubmissionModel;
+import edu.wgu.dmadmin.util.DateUtil;
 
 public class TestObjectFactory {
 
@@ -38,8 +37,8 @@ public class TestObjectFactory {
 		user.getRoles().add(UUID.randomUUID());
 		user.getLandings().add("dashboard");
 		user.getLandings().add("evaluator");
-		user.getPermissions().add(Permissions.TASK_QUEUE);
-		user.getPermissions().add(Permissions.EVALUATION_CLAIM);
+		user.getPermissions().add("test1");
+		user.getPermissions().add("test2");
 
 		return user;
 	}
@@ -115,8 +114,8 @@ public class TestObjectFactory {
 		return model;
 	}
 	
-    public static TaskModel getTaskModel() {
-        TaskModel taskModel = new TaskModel();
+    public static TaskByCourseModel getTaskModel() {
+        TaskByCourseModel taskModel = new TaskByCourseModel();
         taskModel.setCourseName("Course 1");
         taskModel.setCourseCode("C1C1");
         taskModel.setCourseId(new Long(123345));

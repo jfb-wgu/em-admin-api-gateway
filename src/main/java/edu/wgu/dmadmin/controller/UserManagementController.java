@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.wgu.dmadmin.domain.security.BulkCreateResponse;
 import edu.wgu.dmadmin.domain.security.BulkUsers;
+import edu.wgu.dmadmin.domain.security.Permissions;
 import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
-import edu.wgu.dmadmin.domain.user.UserListResponse;
-import edu.wgu.dmadmin.domain.user.UserResponse;
+import edu.wgu.dmadmin.domain.security.User;
+import edu.wgu.dmadmin.domain.security.UserListResponse;
+import edu.wgu.dmadmin.domain.security.UserResponse;
 import edu.wgu.dmadmin.service.UserManagementService;
+import edu.wgu.dmadmin.util.IdentityUtil;
 import edu.wgu.dmaudit.audit.Audit;
-import edu.wgu.dreammachine.domain.security.Permissions;
-import edu.wgu.dreammachine.domain.security.User;
 import edu.wgu.security.authz.annotation.HasAnyRole;
 import edu.wgu.security.authz.annotation.Secured;
 
@@ -34,6 +35,9 @@ public class UserManagementController {
 
 	@Autowired
 	private UserManagementService service;
+	
+	@Autowired
+	private IdentityUtil iUtil;
 
 	@Audit
 	@Secured(strategies = { SecureByPermissionStrategy.class })
@@ -50,7 +54,7 @@ public class UserManagementController {
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void addUsers(@RequestBody User[] users) {
-		this.service.addUsers(Arrays.asList(users));
+		this.service.addUsers(this.iUtil.getUserId(), Arrays.asList(users));
 	}
 
 	@Audit
@@ -67,7 +71,7 @@ public class UserManagementController {
 	@HasAnyRole(Permissions.USER_CREATE)
 	@RequestMapping(value = "/users/bulk", method = RequestMethod.POST)
 	public ResponseEntity<BulkCreateResponse> createUsers(@RequestBody BulkUsers users) {
-		BulkCreateResponse result = this.service.createUsers(users);
+		BulkCreateResponse result = this.service.createUsers(this.iUtil.getUserId(), users);
 		return ResponseEntity.ok().body(result);
 	}
 
@@ -100,5 +104,9 @@ public class UserManagementController {
 	
 	public void setUserManagementService(UserManagementService umService) {
 		this.service = umService;
+	}
+	
+	public void setIdentityUtil(IdentityUtil util) {
+		this.iUtil = util;
 	}
 }

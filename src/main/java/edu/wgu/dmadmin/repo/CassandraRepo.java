@@ -1,9 +1,11 @@
 package edu.wgu.dmadmin.repo;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -15,29 +17,29 @@ import com.datastax.driver.core.Session;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
 
-import edu.wgu.dreammachine.model.evaluation.EvaluationAccessor;
-import edu.wgu.dreammachine.model.evaluation.EvaluationByIdModel;
-import edu.wgu.dreammachine.model.evaluation.EvaluationByStudentAndTaskModel;
-import edu.wgu.dreammachine.model.audit.ActivityLogByUserModel;
-import edu.wgu.dreammachine.model.audit.StatusLogByAssessmentModel;
-import edu.wgu.dreammachine.model.audit.StatusLogByStudentModel;
-import edu.wgu.dreammachine.model.publish.TaskAccessor;
-import edu.wgu.dreammachine.model.publish.TaskByAssessmentModel;
-import edu.wgu.dreammachine.model.publish.TaskByCourseModel;
-import edu.wgu.dreammachine.model.publish.TaskByIdModel;
-import edu.wgu.dreammachine.model.security.PermissionModel;
-import edu.wgu.dreammachine.model.security.RoleModel;
-import edu.wgu.dreammachine.model.security.SecurityAccessor;
-import edu.wgu.dreammachine.model.security.UserByFirstNameModel;
-import edu.wgu.dreammachine.model.security.UserByIdModel;
-import edu.wgu.dreammachine.model.security.UserByLastNameModel;
-import edu.wgu.dreammachine.model.submission.SubmissionAccessor;
-import edu.wgu.dreammachine.model.submission.SubmissionAttachmentModel;
-import edu.wgu.dreammachine.model.submission.SubmissionByEvaluatorAndTaskModel;
-import edu.wgu.dreammachine.model.submission.SubmissionByIdModel;
-import edu.wgu.dreammachine.model.submission.SubmissionByStatusGroupAndTaskModel;
-import edu.wgu.dreammachine.model.submission.SubmissionByStudentAndTaskModel;
-import edu.wgu.dreammachine.util.DateUtil;
+import edu.wgu.common.exception.AuthorizationException;
+import edu.wgu.dmadmin.domain.security.Permissions;
+import edu.wgu.dmadmin.domain.security.RequestBean;
+import edu.wgu.dmadmin.exception.UserNotFoundException;
+import edu.wgu.dmadmin.model.audit.ActivityLogByUserModel;
+import edu.wgu.dmadmin.model.audit.StatusLogAccessor;
+import edu.wgu.dmadmin.model.audit.StatusLogByAssessmentModel;
+import edu.wgu.dmadmin.model.audit.StatusLogByStudentModel;
+import edu.wgu.dmadmin.model.publish.TaskAccessor;
+import edu.wgu.dmadmin.model.publish.TaskByAssessmentModel;
+import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
+import edu.wgu.dmadmin.model.publish.TaskModel;
+import edu.wgu.dmadmin.model.security.PermissionModel;
+import edu.wgu.dmadmin.model.security.RoleModel;
+import edu.wgu.dmadmin.model.security.SecurityAccessor;
+import edu.wgu.dmadmin.model.security.UserByFirstNameModel;
+import edu.wgu.dmadmin.model.security.UserByIdModel;
+import edu.wgu.dmadmin.model.security.UserByLastNameModel;
+import edu.wgu.dmadmin.util.DateUtil;
+import edu.wgu.dmadmin.domain.security.User;
+import edu.wgu.dmadmin.model.submission.SubmissionAccessor;
+import edu.wgu.dmadmin.model.submission.SubmissionByIdModel;
+import edu.wgu.dmadmin.model.submission.SubmissionByStudentAndTaskModel;
 
 @Repository("cassandra")
 public class CassandraRepo {
@@ -45,53 +47,50 @@ public class CassandraRepo {
 	@Autowired
 	Session session;
 
+	@Autowired
+	private RequestBean rBean;
+
 	MappingManager mappingManager;
 	SecurityAccessor securityAccessor;
-	EvaluationAccessor evaluationAccessor;
 	TaskAccessor taskAccessor;
 	SubmissionAccessor submissionAccessor;
-	CassandraAccessor cassandraAccessor;
+	StatusLogAccessor statusAccessor;
 	Mapper<UserByIdModel> userMapper;
 	Mapper<RoleModel> roleMapper;
 	Mapper<PermissionModel> permissionMapper;
 	Mapper<ActivityLogByUserModel> activityMapper;
 	Mapper<SubmissionByIdModel> submissionMapper;
-	Mapper<EvaluationByIdModel> evaluationMapper;
 
 	@Autowired
 	public CassandraRepo(Session session) {
 		this.mappingManager = new MappingManager(session);
 		this.securityAccessor = this.mappingManager.createAccessor(SecurityAccessor.class);
-		this.evaluationAccessor = this.mappingManager.createAccessor(EvaluationAccessor.class);
 		this.taskAccessor = this.mappingManager.createAccessor(TaskAccessor.class);
 		this.submissionAccessor = this.mappingManager.createAccessor(SubmissionAccessor.class);
-		this.cassandraAccessor = this.mappingManager.createAccessor(CassandraAccessor.class);
+		this.statusAccessor = this.mappingManager.createAccessor(StatusLogAccessor.class);
 		this.userMapper = this.mappingManager.mapper(UserByIdModel.class);
 		this.permissionMapper = this.mappingManager.mapper(PermissionModel.class);
 		this.roleMapper = this.mappingManager.mapper(RoleModel.class);
 		this.activityMapper = this.mappingManager.mapper(ActivityLogByUserModel.class);
 		this.submissionMapper = this.mappingManager.mapper(SubmissionByIdModel.class);
-		this.evaluationMapper = this.mappingManager.mapper(EvaluationByIdModel.class);
-		
+
 		this.userMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 		this.roleMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 		this.permissionMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 		this.activityMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 		this.submissionMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
-		this.evaluationMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 	}
 
-	public Optional<UserByIdModel> getUser(String userId) {
+	public Optional<UserByIdModel> getUserModel(String userId) {
+		if (this.rBean.getUser() != null && this.rBean.getUser().getUserId().equals(userId)) {
+			return Optional.of(this.rBean.getUser());
+		}
+
 		return Optional.ofNullable(this.securityAccessor.getByUserId(userId));
 	}
 
-	public UserByIdModel getPermissionsForUser(String userId) {
+	public void updateLastLogin(String userId) {
 		this.securityAccessor.updateLastLogin(DateUtil.getZonedNow(), userId);
-		return this.securityAccessor.getPermissionsForUser(userId);
-	}
-
-	public Optional<UserByIdModel> getUserQualifications(String userId) {
-		return Optional.ofNullable(this.securityAccessor.getUserQualifications(userId));
 	}
 
 	public List<UserByIdModel> getUsers() {
@@ -118,36 +117,9 @@ public class CassandraRepo {
 		return this.securityAccessor.getUsersForPermission(permission).all();
 	}
 
-	/***
-	 * When saving the user, update the permissions and landing pages as well.
-	 *
-	 * @param userModel
-	 * @return the user with updated permission values.
-	 */
 	public UserByIdModel saveUser(UserByIdModel userModel) {
-		if (!userModel.getRoles().isEmpty()) {
-			List<RoleModel> roles = this.getRoles(userModel.getRoles().stream().collect(Collectors.toList()));
-			List<PermissionModel> permissions = this.getPermissions(roles
-					.stream()
-					.map(role -> role.getPermissions())
-					.collect(ArrayList::new, ArrayList::addAll, ArrayList::addAll)
-				);
-
-			userModel.setPermissions(permissions.stream().map(perm -> perm.getPermission()).collect(Collectors.toSet()));
-			userModel.setLandings(permissions.stream().map(perm -> perm.getLanding()).collect(Collectors.toSet()));
-		} else {
-			userModel.setPermissions(Collections.emptySet());
-			userModel.setLandings(Collections.emptySet());
-		}
-
 		this.userMapper.save(userModel);
 		return userModel;
-	}
-
-	public void saveUsers(List<UserByIdModel> userModels) {
-		userModels.forEach(user -> {
-			this.saveUser(user);
-		});
 	}
 
 	public void deleteUser(String userId) {
@@ -199,76 +171,109 @@ public class CassandraRepo {
 	public List<RoleModel> getRoles(List<UUID> roleIds) {
 		return this.securityAccessor.getRoles(roleIds).all();
 	}
-	
-	public Optional<SubmissionByIdModel> getSubmissionById(UUID submissionId) {
-		return Optional.ofNullable(this.submissionAccessor.getSubmissionById(submissionId));
-	}
-	
-	public List<SubmissionByStudentAndTaskModel> getSubmissionByStudentByTasks(String studentId, List<UUID> taskIds) {
-		return this.submissionAccessor.getSubmissionsByStudentAndTasks(studentId, taskIds).all();
-	}
-	
-	public List<SubmissionByStudentAndTaskModel> getSubmissionsByStudentId(String studentId) {
-		return this.submissionAccessor.getSubmissionsByStudent(studentId).all();
-	}
-	
-	public List<SubmissionByStatusGroupAndTaskModel> getSubmissionsByStatusGroupAndTasks(String statusGroup, List<UUID> taskIds) {
-		return this.submissionAccessor.getSubmissionsByStatusGroupAndTasks(statusGroup, taskIds).all();
-	}
-	
-	public List<SubmissionByStatusGroupAndTaskModel> getSubmissionsByStatusGroup(String statusGroup) {
-		return this.submissionAccessor.getSubmissionsByStatusGroup(statusGroup).all();
-	}
-	
-	public List<SubmissionByEvaluatorAndTaskModel> getSubmissionsByEvaluatorsAndTasks(List<String> evaluatorIds, List<UUID> taskIds) {
-		return this.submissionAccessor.getSubmissionsByEvaluatorAndTasks(evaluatorIds, taskIds).all();
-	}
-	
-	public List<SubmissionByEvaluatorAndTaskModel> getSubmissionsByEvaluators(List<String> evaluatorIds) {
-		return this.submissionAccessor.getSubmissionsByEvaluators(evaluatorIds).all();
-	}
-	
+
 	public List<TaskByCourseModel> getTaskBasics() {
 		return this.taskAccessor.getAllBasics().all();
 	}
-	
-	public Optional<TaskByIdModel> getTask(UUID taskId) {
-		return Optional.ofNullable(this.taskAccessor.getTaskById(taskId));
+
+	public List<StatusLogByAssessmentModel> getAssessmentStatus(List<UUID> assessmentIds) {
+		return this.statusAccessor.getAssessmentStatus(assessmentIds).all();
 	}
 
-	public void deleteSubmission(SubmissionByIdModel byId) {
-		this.submissionMapper.delete(byId);
-	}
-	
-	public void deleteEvaluation(EvaluationByIdModel evaluation) {
-		this.evaluationMapper.delete(evaluation);
-	}
-	
-	public List<SubmissionAttachmentModel> getAttachmentsForSubmission(UUID submissionId) {
-		return this.submissionAccessor.getAttachmentsForSubmission(submissionId).all();
-	}
-	
-	public List<EvaluationByStudentAndTaskModel> getEvaluationsBySubmission(String studentId, UUID taskId, UUID submissionId) {
-		return this.evaluationAccessor.getEvaluations(studentId, taskId, submissionId).all();
-	}
-
-    public List<StatusLogByAssessmentModel> getAssessmentStatus(List<UUID> assessmentIds) {
-		return this.cassandraAccessor.getAssessmentStatus(assessmentIds).all();
-	}
-    
-    public List<StatusLogByAssessmentModel> getAssessmentStatus(Date activityDate) {
-		return this.cassandraAccessor.getAssessmentStatusByDate(activityDate).all();
+	public List<StatusLogByAssessmentModel> getAssessmentStatus(Date activityDate) {
+		return this.statusAccessor.getAssessmentStatusByDate(activityDate).all();
 	}
 
 	public List<TaskByAssessmentModel> getBasicTasksByAssessment(UUID assessmentId) {
-		return this.cassandraAccessor.getBasicTasksByAssessment(assessmentId).all();
+		return this.taskAccessor.getBasicTasksByAssessment(assessmentId).all();
 	}
-	
+
 	public Optional<SubmissionByStudentAndTaskModel> getLastSubmissionForTask(String studentId, UUID taskId) {
-		return Optional.ofNullable(this.cassandraAccessor.getLastSubmissionByStudentAndTask(studentId, taskId));
+		return Optional.ofNullable(this.submissionAccessor.getLastSubmissionByStudentAndTask(studentId, taskId));
 	}
-	
+
 	public Optional<StatusLogByStudentModel> getLastStatus(String studentId, UUID taskId) {
-		return Optional.ofNullable(this.cassandraAccessor.getLastStatusEntry(studentId, taskId));
+		return Optional.ofNullable(this.statusAccessor.getLastStatusEntry(studentId, taskId));
+	}
+
+	public List<User> saveUsers(String userId, List<User> users, boolean checkSystem) {
+		List<UserByIdModel> models = users.stream().map(u -> new UserByIdModel(u)).collect(Collectors.toList());
+		return this.saveUsers(models, userId, checkSystem);
+	}
+
+	public List<User> saveUsers(List<UserByIdModel> users) {
+		return this.saveUsers(users, null, false);
+	}
+
+	public List<User> saveUsers(List<UserByIdModel> users, String userId, boolean checkSystem) {
+		List<User> created = new ArrayList<>();
+
+		Map<UUID, RoleModel> roles = this.getRoleMap(users);
+		Map<UUID, PermissionModel> permissions = this.getPermissionMap(roles.values());
+
+		if (checkSystem)
+			checkSystemUser(permissions.values(), userId);
+
+		users.forEach(user -> {
+			user.setPermissions(new HashSet<>());
+			user.setLandings(new HashSet<>());
+
+			user.getRoles().forEach(role -> {
+				RoleModel model = roles.get(role);
+				model.getPermissions().forEach(perm -> {
+					PermissionModel permission = permissions.get(perm);
+					user.getPermissions().add(permission.getPermission());
+					user.getLandings().add(permission.getLanding());
+				});
+			});
+
+			created.add(new User(this.saveUser(user)));
+		});
+
+		return created;
+	}
+
+	private void checkSystemUser(Collection<PermissionModel> permissions, String userId) {
+		if (permissions.stream().filter(p -> p.getPermission().equals(Permissions.SYSTEM)).count() > 0) {
+			UserByIdModel user = this.getUserModel(userId).orElseThrow(() -> new UserNotFoundException(userId));
+			if (!user.getPermissions().contains(Permissions.SYSTEM))
+				throw new AuthorizationException("Only SYSTEM users can assign SYSTEM permissions");
+		}
+	}
+
+	public Map<UUID, RoleModel> getRoleMap() {
+		Map<UUID, RoleModel> roles = this.getRoles().stream().collect(Collectors.toMap(r -> r.getRoleId(), r -> r));
+		return roles;
+	}
+
+	public Map<UUID, RoleModel> getRoleMap(Collection<UserByIdModel> users) {
+		List<UUID> roleIds = users.stream().map(user -> user.getRoles()).collect(ArrayList::new, ArrayList::addAll,
+				ArrayList::addAll);
+		return this.getRoleMap(roleIds);
+	}
+
+	public Map<UUID, RoleModel> getRoleMap(List<UUID> ids) {
+		Map<UUID, RoleModel> roles = this.getRoles(ids).stream().collect(Collectors.toMap(r -> r.getRoleId(), r -> r));
+		return roles;
+	}
+
+	public Map<UUID, PermissionModel> getPermissionMap() {
+		Map<UUID, PermissionModel> permissions = this.getPermissions().stream()
+				.collect(Collectors.toMap(p -> p.getPermissionId(), p -> p));
+		return permissions;
+	}
+
+	public Map<UUID, PermissionModel> getPermissionMap(Collection<RoleModel> roles) {
+		List<UUID> permissionIds = roles.stream().map(role -> role.getPermissions()).collect(ArrayList::new,
+				ArrayList::addAll, ArrayList::addAll);
+		Map<UUID, PermissionModel> permissions = this.getPermissions(permissionIds).stream()
+				.collect(Collectors.toMap(p -> p.getPermissionId(), p -> p));
+		return permissions;
+	}
+
+	public Map<UUID, TaskModel> getTaskMap() {
+		Map<UUID, TaskModel> tasks = this.getTaskBasics().stream()
+				.collect(Collectors.toMap(t -> t.getTaskId(), t -> t));
+		return tasks;
 	}
 }
