@@ -25,15 +25,15 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import edu.wgu.dmadmin.domain.user.Person;
+import edu.wgu.dmadmin.domain.person.Person;
+import edu.wgu.dmadmin.domain.security.User;
 import edu.wgu.dmadmin.exception.UserNotFoundException;
+import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
+import edu.wgu.dmadmin.model.publish.TaskModel;
+import edu.wgu.dmadmin.model.security.RoleModel;
+import edu.wgu.dmadmin.model.security.UserByIdModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.test.TestObjectFactory;
-import edu.wgu.dreammachine.domain.security.User;
-import edu.wgu.dreammachine.model.publish.TaskByCourseModel;
-import edu.wgu.dreammachine.model.publish.TaskModel;
-import edu.wgu.dreammachine.model.security.RoleModel;
-import edu.wgu.dreammachine.model.security.UserByIdModel;
 
 public class UserManagementServiceTest {
 	
@@ -110,7 +110,7 @@ public class UserManagementServiceTest {
 	public void testAddUser() {
 		User evaluator = new User(this.user1);
 		this.service.addUsers(this.user1.getUserId(), Arrays.asList(evaluator));
-		verify(this.repo).saveUsers(anyString(), any(), eq(true), eq(true));
+		verify(this.repo).saveUsers(anyString(), any(), eq(true));
 	}
 
 	@Test
@@ -118,7 +118,7 @@ public class UserManagementServiceTest {
 		List<User> users = Arrays.asList(this.user1, this.user2).stream().map(u -> new User(u)).collect(Collectors.toList());
 		this.service.addUsers(this.user1.getUserId(), users);
 
-		verify(this.repo).saveUsers(eq(this.user1.getUserId()), this.captor.capture(), eq(true), eq(true));
+		verify(this.repo).saveUsers(eq(this.user1.getUserId()), this.captor.capture(), eq(true));
 		assertEquals("testing1", this.captor.getValue().get(0).getEmployeeId());
 		assertEquals("testing2", this.captor.getValue().get(1).getEmployeeId());
 	}

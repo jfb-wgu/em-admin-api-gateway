@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.wgu.dmadmin.domain.security.Permissions;
 import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
 import edu.wgu.dmadmin.repo.oracle.StatusEntry;
 import edu.wgu.dmadmin.service.HealthService;
 import edu.wgu.dmaudit.audit.Audit;
 import edu.wgu.dreamcatcher.domain.model.AssessmentModel;
-import edu.wgu.dreammachine.domain.security.Permissions;
 import edu.wgu.security.authz.annotation.HasAnyRole;
 import edu.wgu.security.authz.annotation.Secured;
 

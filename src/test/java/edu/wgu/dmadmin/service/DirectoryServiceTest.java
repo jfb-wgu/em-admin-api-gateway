@@ -22,15 +22,15 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import edu.wgu.dmadmin.domain.person.Person;
 import edu.wgu.dmadmin.domain.security.LdapGroup;
 import edu.wgu.dmadmin.domain.security.LdapLookup;
 import edu.wgu.dmadmin.domain.security.LdapUser;
-import edu.wgu.dmadmin.domain.user.Person;
+import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
+import edu.wgu.dmadmin.model.security.RoleModel;
+import edu.wgu.dmadmin.model.security.UserByIdModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.test.TestObjectFactory;
-import edu.wgu.dreammachine.model.publish.TaskByCourseModel;
-import edu.wgu.dreammachine.model.security.RoleModel;
-import edu.wgu.dreammachine.model.security.UserByIdModel;
 
 public class DirectoryServiceTest {
 	

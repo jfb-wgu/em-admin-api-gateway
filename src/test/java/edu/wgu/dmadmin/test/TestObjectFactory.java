@@ -7,15 +7,15 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-import edu.wgu.dreammachine.domain.security.Permissions;
-import edu.wgu.dreammachine.domain.security.User;
-import edu.wgu.dreammachine.model.publish.RubricModel;
-import edu.wgu.dreammachine.model.publish.TaskModel;
-import edu.wgu.dreammachine.model.security.PermissionModel;
-import edu.wgu.dreammachine.model.security.RoleModel;
-import edu.wgu.dreammachine.model.security.UserByIdModel;
-import edu.wgu.dreammachine.model.submission.SubmissionModel;
-import edu.wgu.dreammachine.util.DateUtil;
+import edu.wgu.dmadmin.domain.security.Permissions;
+import edu.wgu.dmadmin.domain.security.User;
+import edu.wgu.dmadmin.model.publish.RubricModel;
+import edu.wgu.dmadmin.model.publish.TaskModel;
+import edu.wgu.dmadmin.model.security.PermissionModel;
+import edu.wgu.dmadmin.model.security.RoleModel;
+import edu.wgu.dmadmin.model.security.UserByIdModel;
+import edu.wgu.dmadmin.model.submission.SubmissionModel;
+import edu.wgu.dmadmin.util.DateUtil;
 
 public class TestObjectFactory {
 

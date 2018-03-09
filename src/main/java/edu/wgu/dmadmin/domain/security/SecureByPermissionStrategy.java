@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import edu.wgu.common.domain.AuthzIdentityKeys;
 import edu.wgu.dmadmin.config.ApplicationContextHolder;
+import edu.wgu.dmadmin.model.security.UserByIdModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
-import edu.wgu.dreammachine.model.security.UserByIdModel;
 import edu.wgu.security.authz.domain.AuthorizationInfo;
 import edu.wgu.security.authz.strategy.AuthorizationStrategy;
 

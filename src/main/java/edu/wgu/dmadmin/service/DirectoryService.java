@@ -17,10 +17,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Service;
 
+import edu.wgu.dmadmin.domain.person.Person;
 import edu.wgu.dmadmin.domain.security.LdapGroup;
 import edu.wgu.dmadmin.domain.security.LdapLookup;
 import edu.wgu.dmadmin.domain.security.LdapUser;
-import edu.wgu.dmadmin.domain.user.Person;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 
 @Service

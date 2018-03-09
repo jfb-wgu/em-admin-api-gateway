@@ -1,10 +1,8 @@
-package edu.wgu.dmadmin.domain.user;
+package edu.wgu.dmadmin.domain.security;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-
-import edu.wgu.dreammachine.domain.security.User;
 
 /**
  * @author Jessica Pamdeth

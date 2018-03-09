@@ -5,7 +5,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.wgu.dreammachine.model.security.UserByIdModel;
+import edu.wgu.dmadmin.model.security.UserByIdModel;
 
 public class RequestBean {
 

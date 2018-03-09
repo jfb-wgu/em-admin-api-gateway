@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.nimbusds.jwt.SignedJWT;
 
-import edu.wgu.dmadmin.domain.user.Person;
+import edu.wgu.dmadmin.domain.person.Person;
 import edu.wgu.dmadmin.exception.UserNotFoundException;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import net.minidev.json.JSONObject;

@@ -2,8 +2,8 @@ package edu.wgu.dmadmin.domain.submission;
 
 import java.util.List;
 
-import edu.wgu.dreammachine.domain.evaluation.Evaluation;
-import edu.wgu.dreammachine.domain.submission.Submission;
+import edu.wgu.dmadmin.domain.evaluation.Evaluation;
+import edu.wgu.dmadmin.domain.submission.Submission;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

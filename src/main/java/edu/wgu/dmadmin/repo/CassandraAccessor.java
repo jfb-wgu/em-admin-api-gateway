@@ -8,10 +8,10 @@ import com.datastax.driver.mapping.Result;
 import com.datastax.driver.mapping.annotations.Accessor;
 import com.datastax.driver.mapping.annotations.Query;
 
-import edu.wgu.dreammachine.model.audit.StatusLogByAssessmentModel;
-import edu.wgu.dreammachine.model.audit.StatusLogByStudentModel;
-import edu.wgu.dreammachine.model.publish.TaskByAssessmentModel;
-import edu.wgu.dreammachine.model.submission.SubmissionByStudentAndTaskModel;
+import edu.wgu.dmadmin.model.audit.StatusLogByAssessmentModel;
+import edu.wgu.dmadmin.model.audit.StatusLogByStudentModel;
+import edu.wgu.dmadmin.model.publish.TaskByAssessmentModel;
+import edu.wgu.dmadmin.model.submission.SubmissionByStudentAndTaskModel;
 
 @Accessor
 public interface CassandraAccessor {

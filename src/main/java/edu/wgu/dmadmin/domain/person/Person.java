@@ -1,4 +1,4 @@
-package edu.wgu.dmadmin.domain.user;
+package edu.wgu.dmadmin.domain.person;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import edu.wgu.dreammachine.model.security.UserByIdModel;
+import edu.wgu.dmadmin.model.security.UserByIdModel;
 import lombok.Data;
 
 @Data
