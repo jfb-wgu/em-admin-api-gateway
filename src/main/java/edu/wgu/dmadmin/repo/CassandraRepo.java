@@ -205,33 +205,28 @@ public class CassandraRepo {
 	public Optional<StatusLogByStudentModel> getLastStatus(String studentId, UUID taskId) {
 		return Optional.ofNullable(this.cassandraAccessor.getLastStatusEntry(studentId, taskId));
 	}
-	
-	public List<User> saveUsers(String userId, List<User> users, boolean checkSystem, boolean clean) {
+
+	public List<User> saveUsers(String userId, List<User> users, boolean checkSystem) {
 		List<UserByIdModel> models = users.stream().map(u -> new UserByIdModel(u)).collect(Collectors.toList());
-		return this.saveUsers(models, userId, checkSystem, clean);
-	}
-	
-	public List<User> saveUsers(List<UserByIdModel> users) {
-		return this.saveUsers(users, null, false, true);
+		return this.saveUsers(models, userId, checkSystem);
 	}
 
-	public List<User> saveUsers(List<UserByIdModel> users, String userId, boolean checkSystem, boolean clean) {
+	public List<User> saveUsers(List<UserByIdModel> users) {
+		return this.saveUsers(users, null, false);
+	}
+
+	public List<User> saveUsers(List<UserByIdModel> users, String userId, boolean checkSystem) {
 		List<User> created = new ArrayList<>();
 
 		Map<UUID, RoleModel> roles = this.getRoleMap(users);
 		Map<UUID, PermissionModel> permissions = this.getPermissionMap(roles.values());
 
-		boolean system = permissions.values().stream().filter(p -> p.getPermission().equals(Permissions.SYSTEM))
-				.count() > 0;
-
-		if (system && checkSystem)
-			checkSystemUser(userId);
+		if (checkSystem)
+			checkSystemUser(permissions.values(), userId);
 
 		users.forEach(user -> {
-			if (clean) {
-				user.setPermissions(new HashSet<>());
-				user.setLandings(new HashSet<>());
-			}
+			user.setPermissions(new HashSet<>());
+			user.setLandings(new HashSet<>());
 
 			user.getRoles().forEach(role -> {
 				RoleModel model = roles.get(role);
@@ -248,10 +243,12 @@ public class CassandraRepo {
 		return created;
 	}
 
-	private void checkSystemUser(String userId) {
-		UserByIdModel user = this.getUserModel(userId).orElseThrow(() -> new UserNotFoundException(userId));
-		if (!user.getPermissions().contains(Permissions.SYSTEM))
-			throw new AuthorizationException("Only SYSTEM users can assign SYSTEM permissions");
+	private void checkSystemUser(Collection<PermissionModel> permissions, String userId) {
+		if (permissions.stream().filter(p -> p.getPermission().equals(Permissions.SYSTEM)).count() > 0) {
+			UserByIdModel user = this.getUserModel(userId).orElseThrow(() -> new UserNotFoundException(userId));
+			if (!user.getPermissions().contains(Permissions.SYSTEM))
+				throw new AuthorizationException("Only SYSTEM users can assign SYSTEM permissions");
+		}
 	}
 
 	public Map<UUID, RoleModel> getRoleMap() {
@@ -268,6 +265,12 @@ public class CassandraRepo {
 	public Map<UUID, RoleModel> getRoleMap(List<UUID> ids) {
 		Map<UUID, RoleModel> roles = this.getRoles(ids).stream().collect(Collectors.toMap(r -> r.getRoleId(), r -> r));
 		return roles;
+	}
+
+	public Map<UUID, PermissionModel> getPermissionMap() {
+		Map<UUID, PermissionModel> permissions = this.getPermissions().stream()
+				.collect(Collectors.toMap(p -> p.getPermissionId(), p -> p));
+		return permissions;
 	}
 
 	public Map<UUID, PermissionModel> getPermissionMap(Collection<RoleModel> roles) {

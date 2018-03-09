@@ -37,7 +37,7 @@ public class UserManagementService {
 	}
 
 	public void addUsers(String userId, List<User> users) {
-		this.cassandraRepo.saveUsers(userId, users, true, true);
+		this.cassandraRepo.saveUsers(userId, users, true);
 	}
 
 	public void deleteUser(String userId) {
@@ -121,7 +121,7 @@ public class UserManagementService {
 			}
 		});
 		
-		List<User> created = this.cassandraRepo.saveUsers(toCreate, userId, true, false);
+		List<User> created = this.cassandraRepo.saveUsers(toCreate, userId, true);
 		return new BulkCreateResponse(created, failed);
 	}
 
