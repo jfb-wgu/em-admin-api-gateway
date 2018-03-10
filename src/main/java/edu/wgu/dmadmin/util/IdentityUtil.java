@@ -1,7 +1,6 @@
 package edu.wgu.dmadmin.util;
 
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -38,33 +37,5 @@ public class IdentityUtil {
 		}
 		
 		return userId;
-	}
-	
-	public Set<String> getUserRoles() {
-		ServletRequestAttributes attributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-		Set<String> roles = null;
-		
-		Optional<AuthzIdentityKeys> identityKeys = AuthzIdentityKeys.retrieveFrom(attributes.getRequest());
-		if (identityKeys.isPresent()) {
-			roles = identityKeys.get().getRoles();
-		} else {
-			throw new UserIdNotFoundException("Could not get roles from request.");
-		}
-		
-		return roles;
-	}
-
-	public Long getUserPidm() {
-		ServletRequestAttributes attributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-		Long pidm = null;
-
-		Optional<AuthzIdentityKeys> identityKeys = AuthzIdentityKeys.retrieveFrom(attributes.getRequest());
-		if (identityKeys.isPresent()) {
-			pidm = identityKeys.get().getPidm();
-		} else {
-			throw new UserIdNotFoundException("Could not get pidm from request.");
-		}
-
-		return pidm;
 	}
 }

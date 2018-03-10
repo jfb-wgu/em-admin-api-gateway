@@ -1,19 +1,15 @@
 package edu.wgu.dmadmin.test;
 
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
 import edu.wgu.dmadmin.domain.security.User;
-import edu.wgu.dmadmin.model.publish.RubricModel;
 import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
 import edu.wgu.dmadmin.model.security.PermissionModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
 import edu.wgu.dmadmin.model.security.UserByIdModel;
-import edu.wgu.dmadmin.model.submission.SubmissionModel;
 import edu.wgu.dmadmin.util.DateUtil;
 
 public class TestObjectFactory {
@@ -24,7 +20,6 @@ public class TestObjectFactory {
 	static UUID submissionId = UUID.randomUUID();
 	static String evaluatorId = "evaluator";
 	static String employeeId = "employeeId";
-	static SubmissionModel submissionModel;
 	static UUID assessmentId = UUID.randomUUID();
 	static Random random = new Random();
 	static UUID evaluationId = UUID.randomUUID();
@@ -116,36 +111,13 @@ public class TestObjectFactory {
 	
     public static TaskByCourseModel getTaskModel() {
         TaskByCourseModel taskModel = new TaskByCourseModel();
-        taskModel.setCourseName("Course 1");
-        taskModel.setCourseCode("C1C1");
         taskModel.setCourseId(new Long(123345));
         taskModel.setAssessmentName("Assessment 1");
         taskModel.setAssessmentCode("A1A1");
-        taskModel.setAssessmentDate("2015-07-09");
-        taskModel.setAssessmentType("Performance");
-        taskModel.setAssessmentOrder(1);
         taskModel.setAssessmentId(UUID.randomUUID());
         taskModel.setTaskName("Task Name");
         taskModel.setTaskId(UUID.randomUUID());
         taskModel.setTaskOrder(1);
-        taskModel.setAverageTime(34523);
-        taskModel.setDescription("Description");
-        taskModel.setCompetencies(Collections.emptyList());
-        taskModel.setIntroduction("Introduction");
-        taskModel.setScenario("Senario");
-        taskModel.setNotes("notes");
-        taskModel.setRequirements("requirements");
-        taskModel.setCRDNotes("CRD Notes");
-        taskModel.setRubric(new RubricModel());
-        taskModel.setAspectCount(4);
-        taskModel.setWebLinks(Collections.emptyList());
-        taskModel.setOriginalityMinimum(3);
-        taskModel.setOriginalityWarning(5);
-        taskModel.setDateCreated(new Date());
-        taskModel.setDateUpdated(new Date());
-        taskModel.setDatePublished(new Date());
-        taskModel.setDateRetired(null);
-        taskModel.setPublicationStatus("Published");
         return taskModel;
     }
 }

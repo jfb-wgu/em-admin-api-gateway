@@ -38,7 +38,6 @@ import edu.wgu.dmadmin.model.security.UserByLastNameModel;
 import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dmadmin.domain.security.User;
 import edu.wgu.dmadmin.model.submission.SubmissionAccessor;
-import edu.wgu.dmadmin.model.submission.SubmissionByIdModel;
 import edu.wgu.dmadmin.model.submission.SubmissionByStudentAndTaskModel;
 
 @Repository("cassandra")
@@ -59,7 +58,6 @@ public class CassandraRepo {
 	Mapper<RoleModel> roleMapper;
 	Mapper<PermissionModel> permissionMapper;
 	Mapper<ActivityLogByUserModel> activityMapper;
-	Mapper<SubmissionByIdModel> submissionMapper;
 
 	@Autowired
 	public CassandraRepo(Session session) {
@@ -72,13 +70,11 @@ public class CassandraRepo {
 		this.permissionMapper = this.mappingManager.mapper(PermissionModel.class);
 		this.roleMapper = this.mappingManager.mapper(RoleModel.class);
 		this.activityMapper = this.mappingManager.mapper(ActivityLogByUserModel.class);
-		this.submissionMapper = this.mappingManager.mapper(SubmissionByIdModel.class);
 
 		this.userMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 		this.roleMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 		this.permissionMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 		this.activityMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
-		this.submissionMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 	}
 
 	public Optional<UserByIdModel> getUserModel(String userId) {
