@@ -21,8 +21,8 @@ public class Role {
 	Set<String> permissionNames;
 	
 	public Set<String> getPermissionNames() {
-		if (permissionNames == null) permissionNames = new HashSet<String>();
-		return permissionNames;
+		if (this.permissionNames == null) this.permissionNames = new HashSet<String>();
+		return this.permissionNames;
 	}
 	
 	public Role(RoleModel model) {
