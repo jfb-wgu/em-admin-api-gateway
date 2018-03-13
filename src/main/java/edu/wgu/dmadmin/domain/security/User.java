@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import edu.wgu.dmadmin.model.security.UserModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,17 +24,26 @@ public class User implements Comparable<User> {
 	String firstName;
 	String lastName;
 	Set<UUID> roles;
+	
+	@ApiModelProperty(hidden=true)
 	Set<String> permissions;
 	Set<UUID> teams;
 	Set<UUID> tasks;
+	
+	@ApiModelProperty(hidden=true)
 	Set<String> landings;
+	
+	@ApiModelProperty(hidden=true)
 	Date lastLogin;
+	
 	String employeeId;
 
 	@JsonIgnore
+	@ApiModelProperty(hidden=true)
 	List<String> roleNames;
 
 	@JsonIgnore
+	@ApiModelProperty(hidden=true)
 	List<String> taskNames;
 
 	public List<String> getRoleNames() {

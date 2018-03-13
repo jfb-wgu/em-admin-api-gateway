@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import edu.wgu.dmadmin.model.security.PermissionModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +16,11 @@ public class Permission {
 	String permissionType;
 	String permissionDescription;
 	String landing;
+	
+	@ApiModelProperty(hidden=true)
 	Date dateCreated;
+	
+	@ApiModelProperty(hidden=true)
 	Date dateUpdated;
 	
 	public Permission (PermissionModel model) {

@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import edu.wgu.dmadmin.model.security.RoleModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,8 +17,14 @@ public class Role {
 	String role;
 	String roleDescription;
 	Set<UUID> permissions;
+	
+	@ApiModelProperty(hidden=true)
 	Date dateCreated;
+	
+	@ApiModelProperty(hidden=true)
 	Date dateUpdated;
+	
+	@ApiModelProperty(hidden=true)
 	Set<String> permissionNames;
 	
 	public Set<String> getPermissionNames() {
