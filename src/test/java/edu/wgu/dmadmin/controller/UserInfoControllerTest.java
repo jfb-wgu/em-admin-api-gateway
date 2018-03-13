@@ -28,11 +28,11 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import edu.wgu.dmadmin.domain.security.IdentityUtil;
-import edu.wgu.dmadmin.domain.user.Person;
+import edu.wgu.dmadmin.domain.person.Person;
 import edu.wgu.dmadmin.service.UserInfoService;
 import edu.wgu.dmadmin.test.TestObjectFactory;
-import edu.wgu.dreammachine.util.DateUtil;
+import edu.wgu.dmadmin.util.DateUtil;
+import edu.wgu.dmadmin.util.IdentityUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserInfoControllerTest {

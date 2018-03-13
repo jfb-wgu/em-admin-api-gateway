@@ -10,13 +10,13 @@ import org.apache.commons.collections.SetUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.wgu.dmadmin.domain.security.Role;
 import edu.wgu.dmadmin.exception.RoleNotFoundException;
+import edu.wgu.dmadmin.model.security.PermissionModel;
+import edu.wgu.dmadmin.model.security.RoleModel;
+import edu.wgu.dmadmin.model.security.UserByIdModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
-import edu.wgu.dreammachine.domain.security.Role;
-import edu.wgu.dreammachine.model.security.PermissionModel;
-import edu.wgu.dreammachine.model.security.RoleModel;
-import edu.wgu.dreammachine.model.security.UserByIdModel;
-import edu.wgu.dreammachine.util.DateUtil;
+import edu.wgu.dmadmin.util.DateUtil;
 
 @Service
 public class RoleService {
@@ -29,7 +29,7 @@ public class RoleService {
 	}
 
 	public List<Role> getRoles() {
-		Map<UUID, PermissionModel> permissions = this.cassandraRepo.getPermissions().stream().collect(Collectors.toMap(p -> p.getPermissionId(), p -> p));
+		Map<UUID, PermissionModel> permissions = this.cassandraRepo.getPermissionMap();
 		List<Role> roles = this.cassandraRepo.getRoles().stream().map(r -> new Role(r)).collect(Collectors.toList());
 		roles.forEach(role -> {
 			role.getPermissions().forEach(permission -> {
@@ -41,8 +41,9 @@ public class RoleService {
 	}
 	
 	public Role getRole(UUID roleId) {
-		Map<UUID, PermissionModel> permissions = this.cassandraRepo.getPermissions().stream().collect(Collectors.toMap(p -> p.getPermissionId(), p -> p));
-		Role role = new Role(this.cassandraRepo.getRole(roleId).orElseThrow(() -> new RoleNotFoundException(roleId)));
+		RoleModel model = this.cassandraRepo.getRole(roleId).orElseThrow(() -> new RoleNotFoundException(roleId));
+		Map<UUID, PermissionModel> permissions = this.cassandraRepo.getPermissionMap(Arrays.asList(model));
+		Role role = new Role(model);
 		role.getPermissions().forEach(permission -> {
 			role.getPermissionNames().add(permissions.get(permission).getPermission());
 		});
@@ -56,12 +57,12 @@ public class RoleService {
 	 * @param roleId
 	 */
 	public void deleteRole(UUID roleId) {
-		List<UserByIdModel> usersWithRole = this.cassandraRepo.getUsers().stream().filter(u -> u.getRoles().contains(roleId)).collect(Collectors.toList());
+		List<UserByIdModel> usersWithRole = this.cassandraRepo.getUsersForRole(roleId);
 		for (UserByIdModel user : usersWithRole) {
 			user.getRoles().remove(roleId);
-			this.cassandraRepo.saveUser(user);
 		}
 		
+		this.cassandraRepo.saveUsers(usersWithRole);
 		this.cassandraRepo.deleteRole(roleId);
 	}
 	

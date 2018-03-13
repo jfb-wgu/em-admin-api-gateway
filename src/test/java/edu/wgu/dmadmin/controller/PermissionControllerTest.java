@@ -28,9 +28,9 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.wgu.dmadmin.domain.security.Permission;
 import edu.wgu.dmadmin.service.PermissionService;
-import edu.wgu.dreammachine.domain.security.Permission;
-import edu.wgu.dreammachine.util.DateUtil;
+import edu.wgu.dmadmin.util.DateUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PermissionControllerTest {

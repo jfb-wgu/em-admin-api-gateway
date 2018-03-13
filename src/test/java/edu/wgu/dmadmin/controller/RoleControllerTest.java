@@ -31,9 +31,9 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.wgu.dmadmin.domain.security.Role;
 import edu.wgu.dmadmin.service.RoleService;
-import edu.wgu.dreammachine.domain.security.Role;
-import edu.wgu.dreammachine.util.DateUtil;
+import edu.wgu.dmadmin.util.DateUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RoleControllerTest {

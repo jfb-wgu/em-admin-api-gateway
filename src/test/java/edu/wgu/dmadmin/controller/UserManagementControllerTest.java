@@ -1,6 +1,7 @@
 package edu.wgu.dmadmin.controller;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,15 +32,15 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import edu.wgu.dmadmin.domain.security.IdentityUtil;
-import edu.wgu.dmadmin.domain.user.Person;
-import edu.wgu.dmadmin.domain.user.UserListResponse;
-import edu.wgu.dmadmin.domain.user.UserResponse;
+import edu.wgu.dmadmin.domain.person.Person;
+import edu.wgu.dmadmin.domain.security.User;
+import edu.wgu.dmadmin.domain.security.UserListResponse;
+import edu.wgu.dmadmin.domain.security.UserResponse;
+import edu.wgu.dmadmin.model.security.UserModel;
 import edu.wgu.dmadmin.service.UserManagementService;
 import edu.wgu.dmadmin.test.TestObjectFactory;
-import edu.wgu.dreammachine.domain.security.User;
-import edu.wgu.dreammachine.model.security.UserModel;
-import edu.wgu.dreammachine.util.DateUtil;
+import edu.wgu.dmadmin.util.DateUtil;
+import edu.wgu.dmadmin.util.IdentityUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserManagementControllerTest {
@@ -159,7 +160,7 @@ public class UserManagementControllerTest {
         User[] userArray = new User[1];
         userArray[0] = this.user;
 
-        doNothing().when(this.userService).addUsers(Arrays.asList(userArray));
+        doNothing().when(this.userService).addUsers("test", Arrays.asList(userArray));
 
         this.mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -169,7 +170,7 @@ public class UserManagementControllerTest {
 
         ArgumentCaptor<List> arg1 = ArgumentCaptor.forClass(List.class);
 
-        verify(this.userService).addUsers(arg1.capture());
+        verify(this.userService).addUsers(eq(this.userId), arg1.capture());
         assertEquals(Arrays.asList(userArray), arg1.getValue());
     }
 

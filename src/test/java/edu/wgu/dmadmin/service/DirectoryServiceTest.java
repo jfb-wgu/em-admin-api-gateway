@@ -22,15 +22,15 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import edu.wgu.dmadmin.domain.person.Person;
 import edu.wgu.dmadmin.domain.security.LdapGroup;
 import edu.wgu.dmadmin.domain.security.LdapLookup;
 import edu.wgu.dmadmin.domain.security.LdapUser;
-import edu.wgu.dmadmin.domain.user.Person;
+import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
+import edu.wgu.dmadmin.model.security.RoleModel;
+import edu.wgu.dmadmin.model.security.UserByIdModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.test.TestObjectFactory;
-import edu.wgu.dreammachine.model.publish.TaskByCourseModel;
-import edu.wgu.dreammachine.model.security.RoleModel;
-import edu.wgu.dreammachine.model.security.UserByIdModel;
 
 public class DirectoryServiceTest {
 	
@@ -50,8 +50,8 @@ public class DirectoryServiceTest {
 	
 	RoleModel role1 = TestObjectFactory.getRoleModel("role1");
 	RoleModel role2 = TestObjectFactory.getRoleModel("role2");
-	TaskByCourseModel task1 = new TaskByCourseModel(TestObjectFactory.getTaskModel());
-	TaskByCourseModel task2 = new TaskByCourseModel(TestObjectFactory.getTaskModel());	
+	TaskByCourseModel task1 = TestObjectFactory.getTaskModel();
+	TaskByCourseModel task2 = TestObjectFactory.getTaskModel();	
 	UserByIdModel user1 = TestObjectFactory.getUserModel("test1", "testing1");
 	UserByIdModel user2 = TestObjectFactory.getUserModel("test2", "testing2");
 	Person person1;
@@ -71,7 +71,7 @@ public class DirectoryServiceTest {
 		when(this.repo.getRoles()).thenReturn(Arrays.asList(this.role1, this.role2));
 		when(this.repo.getTaskBasics()).thenReturn(Arrays.asList(this.task1, this.task2));
 		when(this.repo.getUsers()).thenReturn(Arrays.asList(this.user1, this.user2));
-		when(this.repo.getUser(this.user1.getUserId())).thenReturn(Optional.of(this.user1));
+		when(this.repo.getUserModel(this.user1.getUserId())).thenReturn(Optional.of(this.user1));
 		
 		this.person1 = new Person();
 		this.person1.setFirstName("Bruce");
@@ -118,7 +118,7 @@ public class DirectoryServiceTest {
 		when(this.lookup.getGroup(anyString())).thenReturn(group);
 		when(this.lookup.getUsers(anyString())).thenReturn(ldapUsers);
 		when(this.pService.getPersonByUsername("ldap2")).thenReturn(person2);
-		when(this.repo.getUser(this.user2.getUserId())).thenReturn(Optional.empty());
+		when(this.repo.getUserModel(this.user2.getUserId())).thenReturn(Optional.empty());
 		
 		Set<Person> result = this.service.getMissingUsers("test");
 		assertEquals(1, result.size());
