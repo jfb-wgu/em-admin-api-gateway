@@ -63,7 +63,7 @@ public class HealthController {
 	@Audit
 	@Secured(strategies = { SecureByPermissionStrategy.class })
 	@HasAnyRole(Permissions.SYSTEM)
-	@RequestMapping(value = { "/assessments/{assessmentId}/student/{studentId}" }, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = { "/assessments/{assessmentId}/students/{studentId}" }, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ApiOperation("Re-send assessment data through Dream Catcher to ARP.")
 	@ApiImplicitParam(name = "Authorization", value = "SYSTEM permission", dataType = "string", paramType = "header", required = true)
 	public ResponseEntity<AssessmentModel> sendAssessmentUpdate(@PathVariable final UUID assessmentId, @PathVariable final String studentId) {
