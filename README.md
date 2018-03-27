@@ -1,4 +1,5 @@
-﻿### Synopsis
+﻿
+### Synopsis
 
 DM-Admin is a supporting application for Dream Machine.  It provides APIs for user administration and validation of assessment propagation.
 
