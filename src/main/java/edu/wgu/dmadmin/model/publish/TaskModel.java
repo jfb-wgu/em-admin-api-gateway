@@ -1,11 +1,10 @@
 package edu.wgu.dmadmin.model.publish;
 
-import java.util.UUID;
-
 import com.datastax.driver.mapping.annotations.Column;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +20,7 @@ public class TaskModel {
 	String assessmentCode;
 
 	@Column(name = "assessment_id")
-	UUID assessmentId;
+	Long assessmentId;
 
 	@Column(name = "task_name")
 	String taskName;

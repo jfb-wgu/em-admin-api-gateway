@@ -1,16 +1,16 @@
 package edu.wgu.dmadmin.test;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
-
 import edu.wgu.dmadmin.domain.security.User;
-import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
+import edu.wgu.dmadmin.model.publish.TaskByIdModel;
 import edu.wgu.dmadmin.model.security.PermissionModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
 import edu.wgu.dmadmin.model.security.UserByIdModel;
 import edu.wgu.dmadmin.util.DateUtil;
+
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
 
 public class TestObjectFactory {
 
@@ -20,7 +20,7 @@ public class TestObjectFactory {
 	static UUID submissionId = UUID.randomUUID();
 	static String evaluatorId = "evaluator";
 	static String employeeId = "employeeId";
-	static UUID assessmentId = UUID.randomUUID();
+	static Long assessmentId = new Random().nextLong();
 	static Random random = new Random();
 	static UUID evaluationId = UUID.randomUUID();
 	static UUID taskId = UUID.randomUUID();
@@ -109,12 +109,12 @@ public class TestObjectFactory {
 		return model;
 	}
 	
-    public static TaskByCourseModel getTaskModel() {
-        TaskByCourseModel taskModel = new TaskByCourseModel();
+    public static TaskByIdModel getTaskModel() {
+        TaskByIdModel taskModel = new TaskByIdModel();
         taskModel.setCourseId(new Long(123345));
         taskModel.setAssessmentName("Assessment 1");
         taskModel.setAssessmentCode("A1A1");
-        taskModel.setAssessmentId(UUID.randomUUID());
+        taskModel.setAssessmentId(new Random().nextLong());
         taskModel.setTaskName("Task Name");
         taskModel.setTaskId(UUID.randomUUID());
         taskModel.setTaskOrder(1);

@@ -1,16 +1,16 @@
 package edu.wgu.dmadmin.repo.oracle;
 
-import java.util.Date;
-import java.util.UUID;
-
 import edu.wgu.dmadmin.model.audit.StatusLogByAssessmentModel;
 import lombok.Data;
+
+import java.util.Date;
+import java.util.UUID;
 
 @Data
 public class StatusEntry implements Comparable<StatusEntry> {
 
 	String studentId;
-	UUID assessmentId;
+	Long assessmentId;
 	UUID taskId;
 	String status;
 	Date activityDate;
@@ -19,7 +19,7 @@ public class StatusEntry implements Comparable<StatusEntry> {
 	Date date;
 	
 	public StatusEntry(DRF drf, DRFTask task) {
-		this.assessmentId = UUID.fromString(drf.getTitle());
+		this.assessmentId = Long.parseLong(drf.getTitle());
 		this.taskId = UUID.fromString(task.getTaskId());
 		this.studentId = drf.getWguainf().getSpriden().getBannerId();
 		this.status = task.getStatus();

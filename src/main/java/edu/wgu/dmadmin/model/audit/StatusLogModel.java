@@ -1,11 +1,10 @@
 package edu.wgu.dmadmin.model.audit;
 
+import com.datastax.driver.mapping.annotations.Column;
+import lombok.Data;
+
 import java.util.Date;
 import java.util.UUID;
-
-import com.datastax.driver.mapping.annotations.Column;
-
-import lombok.Data;
 
 @Data
 public class StatusLogModel {
@@ -23,7 +22,7 @@ public class StatusLogModel {
 	String courseCode;
 	
 	@Column(name="assessment_id")
-	UUID assessmentId;
+	Long assessmentId;
 	
 	@Column(name="task_id")
 	UUID taskId;

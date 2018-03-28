@@ -1,5 +1,33 @@
 package edu.wgu.dmadmin.repo;
 
+import com.datastax.driver.core.Session;
+import com.datastax.driver.mapping.Mapper;
+import com.datastax.driver.mapping.MappingManager;
+import edu.wgu.common.exception.AuthorizationException;
+import edu.wgu.dmadmin.domain.security.Permissions;
+import edu.wgu.dmadmin.domain.security.RequestBean;
+import edu.wgu.dmadmin.domain.security.User;
+import edu.wgu.dmadmin.exception.UserNotFoundException;
+import edu.wgu.dmadmin.model.audit.ActivityLogByUserModel;
+import edu.wgu.dmadmin.model.audit.StatusLogAccessor;
+import edu.wgu.dmadmin.model.audit.StatusLogByAssessmentModel;
+import edu.wgu.dmadmin.model.audit.StatusLogByStudentModel;
+import edu.wgu.dmadmin.model.publish.TaskAccessor;
+import edu.wgu.dmadmin.model.publish.TaskByAssessmentModel;
+import edu.wgu.dmadmin.model.publish.TaskByIdModel;
+import edu.wgu.dmadmin.model.publish.TaskModel;
+import edu.wgu.dmadmin.model.security.PermissionModel;
+import edu.wgu.dmadmin.model.security.RoleModel;
+import edu.wgu.dmadmin.model.security.SecurityAccessor;
+import edu.wgu.dmadmin.model.security.UserByFirstNameModel;
+import edu.wgu.dmadmin.model.security.UserByIdModel;
+import edu.wgu.dmadmin.model.security.UserByLastNameModel;
+import edu.wgu.dmadmin.model.submission.SubmissionAccessor;
+import edu.wgu.dmadmin.model.submission.SubmissionByStudentAndTaskModel;
+import edu.wgu.dmadmin.util.DateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -9,36 +37,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
-import com.datastax.driver.core.Session;
-import com.datastax.driver.mapping.Mapper;
-import com.datastax.driver.mapping.MappingManager;
-
-import edu.wgu.common.exception.AuthorizationException;
-import edu.wgu.dmadmin.domain.security.Permissions;
-import edu.wgu.dmadmin.domain.security.RequestBean;
-import edu.wgu.dmadmin.exception.UserNotFoundException;
-import edu.wgu.dmadmin.model.audit.ActivityLogByUserModel;
-import edu.wgu.dmadmin.model.audit.StatusLogAccessor;
-import edu.wgu.dmadmin.model.audit.StatusLogByAssessmentModel;
-import edu.wgu.dmadmin.model.audit.StatusLogByStudentModel;
-import edu.wgu.dmadmin.model.publish.TaskAccessor;
-import edu.wgu.dmadmin.model.publish.TaskByAssessmentModel;
-import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
-import edu.wgu.dmadmin.model.publish.TaskModel;
-import edu.wgu.dmadmin.model.security.PermissionModel;
-import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.security.SecurityAccessor;
-import edu.wgu.dmadmin.model.security.UserByFirstNameModel;
-import edu.wgu.dmadmin.model.security.UserByIdModel;
-import edu.wgu.dmadmin.model.security.UserByLastNameModel;
-import edu.wgu.dmadmin.util.DateUtil;
-import edu.wgu.dmadmin.domain.security.User;
-import edu.wgu.dmadmin.model.submission.SubmissionAccessor;
-import edu.wgu.dmadmin.model.submission.SubmissionByStudentAndTaskModel;
 
 @Repository("cassandra")
 public class CassandraRepo {
@@ -168,11 +166,11 @@ public class CassandraRepo {
 		return this.securityAccessor.getRoles(roleIds).all();
 	}
 
-	public List<TaskByCourseModel> getTaskBasics() {
+	public List<TaskByIdModel> getTaskBasics() {
 		return this.taskAccessor.getAllBasics().all();
 	}
 
-	public List<StatusLogByAssessmentModel> getAssessmentStatus(List<UUID> assessmentIds) {
+	public List<StatusLogByAssessmentModel> getAssessmentStatus(List<Long> assessmentIds) {
 		return this.statusAccessor.getAssessmentStatus(assessmentIds).all();
 	}
 
@@ -180,7 +178,7 @@ public class CassandraRepo {
 		return this.statusAccessor.getAssessmentStatusByDate(activityDate).all();
 	}
 
-	public List<TaskByAssessmentModel> getBasicTasksByAssessment(UUID assessmentId) {
+	public List<TaskByAssessmentModel> getBasicTasksByAssessment(Long assessmentId) {
 		return this.taskAccessor.getBasicTasksByAssessment(assessmentId).all();
 	}
 

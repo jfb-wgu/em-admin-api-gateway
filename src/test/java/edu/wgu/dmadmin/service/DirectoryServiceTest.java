@@ -1,20 +1,14 @@
 package edu.wgu.dmadmin.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.naming.InvalidNameException;
-import javax.naming.Name;
-import javax.naming.ldap.LdapName;
-
+import edu.wgu.dmadmin.domain.person.Person;
+import edu.wgu.dmadmin.domain.security.LdapGroup;
+import edu.wgu.dmadmin.domain.security.LdapLookup;
+import edu.wgu.dmadmin.domain.security.LdapUser;
+import edu.wgu.dmadmin.model.publish.TaskByIdModel;
+import edu.wgu.dmadmin.model.security.RoleModel;
+import edu.wgu.dmadmin.model.security.UserByIdModel;
+import edu.wgu.dmadmin.repo.CassandraRepo;
+import edu.wgu.dmadmin.test.TestObjectFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,15 +16,19 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import edu.wgu.dmadmin.domain.person.Person;
-import edu.wgu.dmadmin.domain.security.LdapGroup;
-import edu.wgu.dmadmin.domain.security.LdapLookup;
-import edu.wgu.dmadmin.domain.security.LdapUser;
-import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
-import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.security.UserByIdModel;
-import edu.wgu.dmadmin.repo.CassandraRepo;
-import edu.wgu.dmadmin.test.TestObjectFactory;
+import javax.naming.InvalidNameException;
+import javax.naming.Name;
+import javax.naming.ldap.LdapName;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 
 public class DirectoryServiceTest {
 	
@@ -50,8 +48,8 @@ public class DirectoryServiceTest {
 	
 	RoleModel role1 = TestObjectFactory.getRoleModel("role1");
 	RoleModel role2 = TestObjectFactory.getRoleModel("role2");
-	TaskByCourseModel task1 = TestObjectFactory.getTaskModel();
-	TaskByCourseModel task2 = TestObjectFactory.getTaskModel();	
+	TaskByIdModel task1 = TestObjectFactory.getTaskModel();
+	TaskByIdModel task2 = TestObjectFactory.getTaskModel();
 	UserByIdModel user1 = TestObjectFactory.getUserModel("test1", "testing1");
 	UserByIdModel user2 = TestObjectFactory.getUserModel("test2", "testing2");
 	Person person1;

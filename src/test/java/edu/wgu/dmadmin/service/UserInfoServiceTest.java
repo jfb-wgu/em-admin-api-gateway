@@ -1,14 +1,12 @@
 package edu.wgu.dmadmin.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.text.ParseException;
-import java.util.Arrays;
-import java.util.Optional;
-
+import edu.wgu.dmadmin.domain.person.Person;
+import edu.wgu.dmadmin.exception.UserNotFoundException;
+import edu.wgu.dmadmin.model.publish.TaskByIdModel;
+import edu.wgu.dmadmin.model.security.RoleModel;
+import edu.wgu.dmadmin.model.security.UserByIdModel;
+import edu.wgu.dmadmin.repo.CassandraRepo;
+import edu.wgu.dmadmin.test.TestObjectFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,13 +15,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import edu.wgu.dmadmin.domain.person.Person;
-import edu.wgu.dmadmin.exception.UserNotFoundException;
-import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
-import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.security.UserByIdModel;
-import edu.wgu.dmadmin.repo.CassandraRepo;
-import edu.wgu.dmadmin.test.TestObjectFactory;
+import java.text.ParseException;
+import java.util.Arrays;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class UserInfoServiceTest {
 	
@@ -40,8 +39,8 @@ public class UserInfoServiceTest {
 	
 	RoleModel role1 = TestObjectFactory.getRoleModel("role1");
 	RoleModel role2 = TestObjectFactory.getRoleModel("role2");
-	TaskByCourseModel task1 = TestObjectFactory.getTaskModel();
-	TaskByCourseModel task2 = TestObjectFactory.getTaskModel();	
+	TaskByIdModel task1 = TestObjectFactory.getTaskModel();
+	TaskByIdModel task2 = TestObjectFactory.getTaskModel();
 	UserByIdModel user1 = TestObjectFactory.getUserModel("test1", "testing1");
 	UserByIdModel user2 = TestObjectFactory.getUserModel("test2", "testing2");
 	Person person1;

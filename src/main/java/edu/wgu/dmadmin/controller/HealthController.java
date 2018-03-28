@@ -1,21 +1,5 @@
 package edu.wgu.dmadmin.controller;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import edu.wgu.dmadmin.domain.security.Permissions;
 import edu.wgu.dmadmin.domain.security.SecureByPermissionStrategy;
 import edu.wgu.dmadmin.repo.oracle.StatusEntry;
@@ -27,6 +11,20 @@ import edu.wgu.security.authz.annotation.Secured;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jessica Pamdeth
@@ -45,7 +43,7 @@ public class HealthController {
 	@ApiOperation("Find records in the specified assessments that do not match the status in ARP.")
 	@ApiImplicitParam(name = "Authorization", value = "SYSTEM permission", dataType = "string", paramType = "header", required = true)
 	public ResponseEntity<List<StatusEntry>> getMissingAssessmentRecords(
-			@ApiParam(value="One or more UUID values") @RequestBody final List<UUID> assessmentIds) {
+			@ApiParam(value="One or more UUID values") @RequestBody final List<Long> assessmentIds) {
 		return ResponseEntity.ok(this.service.compareDRFData(assessmentIds));
 	}
 	
@@ -66,7 +64,7 @@ public class HealthController {
 	@RequestMapping(value = { "/assessments/{assessmentId}/students/{studentId}" }, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ApiOperation("Re-send assessment data through Dream Catcher to ARP.")
 	@ApiImplicitParam(name = "Authorization", value = "SYSTEM permission", dataType = "string", paramType = "header", required = true)
-	public ResponseEntity<AssessmentModel> sendAssessmentUpdate(@PathVariable final UUID assessmentId, @PathVariable final String studentId) {
+	public ResponseEntity<AssessmentModel> sendAssessmentUpdate(@PathVariable final Long assessmentId, @PathVariable final String studentId) {
 		return ResponseEntity.ok(this.service.resendAssessmentUpdate(studentId, assessmentId));
 	}
 	

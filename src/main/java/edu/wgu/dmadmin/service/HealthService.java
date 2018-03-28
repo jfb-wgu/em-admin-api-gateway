@@ -1,28 +1,5 @@
 package edu.wgu.dmadmin.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.tuple.Pair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.AbstractEnvironment;
-import org.springframework.core.env.EnumerablePropertySource;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.PropertySource;
-import org.springframework.stereotype.Service;
-
 import edu.wgu.dmadmin.messaging.MessageSender;
 import edu.wgu.dmadmin.model.audit.StatusLogByAssessmentModel;
 import edu.wgu.dmadmin.model.audit.StatusLogByStudentModel;
@@ -36,6 +13,28 @@ import edu.wgu.dmadmin.repo.oracle.StatusEntry;
 import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dreamcatcher.domain.model.AssessmentModel;
 import edu.wgu.dreamcatcher.domain.model.TaskModel;
+import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.AbstractEnvironment;
+import org.springframework.core.env.EnumerablePropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertySource;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class HealthService {
@@ -64,7 +63,7 @@ public class HealthService {
 		this.rabbitTemplate = template;
 	}
 
-	public List<StatusEntry> compareDRFData(List<UUID> assessments) {
+	public List<StatusEntry> compareDRFData(List<Long> assessments) {
 		List<StatusLogByAssessmentModel> stats = this.cassandraRepo.getAssessmentStatus(assessments);
 		List<DRF> drfs = this.oracleRepo
 				.findByTitleIn(assessments.stream().map(a -> a.toString()).collect(Collectors.toList()));
@@ -125,7 +124,7 @@ public class HealthService {
 		return result;
 	}
 
-	public AssessmentModel processAssessmentUpdate(String studentId, UUID assessmentId) {
+	public AssessmentModel processAssessmentUpdate(String studentId, Long assessmentId) {
 		List<TaskByAssessmentModel> basicTasks = this.cassandraRepo.getBasicTasksByAssessment(assessmentId);
 		List<DRF> drfs = this.oracleRepo.findByWguainfSpridenBannerIdAndTitle(studentId,	assessmentId.toString());
 		List<DRFTask> drfTasks = drfs.stream().map(drf -> drf.getTasks()).collect(ArrayList::new, ArrayList::addAll, ArrayList::addAll);
@@ -179,7 +178,7 @@ public class HealthService {
 		return model;
 	}
 	
-	public AssessmentModel resendAssessmentUpdate(String studentId, UUID assessmentId) {
+	public AssessmentModel resendAssessmentUpdate(String studentId, Long assessmentId) {
 		AssessmentModel model = this.processAssessmentUpdate(studentId, assessmentId);
 		
 		if (model != null) {
