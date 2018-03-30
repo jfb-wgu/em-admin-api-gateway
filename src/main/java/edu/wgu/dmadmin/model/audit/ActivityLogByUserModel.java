@@ -20,7 +20,7 @@ public class ActivityLogByUserModel {
 
 	@PartitionKey(1)
 	@Column(name="log_year_month")
-	String LogYearMonth;
+	String logYearMonth;
 
 	@PartitionKey(2)
 	@Column(name="activity_date")
