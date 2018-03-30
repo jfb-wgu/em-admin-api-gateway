@@ -17,12 +17,16 @@ public class ActivityLogByUserModel {
 	@PartitionKey(0)
 	@Column(name="user_id")
 	String userId;
-	
+
 	@PartitionKey(1)
+	@Column(name="log_year_month")
+	String LogYearMonth;
+
+	@PartitionKey(2)
 	@Column(name="activity_date")
 	Date activityDate;
 	
-	@PartitionKey(2)
+	@PartitionKey(3)
 	@Column(name="log_id")
 	UUID logId;
 
