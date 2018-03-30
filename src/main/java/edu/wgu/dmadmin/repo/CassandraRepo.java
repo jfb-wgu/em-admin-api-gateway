@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import edu.wgu.dmadmin.model.audit.*;
+import edu.wgu.dmadmin.model.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,24 +23,12 @@ import edu.wgu.common.exception.AuthorizationException;
 import edu.wgu.dmadmin.domain.security.Permissions;
 import edu.wgu.dmadmin.domain.security.RequestBean;
 import edu.wgu.dmadmin.exception.UserNotFoundException;
-import edu.wgu.dmadmin.model.audit.ActivityLogByUserModel;
-import edu.wgu.dmadmin.model.audit.StatusLogAccessor;
-import edu.wgu.dmadmin.model.audit.StatusLogByAssessmentModel;
-import edu.wgu.dmadmin.model.audit.StatusLogByStudentModel;
 import edu.wgu.dmadmin.model.publish.TaskAccessor;
-import edu.wgu.dmadmin.model.publish.TaskByAssessmentModel;
-import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
 import edu.wgu.dmadmin.model.publish.TaskModel;
-import edu.wgu.dmadmin.model.security.PermissionModel;
-import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.security.SecurityAccessor;
-import edu.wgu.dmadmin.model.security.UserByFirstNameModel;
-import edu.wgu.dmadmin.model.security.UserByIdModel;
-import edu.wgu.dmadmin.model.security.UserByLastNameModel;
 import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dmadmin.domain.security.User;
 import edu.wgu.dmadmin.model.submission.SubmissionAccessor;
-import edu.wgu.dmadmin.model.submission.SubmissionByStudentAndTaskModel;
+import edu.wgu.dmadmin.model.submission.SubmissionByIdModel;
 
 @Repository("cassandra")
 public class CassandraRepo {
@@ -54,7 +44,7 @@ public class CassandraRepo {
 	TaskAccessor taskAccessor;
 	SubmissionAccessor submissionAccessor;
 	StatusLogAccessor statusAccessor;
-	Mapper<UserByIdModel> userMapper;
+	Mapper<UserModel> userMapper;
 	Mapper<RoleModel> roleMapper;
 	Mapper<PermissionModel> permissionMapper;
 	Mapper<ActivityLogByUserModel> activityMapper;
@@ -66,7 +56,7 @@ public class CassandraRepo {
 		this.taskAccessor = this.mappingManager.createAccessor(TaskAccessor.class);
 		this.submissionAccessor = this.mappingManager.createAccessor(SubmissionAccessor.class);
 		this.statusAccessor = this.mappingManager.createAccessor(StatusLogAccessor.class);
-		this.userMapper = this.mappingManager.mapper(UserByIdModel.class);
+		this.userMapper = this.mappingManager.mapper(UserModel.class);
 		this.permissionMapper = this.mappingManager.mapper(PermissionModel.class);
 		this.roleMapper = this.mappingManager.mapper(RoleModel.class);
 		this.activityMapper = this.mappingManager.mapper(ActivityLogByUserModel.class);
@@ -77,7 +67,7 @@ public class CassandraRepo {
 		this.activityMapper.setDefaultSaveOptions(Mapper.Option.saveNullFields(false));
 	}
 
-	public Optional<UserByIdModel> getUserModel(String userId) {
+	public Optional<UserModel> getUserModel(String userId) {
 		if (this.rBean.getUser() != null && this.rBean.getUser().getUserId().equals(userId)) {
 			return Optional.of(this.rBean.getUser());
 		}
@@ -89,31 +79,31 @@ public class CassandraRepo {
 		this.securityAccessor.updateLastLogin(DateUtil.getZonedNow(), userId);
 	}
 
-	public List<UserByIdModel> getUsers() {
+	public List<UserModel> getUsers() {
 		return this.securityAccessor.getAll().all();
 	}
 
-	public List<UserByIdModel> getUsersById(List<String> userIds) {
+	public List<UserModel> getUsersById(List<String> userIds) {
 		return this.securityAccessor.getUsersById(userIds).all();
 	}
 
-	public List<UserByLastNameModel> getUsersByLastName(String name) {
+	public List<UserModel> getUsersByLastName(String name) {
 		return this.securityAccessor.getUsersByLastName(name).all();
 	}
 
-	public List<UserByFirstNameModel> getUsersByFirstName(String name) {
+	public List<UserModel> getUsersByFirstName(String name) {
 		return this.securityAccessor.getUsersByFirstName(name).all();
 	}
 
-	public List<UserByIdModel> getUsersForRole(UUID roleId) {
+	public List<UserModel> getUsersForRole(UUID roleId) {
 		return this.securityAccessor.getUsersForRole(roleId).all();
 	}
 
-	public List<UserByIdModel> getUsersForPermission(String permission) {
+	public List<UserModel> getUsersForPermission(String permission) {
 		return this.securityAccessor.getUsersForPermission(permission).all();
 	}
 
-	public UserByIdModel saveUser(UserByIdModel userModel) {
+	public UserModel saveUser(UserModel userModel) {
 		this.userMapper.save(userModel);
 		return userModel;
 	}
@@ -168,40 +158,40 @@ public class CassandraRepo {
 		return this.securityAccessor.getRoles(roleIds).all();
 	}
 
-	public List<TaskByCourseModel> getTaskBasics() {
+	public List<TaskModel> getTaskBasics() {
 		return this.taskAccessor.getAllBasics().all();
 	}
 
-	public List<StatusLogByAssessmentModel> getAssessmentStatus(List<UUID> assessmentIds) {
+	public List<StatusLogModel> getAssessmentStatus(List<UUID> assessmentIds) {
 		return this.statusAccessor.getAssessmentStatus(assessmentIds).all();
 	}
 
-	public List<StatusLogByAssessmentModel> getAssessmentStatus(Date activityDate) {
+	public List<StatusLogModel> getAssessmentStatus(Date activityDate) {
 		return this.statusAccessor.getAssessmentStatusByDate(activityDate).all();
 	}
 
-	public List<TaskByAssessmentModel> getBasicTasksByAssessment(UUID assessmentId) {
+	public List<TaskModel> getBasicTasksByAssessment(UUID assessmentId) {
 		return this.taskAccessor.getBasicTasksByAssessment(assessmentId).all();
 	}
 
-	public Optional<SubmissionByStudentAndTaskModel> getLastSubmissionForTask(String studentId, UUID taskId) {
+	public Optional<SubmissionByIdModel> getLastSubmissionForTask(String studentId, UUID taskId) {
 		return Optional.ofNullable(this.submissionAccessor.getLastSubmissionByStudentAndTask(studentId, taskId));
 	}
 
-	public Optional<StatusLogByStudentModel> getLastStatus(String studentId, UUID taskId) {
+	public Optional<StatusLogModel> getLastStatus(String studentId, UUID taskId) {
 		return Optional.ofNullable(this.statusAccessor.getLastStatusEntry(studentId, taskId));
 	}
 
 	public List<User> saveUsers(String userId, List<User> users, boolean checkSystem) {
-		List<UserByIdModel> models = users.stream().map(u -> new UserByIdModel(u)).collect(Collectors.toList());
+		List<UserModel> models = users.stream().map(u -> new UserModel(u)).collect(Collectors.toList());
 		return this.saveUsers(models, userId, checkSystem);
 	}
 
-	public List<User> saveUsers(List<UserByIdModel> users) {
+	public List<User> saveUsers(List<UserModel> users) {
 		return this.saveUsers(users, null, false);
 	}
 
-	public List<User> saveUsers(List<UserByIdModel> users, String userId, boolean checkSystem) {
+	public List<User> saveUsers(List<UserModel> users, String userId, boolean checkSystem) {
 		List<User> created = new ArrayList<>();
 
 		Map<UUID, RoleModel> roles = this.getRoleMap(users);
@@ -231,7 +221,7 @@ public class CassandraRepo {
 
 	private void checkSystemUser(Collection<PermissionModel> permissions, String userId) {
 		if (permissions.stream().filter(p -> p.getPermission().equals(Permissions.SYSTEM)).count() > 0) {
-			UserByIdModel user = this.getUserModel(userId).orElseThrow(() -> new UserNotFoundException(userId));
+			UserModel user = this.getUserModel(userId).orElseThrow(() -> new UserNotFoundException(userId));
 			if (!user.getPermissions().contains(Permissions.SYSTEM))
 				throw new AuthorizationException("Only SYSTEM users can assign SYSTEM permissions");
 		}
@@ -242,7 +232,7 @@ public class CassandraRepo {
 		return roles;
 	}
 
-	public Map<UUID, RoleModel> getRoleMap(Collection<UserByIdModel> users) {
+	public Map<UUID, RoleModel> getRoleMap(Collection<UserModel> users) {
 		List<UUID> roleIds = users.stream().map(user -> user.getRoles()).collect(ArrayList::new, ArrayList::addAll,
 				ArrayList::addAll);
 		return this.getRoleMap(roleIds);

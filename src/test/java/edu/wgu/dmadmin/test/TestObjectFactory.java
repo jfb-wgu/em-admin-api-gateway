@@ -6,10 +6,10 @@ import java.util.Set;
 import java.util.UUID;
 
 import edu.wgu.dmadmin.domain.security.User;
-import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
+import edu.wgu.dmadmin.model.publish.TaskModel;
 import edu.wgu.dmadmin.model.security.PermissionModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.security.UserByIdModel;
+import edu.wgu.dmadmin.model.security.UserModel;
 import edu.wgu.dmadmin.util.DateUtil;
 
 public class TestObjectFactory {
@@ -25,8 +25,8 @@ public class TestObjectFactory {
 	static UUID evaluationId = UUID.randomUUID();
 	static UUID taskId = UUID.randomUUID();
 
-	public static UserByIdModel getUserModel() {
-		UserByIdModel user = getUserModel(evaluatorFirstName, evaluatorLastName, evaluatorId, new HashSet<UUID>(),
+	public static UserModel getUserModel() {
+		UserModel user = getUserModel(evaluatorFirstName, evaluatorLastName, evaluatorId, new HashSet<UUID>(),
 				new HashSet<String>(), new HashSet<UUID>(), new HashSet<String>(), employeeId);
 
 		user.getRoles().add(UUID.randomUUID());
@@ -38,14 +38,14 @@ public class TestObjectFactory {
 		return user;
 	}
 
-	public static UserByIdModel getUserModel(String inUserId, String inEmployeeId) {
+	public static UserModel getUserModel(String inUserId, String inEmployeeId) {
 		return getUserModel(evaluatorFirstName, evaluatorLastName, inUserId, new HashSet<UUID>(), new HashSet<String>(),
 				new HashSet<UUID>(), new HashSet<String>(), inEmployeeId);
 	}
 
-	public static UserByIdModel getUserModel(String firstName, String lastName, String userId, Set<UUID> roles,
+	public static UserModel getUserModel(String firstName, String lastName, String userId, Set<UUID> roles,
 			Set<String> permissions, Set<UUID> tasks, Set<String> landings, String inEmployeeId) {
-		UserByIdModel user = new UserByIdModel();
+		UserModel user = new UserModel();
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setUserId(userId);
@@ -109,8 +109,8 @@ public class TestObjectFactory {
 		return model;
 	}
 	
-    public static TaskByCourseModel getTaskModel() {
-        TaskByCourseModel taskModel = new TaskByCourseModel();
+    public static TaskModel getTaskModel() {
+		TaskModel taskModel = new TaskModel();
         taskModel.setCourseId(new Long(123345));
         taskModel.setAssessmentName("Assessment 1");
         taskModel.setAssessmentCode("A1A1");

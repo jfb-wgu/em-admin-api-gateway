@@ -9,8 +9,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@Table(keyspace = "dm", name = "task_by_course", readConsistency = "LOCAL_QUORUM", writeConsistency = "LOCAL_QUORUM")
 public class TaskModel {
 
+	@PartitionKey(0)
 	@Column(name = "course_id")
 	Long courseId;
 
@@ -20,12 +22,14 @@ public class TaskModel {
 	@Column(name = "assessment_code")
 	String assessmentCode;
 
+	@PartitionKey(1)
 	@Column(name = "assessment_id")
 	UUID assessmentId;
 
 	@Column(name = "task_name")
 	String taskName;
 
+	@PartitionKey(2)
 	@Column(name = "task_id")
 	UUID taskId;
 

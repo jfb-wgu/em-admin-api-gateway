@@ -3,7 +3,7 @@ package edu.wgu.dmadmin.repo.oracle;
 import java.util.Date;
 import java.util.UUID;
 
-import edu.wgu.dmadmin.model.audit.StatusLogByAssessmentModel;
+import edu.wgu.dmadmin.model.audit.StatusLogModel;
 import lombok.Data;
 
 @Data
@@ -28,7 +28,7 @@ public class StatusEntry implements Comparable<StatusEntry> {
 		this.date = task.getActivityDate();
 	}
 	
-	public StatusEntry(StatusLogByAssessmentModel model) {
+	public StatusEntry(StatusLogModel model) {
 		this.submissionId = model.getSubmissionId();
 		this.assessmentId = model.getAssessmentId();
 		this.taskId = model.getTaskId();

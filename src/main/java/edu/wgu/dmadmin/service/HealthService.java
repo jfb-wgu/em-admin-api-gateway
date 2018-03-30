@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import edu.wgu.dmadmin.model.audit.StatusLogModel;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +25,8 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.stereotype.Service;
 
 import edu.wgu.dmadmin.messaging.MessageSender;
-import edu.wgu.dmadmin.model.audit.StatusLogByAssessmentModel;
-import edu.wgu.dmadmin.model.audit.StatusLogByStudentModel;
-import edu.wgu.dmadmin.model.publish.TaskByAssessmentModel;
-import edu.wgu.dmadmin.model.submission.SubmissionByStudentAndTaskModel;
+import edu.wgu.dmadmin.model.publish.TaskModel;
+import edu.wgu.dmadmin.model.submission.SubmissionByIdModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.repo.OracleRepo;
 import edu.wgu.dmadmin.repo.oracle.DRF;
@@ -126,7 +125,7 @@ public class HealthService {
 	}
 
 	public AssessmentModel processAssessmentUpdate(String studentId, UUID assessmentId) {
-		List<TaskByAssessmentModel> basicTasks = this.cassandraRepo.getBasicTasksByAssessment(assessmentId);
+		List<TaskModel> basicTasks = this.cassandraRepo.getBasicTasksByAssessment(assessmentId);
 		List<DRF> drfs = this.oracleRepo.findByWguainfSpridenBannerIdAndTitle(studentId,	assessmentId.toString());
 		List<DRFTask> drfTasks = drfs.stream().map(drf -> drf.getTasks()).collect(ArrayList::new, ArrayList::addAll, ArrayList::addAll);
 
@@ -136,9 +135,9 @@ public class HealthService {
 		model.setStudentId(studentId);
 
 		List<TaskModel> tasks = new ArrayList<>();
-		SubmissionByStudentAndTaskModel submission = null;
+		SubmissionByIdModel submission = null;
 
-		for (TaskByAssessmentModel task : basicTasks) {
+		for (TaskModel task : basicTasks) {
 			TaskModel taskModel = new TaskModel();
 			taskModel.setTaskId(task.getTaskId().toString());
 			taskModel.setTaskName(task.getTaskName());
@@ -147,14 +146,14 @@ public class HealthService {
 			// Find the latest status record from Oracle
 			Optional<DRFTask> latest = drfTasks.stream().filter(t -> t.getTaskId().equals(task.getTaskId().toString())).sorted().findFirst();
 			
-			Optional<SubmissionByStudentAndTaskModel> optSubmission = this.cassandraRepo.getLastSubmissionForTask(studentId, task.getTaskId());
+			Optional<SubmissionByIdModel> optSubmission = this.cassandraRepo.getLastSubmissionForTask(studentId, task.getTaskId());
 			if (optSubmission.isPresent()) {
 				submission = optSubmission.get();
 				taskModel.setSubmissionId(submission.getSubmissionId().toString());
 
-				Optional<StatusLogByStudentModel> optStatus = this.cassandraRepo.getLastStatus(studentId, submission.getSubmissionId());
+				Optional<StatusLogModel> optStatus = this.cassandraRepo.getLastStatus(studentId, submission.getSubmissionId());
 				if (optStatus.isPresent()) {
-					StatusLogByStudentModel status = optStatus.get();
+					StatusLogModel status = optStatus.get();
 					if (!latest.isPresent() || !status.getNewStatus().equals(latest.get().getStatus())) {
 						taskModel.setDateUpdated(status.getActivityDate());
 

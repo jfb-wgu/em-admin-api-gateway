@@ -11,11 +11,11 @@ import com.datastax.driver.mapping.annotations.Query;
 @Accessor
 public interface StatusLogAccessor {
     @Query("select * from dm.status_log_by_assessment where assessment_id IN :assessmentIds")
-    Result<StatusLogByAssessmentModel> getAssessmentStatus(List<UUID> assessmentIds);
+    Result<StatusLogModel> getAssessmentStatus(List<UUID> assessmentIds);
     
     @Query("select * from dm.status_log_by_assessment where activity_date >= ? allow filtering")
-    Result<StatusLogByAssessmentModel> getAssessmentStatusByDate(Date activityDate);
+    Result<StatusLogModel> getAssessmentStatusByDate(Date activityDate);
     
-    @Query("SELECT * FROM dm.status_log_by_student WHERE student_id = ? AND submission_id = ? limit 1")
-    StatusLogByStudentModel getLastStatusEntry(String studentId, UUID submissionId);
+    @Query("SELECT * FROM dm.status_log_by_assessment WHERE student_id = ? AND submission_id = ? limit 1")
+    StatusLogModel getLastStatusEntry(String studentId, UUID submissionId);
 }

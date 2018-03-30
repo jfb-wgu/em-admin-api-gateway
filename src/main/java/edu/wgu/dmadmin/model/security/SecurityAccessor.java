@@ -11,13 +11,13 @@ import com.datastax.driver.mapping.annotations.Query;
 @Accessor
 public interface SecurityAccessor {
     @Query("SELECT * FROM dm.user_by_id")
-    Result<UserByIdModel> getAll();
+    Result<UserModel> getAll();
     
     @Query("SELECT * FROM dm.user_by_id where user_id = ?")
-    UserByIdModel getByUserId(String userId);
+    UserModel getByUserId(String userId);
     
     @Query("SELECT * FROM dm.user_by_id where user_id IN :userIds")
-    Result<UserByIdModel> getUsersById(List<String> userIds);
+    Result<UserModel> getUsersById(List<String> userIds);
     
     @Query("SELECT * FROM dm.permission")
     Result<PermissionModel> getPermissions();
@@ -43,17 +43,17 @@ public interface SecurityAccessor {
     @Query("UPDATE dm.user_by_id set last_login = ? WHERE user_id = ?")
     void updateLastLogin(Date login, String userId);
     
-    @Query("SELECT * FROM dm.user_by_last_name where last_name = ?")
-    Result<UserByLastNameModel> getUsersByLastName(String name);
+    @Query("SELECT * FROM dm.user_by_id where last_name = ?")
+    Result<UserModel> getUsersByLastName(String name);
 
-    @Query("SELECT * FROM dm.user_by_first_name where first_name = ?")
-    Result<UserByFirstNameModel> getUsersByFirstName(String name);
+    @Query("SELECT * FROM dm.user_by_id where first_name = ?")
+    Result<UserModel> getUsersByFirstName(String name);
     
     @Query("SELECT * FROM dm.user_by_id WHERE roles CONTAINS ?")
-    Result<UserByIdModel> getUsersForRole(UUID roleId);
+    Result<UserModel> getUsersForRole(UUID roleId);
 
     @Query("SELECT * FROM dm.user_by_id WHERE permissions CONTAINS ?")
-    Result<UserByIdModel> getUsersForPermission(String permission);
+    Result<UserModel> getUsersForPermission(String permission);
     
     @Query("DELETE FROM dm.permission WHERE permission_id = ? and permission = ?")
     void deletePermission(UUID permissionId, String permission);

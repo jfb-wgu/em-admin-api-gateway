@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import edu.wgu.dmadmin.model.security.UserByIdModel;
+import edu.wgu.dmadmin.model.security.UserModel;
 import lombok.Data;
 
 @Data
@@ -69,7 +69,7 @@ public class Person implements Serializable {
 	   return "";
    }
    
-   public void setUserInfo(UserByIdModel user) {
+   public void setUserInfo(UserModel user) {
 	   this.teams = user.getTeams();
 	   this.emaRoles = user.getRoles();
 	   this.permissions = user.getPermissions();

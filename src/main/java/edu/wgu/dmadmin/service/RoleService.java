@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import edu.wgu.dmadmin.model.security.UserModel;
 import org.apache.commons.collections.SetUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,6 @@ import edu.wgu.dmadmin.domain.security.Role;
 import edu.wgu.dmadmin.exception.RoleNotFoundException;
 import edu.wgu.dmadmin.model.security.PermissionModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.security.UserByIdModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.util.DateUtil;
 
@@ -57,8 +57,8 @@ public class RoleService {
 	 * @param roleId
 	 */
 	public void deleteRole(UUID roleId) {
-		List<UserByIdModel> usersWithRole = this.cassandraRepo.getUsersForRole(roleId);
-		for (UserByIdModel user : usersWithRole) {
+		List<UserModel> usersWithRole = this.cassandraRepo.getUsersForRole(roleId);
+		for (UserModel user : usersWithRole) {
 			user.getRoles().remove(roleId);
 		}
 		

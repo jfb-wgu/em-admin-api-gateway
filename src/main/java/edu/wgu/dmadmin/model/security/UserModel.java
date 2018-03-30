@@ -1,6 +1,7 @@
 package edu.wgu.dmadmin.model.security;
 
 import com.datastax.driver.mapping.annotations.Column;
+import edu.wgu.dmadmin.domain.security.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,8 +12,10 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
+@Table(keyspace = "dm", name = "user_by_id", readConsistency = "LOCAL_QUORUM", writeConsistency = "LOCAL_QUORUM")
 public class UserModel {
 
+	@PartitionKey(0)
 	@Column(name = "user_id")
 	String userId;
 
@@ -62,5 +65,18 @@ public class UserModel {
 		if (this.teams == null)
 			this.teams = new HashSet<UUID>();
 		return this.teams;
+	}
+
+	public UserByIdModel(User user) {
+		this.userId = user.getUserId();
+		this.firstName = user.getFirstName();
+		this.lastName = user.getLastName();
+		this.roles = user.getRoles();
+		this.permissions = user.getPermissions();
+		this.teams = user.getTeams();
+		this.tasks = user.getTasks();
+		this.landings = user.getLandings();
+		this.lastLogin = user.getLastLogin();
+		this.employeeId = user.getEmployeeId();
 	}
 }

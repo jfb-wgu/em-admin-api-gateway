@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import edu.wgu.dmadmin.model.security.UserModel;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,10 +29,8 @@ import org.mockito.MockitoAnnotations;
 import edu.wgu.dmadmin.domain.person.Person;
 import edu.wgu.dmadmin.domain.security.User;
 import edu.wgu.dmadmin.exception.UserNotFoundException;
-import edu.wgu.dmadmin.model.publish.TaskByCourseModel;
 import edu.wgu.dmadmin.model.publish.TaskModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.security.UserByIdModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 
@@ -53,10 +52,10 @@ public class UserManagementServiceTest {
 	
 	RoleModel role1 = TestObjectFactory.getRoleModel("role1");
 	RoleModel role2 = TestObjectFactory.getRoleModel("role2");
-	TaskByCourseModel task1 = TestObjectFactory.getTaskModel();
-	TaskByCourseModel task2 = TestObjectFactory.getTaskModel();	
-	UserByIdModel user1 = TestObjectFactory.getUserModel("test1", "testing1");
-	UserByIdModel user2 = TestObjectFactory.getUserModel("test2", "testing2");
+	TaskModel task1 = TestObjectFactory.getTaskModel();
+	TaskModel task2 = TestObjectFactory.getTaskModel();
+	UserModel user1 = TestObjectFactory.getUserModel("test1", "testing1");
+	UserModel user2 = TestObjectFactory.getUserModel("test2", "testing2");
 	Person person1;
 	
 	@Before
@@ -160,7 +159,7 @@ public class UserManagementServiceTest {
 		when(this.repo.getUserModel(anyString())).thenReturn(Optional.empty());
 		this.service.createUser("testing");
 		
-		ArgumentCaptor<UserByIdModel> argument = ArgumentCaptor.forClass(UserByIdModel.class);
+		ArgumentCaptor<UserModel> argument = ArgumentCaptor.forClass(UserModel.class);
 		verify(this.repo).saveUser(argument.capture());
 		assertEquals("Bruce", argument.getValue().getFirstName());
 		assertEquals("Wayne", argument.getValue().getLastName());

@@ -8,26 +8,34 @@ import com.datastax.driver.mapping.annotations.Column;
 import lombok.Data;
 
 @Data
+@NoArgsConstructor
+@Table(keyspace = "dm", name="status_log_by_assessment", readConsistency = "LOCAL_QUORUM", writeConsistency = "LOCAL_QUORUM")
 public class StatusLogModel {
-	
+
+	@PartitionKey(5)
 	@Column(name="log_id")
 	UUID logId;
-	
+
+	@PartitionKey(3)
 	@Column(name="student_id")
 	String studentId;
-	
+
+	@PartitionKey(1)
 	@Column(name="activity_date")
 	Date activityDate;
 	
 	@Column(name="course_code")
 	String courseCode;
-	
+
+	@PartitionKey(0)
 	@Column(name="assessment_id")
 	UUID assessmentId;
-	
+
+	@PartitionKey(2)
 	@Column(name="task_id")
 	UUID taskId;
-	
+
+	@PartitionKey(4)
 	@Column(name="submission_id")
 	UUID submissionId;
 	

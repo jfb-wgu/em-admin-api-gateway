@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import edu.wgu.dmadmin.model.security.UserModel;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,7 +26,6 @@ import org.mockito.ArgumentCaptor;
 import edu.wgu.dmadmin.domain.security.Permission;
 import edu.wgu.dmadmin.model.security.PermissionModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.security.UserByIdModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.util.DateUtil;
 
@@ -47,13 +47,13 @@ public class PermissionServiceTest {
 	
 	RoleModel role1 = new RoleModel();
 	RoleModel role2 = new RoleModel();
-	
-	UserByIdModel user1 = new UserByIdModel();
-	UserByIdModel user2 = new UserByIdModel();
+
+	UserModel user1 = new UserModel();
+	UserModel user2 = new UserModel();
 	
 	List<PermissionModel> permissions;
 	List<RoleModel> roles;
-	List<UserByIdModel> users;
+	List<UserModel> users;
 	
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();

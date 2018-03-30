@@ -9,8 +9,5 @@
         <module name="dm-admin" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="dm-admin" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

@@ -19,7 +19,6 @@ import edu.wgu.dmadmin.domain.security.User;
 import edu.wgu.dmadmin.exception.UserNotFoundException;
 import edu.wgu.dmadmin.model.publish.TaskModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.security.UserByIdModel;
 import edu.wgu.dmadmin.model.security.UserModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 
@@ -47,7 +46,7 @@ public class UserManagementService {
 	public List<User> getUsers() {
 		List<User> users = null;
 		
-		List<UserByIdModel> models = this.cassandraRepo.getUsers();
+		List<UserModel> models = this.cassandraRepo.getUsers();
 		Map<UUID, RoleModel> roles = this.cassandraRepo.getRoleMap(models);
 		Map<UUID, TaskModel> tasks = this.cassandraRepo.getTaskMap();
 		
@@ -84,8 +83,8 @@ public class UserManagementService {
 	public UserModel createUser(String username) {
 		Person person = this.personService.getPersonByUsername(username);
 
-		UserByIdModel user = this.cassandraRepo.getUserModel(person.getUserId()).orElseGet(() -> {
-			UserByIdModel model = new UserByIdModel();
+		UserModel user = this.cassandraRepo.getUserModel(person.getUserId()).orElseGet(() -> {
+			UserModel model = new UserModel();
 			model.setUserId(person.getUserId());
 			model.setFirstName(person.getFirstName());
 			model.setLastName(person.getLastName());
@@ -97,14 +96,14 @@ public class UserManagementService {
 	}
 
 	public BulkCreateResponse createUsers(String userId, BulkUsers users) {
-		List<UserByIdModel> toCreate = new ArrayList<>();
+		List<UserModel> toCreate = new ArrayList<>();
 		List<String> failed = new ArrayList<>();
 
 		users.getUsernames().forEach(name -> {
 			try {
 				Person person = this.personService.getPersonByUsername(name);
-				UserByIdModel user = this.cassandraRepo.getUserModel(person.getUserId()).orElseGet(() -> {
-					UserByIdModel model = new UserByIdModel();
+				UserModel user = this.cassandraRepo.getUserModel(person.getUserId()).orElseGet(() -> {
+					UserModel model = new UserModel();
 					model.setUserId(person.getUserId());
 					model.setFirstName(person.getFirstName());
 					model.setLastName(person.getLastName());
