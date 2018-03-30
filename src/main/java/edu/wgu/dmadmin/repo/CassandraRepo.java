@@ -168,7 +168,13 @@ public class CassandraRepo {
 	}
 
 	public List<StatusLogModel> getAssessmentStatus(List<UUID> assessmentIds) {
-		return this.statusAccessor.getAssessmentStatus(assessmentIds).all();
+		List<StatusLogModel> models = new ArrayList<>();
+		
+		assessmentIds.forEach(id -> {
+			models.addAll(this.statusAccessor.getAssessmentStatus(id).all());
+		});
+		
+		return models;
 	}
 
 	public List<StatusLogModel> getAssessmentStatus(Date activityDate) {

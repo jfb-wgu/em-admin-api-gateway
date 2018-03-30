@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Table(keyspace = "dm", name="activity_log_by_user", readConsistency = "LOCAL_QUORUM", writeConsistency = "LOCAL_QUORUM")
+@Table(keyspace = "dm", name="activity_log_by_user")
 public class ActivityLogByUserModel {	
 	@PartitionKey(0)
 	@Column(name="user_id")

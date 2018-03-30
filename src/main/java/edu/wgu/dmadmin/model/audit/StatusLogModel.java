@@ -12,33 +12,31 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Table(keyspace = "dm", name="status_log_by_assessment")
+@Table(keyspace = "dm", name="status_log")
 public class StatusLogModel {
 
-	@PartitionKey(5)
+	@PartitionKey(3)
 	@Column(name="log_id")
 	UUID logId;
 
-	@PartitionKey(3)
+	@PartitionKey(0)
 	@Column(name="student_id")
 	String studentId;
 
-	@PartitionKey(1)
+	@PartitionKey(2)
 	@Column(name="activity_date")
 	Date activityDate;
 	
 	@Column(name="course_code")
 	String courseCode;
 
-	@PartitionKey(0)
 	@Column(name="assessment_id")
 	UUID assessmentId;
 
-	@PartitionKey(2)
 	@Column(name="task_id")
 	UUID taskId;
 
-	@PartitionKey(4)
+	@PartitionKey(1)
 	@Column(name="submission_id")
 	UUID submissionId;
 	
