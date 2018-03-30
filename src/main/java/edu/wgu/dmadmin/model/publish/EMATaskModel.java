@@ -3,14 +3,16 @@ package edu.wgu.dmadmin.model.publish;
 import java.util.UUID;
 
 import com.datastax.driver.mapping.annotations.Column;
+import com.datastax.driver.mapping.annotations.PartitionKey;
+import com.datastax.driver.mapping.annotations.Table;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Table(keyspace = "dm", name = "task_by_course", readConsistency = "LOCAL_QUORUM", writeConsistency = "LOCAL_QUORUM")
-public class TaskModel {
+@Table(keyspace = "dm", name = "task_by_course")
+public class EMATaskModel {
 
 	@PartitionKey(0)
 	@Column(name = "course_id")

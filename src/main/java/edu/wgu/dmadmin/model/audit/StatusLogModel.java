@@ -4,12 +4,15 @@ import java.util.Date;
 import java.util.UUID;
 
 import com.datastax.driver.mapping.annotations.Column;
+import com.datastax.driver.mapping.annotations.PartitionKey;
+import com.datastax.driver.mapping.annotations.Table;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Table(keyspace = "dm", name="status_log_by_assessment", readConsistency = "LOCAL_QUORUM", writeConsistency = "LOCAL_QUORUM")
+@Table(keyspace = "dm", name="status_log_by_assessment")
 public class StatusLogModel {
 
 	@PartitionKey(5)

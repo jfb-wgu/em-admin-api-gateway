@@ -12,7 +12,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import edu.wgu.dmadmin.model.audit.StatusLogModel;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +24,9 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.stereotype.Service;
 
 import edu.wgu.dmadmin.messaging.MessageSender;
-import edu.wgu.dmadmin.model.publish.TaskModel;
-import edu.wgu.dmadmin.model.submission.SubmissionByIdModel;
+import edu.wgu.dmadmin.model.audit.StatusLogModel;
+import edu.wgu.dmadmin.model.publish.EMATaskModel;
+import edu.wgu.dmadmin.model.submission.SubmissionModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.repo.OracleRepo;
 import edu.wgu.dmadmin.repo.oracle.DRF;
@@ -64,7 +64,7 @@ public class HealthService {
 	}
 
 	public List<StatusEntry> compareDRFData(List<UUID> assessments) {
-		List<StatusLogByAssessmentModel> stats = this.cassandraRepo.getAssessmentStatus(assessments);
+		List<StatusLogModel> stats = this.cassandraRepo.getAssessmentStatus(assessments);
 		List<DRF> drfs = this.oracleRepo
 				.findByTitleIn(assessments.stream().map(a -> a.toString()).collect(Collectors.toList()));
 
@@ -72,7 +72,7 @@ public class HealthService {
 	}
 
 	public List<StatusEntry> compareDRFData(Date activityDate) {
-		List<StatusLogByAssessmentModel> stats = this.cassandraRepo.getAssessmentStatus(activityDate);
+		List<StatusLogModel> stats = this.cassandraRepo.getAssessmentStatus(activityDate);
 		List<DRF> drfs = this.oracleRepo.findByVendorIdAndTasksActivityDateGreaterThanEqual(new Long(57),
 				new java.sql.Date(activityDate.getTime()));
 
@@ -88,7 +88,7 @@ public class HealthService {
 	 * @return
 	 */
 	@SuppressWarnings("static-method")
-	private List<StatusEntry> compareEntries(List<StatusLogByAssessmentModel> stats, List<DRF> drfs) {
+	private List<StatusEntry> compareEntries(List<StatusLogModel> stats, List<DRF> drfs) {
 		List<StatusEntry> cassandra = stats.stream().map(s -> new StatusEntry(s)).collect(Collectors.toList());
 		
 	    Map<Pair<String, UUID>, StatusEntry> cassandraMap =  
@@ -125,7 +125,7 @@ public class HealthService {
 	}
 
 	public AssessmentModel processAssessmentUpdate(String studentId, UUID assessmentId) {
-		List<TaskModel> basicTasks = this.cassandraRepo.getBasicTasksByAssessment(assessmentId);
+		List<EMATaskModel> basicTasks = this.cassandraRepo.getBasicTasksByAssessment(assessmentId);
 		List<DRF> drfs = this.oracleRepo.findByWguainfSpridenBannerIdAndTitle(studentId,	assessmentId.toString());
 		List<DRFTask> drfTasks = drfs.stream().map(drf -> drf.getTasks()).collect(ArrayList::new, ArrayList::addAll, ArrayList::addAll);
 
@@ -135,9 +135,9 @@ public class HealthService {
 		model.setStudentId(studentId);
 
 		List<TaskModel> tasks = new ArrayList<>();
-		SubmissionByIdModel submission = null;
+		SubmissionModel submission = null;
 
-		for (TaskModel task : basicTasks) {
+		for (EMATaskModel task : basicTasks) {
 			TaskModel taskModel = new TaskModel();
 			taskModel.setTaskId(task.getTaskId().toString());
 			taskModel.setTaskName(task.getTaskName());
@@ -146,7 +146,7 @@ public class HealthService {
 			// Find the latest status record from Oracle
 			Optional<DRFTask> latest = drfTasks.stream().filter(t -> t.getTaskId().equals(task.getTaskId().toString())).sorted().findFirst();
 			
-			Optional<SubmissionByIdModel> optSubmission = this.cassandraRepo.getLastSubmissionForTask(studentId, task.getTaskId());
+			Optional<SubmissionModel> optSubmission = this.cassandraRepo.getLastSubmissionForTask(studentId, task.getTaskId());
 			if (optSubmission.isPresent()) {
 				submission = optSubmission.get();
 				taskModel.setSubmissionId(submission.getSubmissionId().toString());

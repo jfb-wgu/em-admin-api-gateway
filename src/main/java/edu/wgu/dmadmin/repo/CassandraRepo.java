@@ -10,8 +10,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import edu.wgu.dmadmin.model.audit.*;
-import edu.wgu.dmadmin.model.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -22,13 +20,20 @@ import com.datastax.driver.mapping.MappingManager;
 import edu.wgu.common.exception.AuthorizationException;
 import edu.wgu.dmadmin.domain.security.Permissions;
 import edu.wgu.dmadmin.domain.security.RequestBean;
-import edu.wgu.dmadmin.exception.UserNotFoundException;
-import edu.wgu.dmadmin.model.publish.TaskAccessor;
-import edu.wgu.dmadmin.model.publish.TaskModel;
-import edu.wgu.dmadmin.util.DateUtil;
 import edu.wgu.dmadmin.domain.security.User;
+import edu.wgu.dmadmin.exception.UserNotFoundException;
+import edu.wgu.dmadmin.model.audit.ActivityLogByUserModel;
+import edu.wgu.dmadmin.model.audit.StatusLogAccessor;
+import edu.wgu.dmadmin.model.audit.StatusLogModel;
+import edu.wgu.dmadmin.model.publish.TaskAccessor;
+import edu.wgu.dmadmin.model.publish.EMATaskModel;
+import edu.wgu.dmadmin.model.security.PermissionModel;
+import edu.wgu.dmadmin.model.security.RoleModel;
+import edu.wgu.dmadmin.model.security.SecurityAccessor;
+import edu.wgu.dmadmin.model.security.UserModel;
 import edu.wgu.dmadmin.model.submission.SubmissionAccessor;
-import edu.wgu.dmadmin.model.submission.SubmissionByIdModel;
+import edu.wgu.dmadmin.model.submission.SubmissionModel;
+import edu.wgu.dmadmin.util.DateUtil;
 
 @Repository("cassandra")
 public class CassandraRepo {
@@ -158,7 +163,7 @@ public class CassandraRepo {
 		return this.securityAccessor.getRoles(roleIds).all();
 	}
 
-	public List<TaskModel> getTaskBasics() {
+	public List<EMATaskModel> getTaskBasics() {
 		return this.taskAccessor.getAllBasics().all();
 	}
 
@@ -170,11 +175,11 @@ public class CassandraRepo {
 		return this.statusAccessor.getAssessmentStatusByDate(activityDate).all();
 	}
 
-	public List<TaskModel> getBasicTasksByAssessment(UUID assessmentId) {
+	public List<EMATaskModel> getBasicTasksByAssessment(UUID assessmentId) {
 		return this.taskAccessor.getBasicTasksByAssessment(assessmentId).all();
 	}
 
-	public Optional<SubmissionByIdModel> getLastSubmissionForTask(String studentId, UUID taskId) {
+	public Optional<SubmissionModel> getLastSubmissionForTask(String studentId, UUID taskId) {
 		return Optional.ofNullable(this.submissionAccessor.getLastSubmissionByStudentAndTask(studentId, taskId));
 	}
 
@@ -257,8 +262,8 @@ public class CassandraRepo {
 		return permissions;
 	}
 
-	public Map<UUID, TaskModel> getTaskMap() {
-		Map<UUID, TaskModel> tasks = this.getTaskBasics().stream()
+	public Map<UUID, EMATaskModel> getTaskMap() {
+		Map<UUID, EMATaskModel> tasks = this.getTaskBasics().stream()
 				.collect(Collectors.toMap(t -> t.getTaskId(), t -> t));
 		return tasks;
 	}

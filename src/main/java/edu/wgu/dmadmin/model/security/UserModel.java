@@ -1,14 +1,17 @@
 package edu.wgu.dmadmin.model.security;
 
-import com.datastax.driver.mapping.annotations.Column;
-import edu.wgu.dmadmin.domain.security.User;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+
+import com.datastax.driver.mapping.annotations.Column;
+import com.datastax.driver.mapping.annotations.PartitionKey;
+import com.datastax.driver.mapping.annotations.Table;
+
+import edu.wgu.dmadmin.domain.security.User;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -67,7 +70,7 @@ public class UserModel {
 		return this.teams;
 	}
 
-	public UserByIdModel(User user) {
+	public UserModel(User user) {
 		this.userId = user.getUserId();
 		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();

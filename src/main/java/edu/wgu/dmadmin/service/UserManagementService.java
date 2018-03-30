@@ -17,7 +17,7 @@ import edu.wgu.dmadmin.domain.security.BulkCreateResponse;
 import edu.wgu.dmadmin.domain.security.BulkUsers;
 import edu.wgu.dmadmin.domain.security.User;
 import edu.wgu.dmadmin.exception.UserNotFoundException;
-import edu.wgu.dmadmin.model.publish.TaskModel;
+import edu.wgu.dmadmin.model.publish.EMATaskModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
 import edu.wgu.dmadmin.model.security.UserModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
@@ -48,7 +48,7 @@ public class UserManagementService {
 		
 		List<UserModel> models = this.cassandraRepo.getUsers();
 		Map<UUID, RoleModel> roles = this.cassandraRepo.getRoleMap(models);
-		Map<UUID, TaskModel> tasks = this.cassandraRepo.getTaskMap();
+		Map<UUID, EMATaskModel> tasks = this.cassandraRepo.getTaskMap();
 		
 
 		users = models.stream().map(evaluator -> new User(evaluator)).collect(Collectors.toList());
@@ -64,7 +64,7 @@ public class UserManagementService {
 
 			user.getTasks().forEach(task -> {
 				try {
-					TaskModel model = tasks.get(task);
+					EMATaskModel model = tasks.get(task);
 					user.getTaskNames().add(model.getAssessmentCode() + "-" + model.getTaskName());
 				} catch (NullPointerException e) {
 					logger.error("Task [" + task + "] was not found.", e.getMessage());

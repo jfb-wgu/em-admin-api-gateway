@@ -9,5 +9,5 @@ import com.datastax.driver.mapping.annotations.Query;
 public interface SubmissionAccessor {
 	
     @Query("SELECT submission_id, task_id, attempt, student_id FROM dm.submission_by_id WHERE student_id = ? AND task_id = ? limit 1")
-    SubmissionByIdModel getLastSubmissionByStudentAndTask(String studentId, UUID taskId);
+    SubmissionModel getLastSubmissionByStudentAndTask(String studentId, UUID taskId);
 }

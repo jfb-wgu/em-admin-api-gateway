@@ -29,7 +29,7 @@ import org.mockito.MockitoAnnotations;
 import edu.wgu.dmadmin.domain.person.Person;
 import edu.wgu.dmadmin.domain.security.User;
 import edu.wgu.dmadmin.exception.UserNotFoundException;
-import edu.wgu.dmadmin.model.publish.TaskModel;
+import edu.wgu.dmadmin.model.publish.EMATaskModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.test.TestObjectFactory;
@@ -52,8 +52,8 @@ public class UserManagementServiceTest {
 	
 	RoleModel role1 = TestObjectFactory.getRoleModel("role1");
 	RoleModel role2 = TestObjectFactory.getRoleModel("role2");
-	TaskModel task1 = TestObjectFactory.getTaskModel();
-	TaskModel task2 = TestObjectFactory.getTaskModel();
+	EMATaskModel task1 = TestObjectFactory.getTaskModel();
+	EMATaskModel task2 = TestObjectFactory.getTaskModel();
 	UserModel user1 = TestObjectFactory.getUserModel("test1", "testing1");
 	UserModel user2 = TestObjectFactory.getUserModel("test2", "testing2");
 	Person person1;
@@ -86,7 +86,7 @@ public class UserManagementServiceTest {
 		Map<UUID, RoleModel> roleMap = Arrays.asList(this.role1, this.role2).stream().collect(Collectors.toMap(r -> r.getRoleId(), r -> r));
 		when(this.repo.getRoleMap(Arrays.asList(this.user1, this.user2))).thenReturn(roleMap);
 		
-		Map<UUID, TaskModel> taskMap = Arrays.asList(this.task1, this.task2).stream().collect(Collectors.toMap(t -> t.getTaskId(), t -> t));
+		Map<UUID, EMATaskModel> taskMap = Arrays.asList(this.task1, this.task2).stream().collect(Collectors.toMap(t -> t.getTaskId(), t -> t));
 		when(this.repo.getTaskMap()).thenReturn(taskMap);
 	}
 	
