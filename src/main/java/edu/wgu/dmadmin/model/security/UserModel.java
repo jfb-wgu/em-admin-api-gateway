@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Table(keyspace = "dm", name = "user_by_id", readConsistency = "LOCAL_QUORUM", writeConsistency = "LOCAL_QUORUM")
+@Table(keyspace = "dm", name = "user_by_id")
 public class UserModel {
 
 	@PartitionKey(0)

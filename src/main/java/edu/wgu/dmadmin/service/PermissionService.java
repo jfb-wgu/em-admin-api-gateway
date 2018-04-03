@@ -55,7 +55,6 @@ public class PermissionService {
 
 			if (oldPermission != null) {
 				if (!oldPermission.getPermission().equals(permission.getPermission())) {
-					this.cassandraRepo.deletePermission(permission.getPermissionId(), oldPermission.getPermission());
 					this.cassandraRepo
 							.saveUsers(this.cassandraRepo.getUsersForPermission(oldPermission.getPermission()));
 				} else if (!oldPermission.getLanding().equals(permission.getLanding())) {

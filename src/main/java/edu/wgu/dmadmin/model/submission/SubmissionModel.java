@@ -14,15 +14,12 @@ import lombok.NoArgsConstructor;
 @Table(keyspace = "dm", name = "submission_by_id")
 public class SubmissionModel {
 
-	@PartitionKey(1)
 	@Column(name = "student_id")
 	public String studentId;
 
-	@PartitionKey(2)
 	@Column(name = "task_id")
 	public UUID taskId;
 
-	@PartitionKey(3)
 	int attempt;
 
 	@PartitionKey(0)

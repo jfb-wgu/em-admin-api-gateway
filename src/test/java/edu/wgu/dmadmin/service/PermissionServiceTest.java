@@ -128,7 +128,6 @@ public class PermissionServiceTest {
 		assertEquals(this.permissionId1, argument.getValue().getPermissionId());
 		assertNotNull("newPermission", argument.getValue().getPermission());
 		
-		verify(this.repo).deletePermission(this.permissionId1, this.permission1.getPermission());
 		verify(this.repo).getUsersForPermission(this.permission1.getPermission());
 		verify(this.repo).saveUsers(any());
 	}
@@ -148,7 +147,6 @@ public class PermissionServiceTest {
 		assertEquals(this.permissionId1, argument.getValue().getPermissionId());
 		assertNotNull("newPermission", argument.getValue().getPermission());
 		
-		verify(this.repo, never()).deletePermission(this.permissionId1, this.permission1.getPermission());
 		verify(this.repo).getUsersForPermission(this.permission1.getPermission());
 		verify(this.repo).saveUsers(any());
 	}
@@ -168,7 +166,6 @@ public class PermissionServiceTest {
 		assertEquals(this.permissionId1, argument.getValue().getPermissionId());
 		assertNotNull("newPermission", argument.getValue().getPermission());
 		
-		verify(this.repo, never()).deletePermission(this.permissionId1, this.permission1.getPermission());
 		verify(this.repo, never()).getUsersForPermission(this.permission1.getPermission());
 		verify(this.repo, never()).saveUsers(any());
 	}
@@ -191,7 +188,6 @@ public class PermissionServiceTest {
 		assertNotNull("newPermission", argument.getValue().getPermission());
 		assertEquals(test, argument.getValue().getDateCreated());
 		
-		verify(this.repo, never()).deletePermission(this.permissionId1, this.permission1.getPermission());
 		verify(this.repo, never()).getUsersForPermission(this.permission1.getPermission());
 		verify(this.repo, never()).saveUsers(any());
 	}

@@ -24,14 +24,13 @@ public class EMATaskModel {
 	@Column(name = "assessment_code")
 	String assessmentCode;
 
-	@PartitionKey(1)
 	@Column(name = "assessment_id")
 	UUID assessmentId;
 
 	@Column(name = "task_name")
 	String taskName;
 
-	@PartitionKey(2)
+	@PartitionKey(1)
 	@Column(name = "task_id")
 	UUID taskId;
 

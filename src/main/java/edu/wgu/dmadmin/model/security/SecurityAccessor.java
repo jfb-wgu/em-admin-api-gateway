@@ -54,7 +54,4 @@ public interface SecurityAccessor {
 
     @Query("SELECT * FROM dm.user_by_id WHERE permissions CONTAINS ?")
     Result<UserModel> getUsersForPermission(String permission);
-    
-    @Query("DELETE FROM dm.permission WHERE permission_id = ? and permission = ?")
-    void deletePermission(UUID permissionId, String permission);
 }

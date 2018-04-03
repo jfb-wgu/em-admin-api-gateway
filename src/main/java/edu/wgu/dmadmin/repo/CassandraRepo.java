@@ -147,10 +147,6 @@ public class CassandraRepo {
 		this.securityAccessor.deleteRole(roleId);
 	}
 
-	public void deletePermission(UUID permissionId, String permission) {
-		this.securityAccessor.deletePermission(permissionId, permission);
-	}
-
 	public Optional<RoleModel> getRole(UUID roleId) {
 		return Optional.ofNullable(this.securityAccessor.getRole(roleId));
 	}
