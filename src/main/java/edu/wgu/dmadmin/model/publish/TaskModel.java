@@ -10,9 +10,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class TaskModel {
 
-	@Column(name = "course_id")
-	Long courseId;
-
 	@Column(name = "assessment_name")
 	String assessmentName;
 

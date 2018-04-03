@@ -111,7 +111,6 @@ public class TestObjectFactory {
 	
     public static TaskByIdModel getTaskModel() {
         TaskByIdModel taskModel = new TaskByIdModel();
-        taskModel.setCourseId(new Long(123345));
         taskModel.setAssessmentName("Assessment 1");
         taskModel.setAssessmentCode("A1A1");
         taskModel.setAssessmentId(new Random().nextLong());
