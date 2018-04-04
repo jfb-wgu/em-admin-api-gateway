@@ -1,18 +1,24 @@
 package edu.wgu.dmadmin.model.security;
 
-import com.datastax.driver.mapping.annotations.Column;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import com.datastax.driver.mapping.annotations.Column;
+import com.datastax.driver.mapping.annotations.PartitionKey;
+import com.datastax.driver.mapping.annotations.Table;
+
+import edu.wgu.dmadmin.domain.security.User;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Data
 @NoArgsConstructor
+@Table(keyspace = "dm", name = "user_by_id")
 public class UserModel {
 
+	@PartitionKey(0)
 	@Column(name = "user_id")
 	String userId;
 
@@ -62,5 +68,18 @@ public class UserModel {
 		if (this.teams == null)
 			this.teams = new HashSet<UUID>();
 		return this.teams;
+	}
+
+	public UserModel(User user) {
+		this.userId = user.getUserId();
+		this.firstName = user.getFirstName();
+		this.lastName = user.getLastName();
+		this.roles = user.getRoles();
+		this.permissions = user.getPermissions();
+		this.teams = user.getTeams();
+		this.tasks = user.getTasks();
+		this.landings = user.getLandings();
+		this.lastLogin = user.getLastLogin();
+		this.employeeId = user.getEmployeeId();
 	}
 }

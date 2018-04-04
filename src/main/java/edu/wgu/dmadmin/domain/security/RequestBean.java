@@ -2,24 +2,23 @@ package edu.wgu.dmadmin.domain.security;
 
 import java.util.Set;
 
+import edu.wgu.dmadmin.model.security.UserModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import edu.wgu.dmadmin.model.security.UserByIdModel;
 
 public class RequestBean {
 
 	private static Logger logger = LoggerFactory.getLogger(RequestBean.class);
 
-	private UserByIdModel user;
+	private UserModel user;
 	private Set<String> authRoles;
 
-	public UserByIdModel getUser() {
+	public UserModel getUser() {
 		logger.debug("RequestBean.getUser() called, returning: " + this.user);
 		return this.user;
 	}
 
-	public void setUser(UserByIdModel model) {
+	public void setUser(UserModel model) {
 		logger.debug("RequestBean.setUser() called, value was " + this.user);
 		this.user = model;
 	}
