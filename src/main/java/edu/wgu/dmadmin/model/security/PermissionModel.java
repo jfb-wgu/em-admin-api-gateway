@@ -13,14 +13,13 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Table(keyspace = "dm", name = "permission", readConsistency = "LOCAL_QUORUM", writeConsistency = "LOCAL_QUORUM")
+@Table(keyspace = "dm", name = "permission")
 public class PermissionModel {
 	
 	@PartitionKey(0)
 	@Column(name="permission_id")
 	UUID permissionId;
 	
-	@PartitionKey(1)
 	String permission;
 	
 	@Column(name="permission_type")

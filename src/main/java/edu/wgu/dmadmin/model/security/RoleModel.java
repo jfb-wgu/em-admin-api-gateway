@@ -15,14 +15,13 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Table(keyspace = "dm", name = "role", readConsistency = "LOCAL_QUORUM", writeConsistency = "LOCAL_QUORUM")
+@Table(keyspace = "dm", name = "role")
 public class RoleModel {
 	
 	@PartitionKey(0)
 	@Column(name="role_id")
 	UUID roleId;
 	
-	@PartitionKey(1)
 	String role;
 
 	@Column(name="role_description")

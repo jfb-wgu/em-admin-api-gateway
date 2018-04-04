@@ -1,22 +1,12 @@
 package edu.wgu.dmadmin.service;
 
-import edu.wgu.dmadmin.domain.person.Person;
-import edu.wgu.dmadmin.domain.security.User;
-import edu.wgu.dmadmin.exception.UserNotFoundException;
-import edu.wgu.dmadmin.model.publish.TaskByIdModel;
-import edu.wgu.dmadmin.model.publish.TaskModel;
-import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.security.UserByIdModel;
-import edu.wgu.dmadmin.repo.CassandraRepo;
-import edu.wgu.dmadmin.test.TestObjectFactory;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,13 +16,23 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import edu.wgu.dmadmin.domain.person.Person;
+import edu.wgu.dmadmin.domain.security.User;
+import edu.wgu.dmadmin.exception.UserNotFoundException;
+import edu.wgu.dmadmin.model.publish.EMATaskModel;
+import edu.wgu.dmadmin.model.security.RoleModel;
+import edu.wgu.dmadmin.model.security.UserModel;
+import edu.wgu.dmadmin.repo.CassandraRepo;
+import edu.wgu.dmadmin.test.TestObjectFactory;
 
 public class UserManagementServiceTest {
 	
@@ -52,10 +52,11 @@ public class UserManagementServiceTest {
 	
 	RoleModel role1 = TestObjectFactory.getRoleModel("role1");
 	RoleModel role2 = TestObjectFactory.getRoleModel("role2");
-	TaskByIdModel task1 = TestObjectFactory.getTaskModel();
-	TaskByIdModel task2 = TestObjectFactory.getTaskModel();
-	UserByIdModel user1 = TestObjectFactory.getUserModel("test1", "testing1");
-	UserByIdModel user2 = TestObjectFactory.getUserModel("test2", "testing2");
+
+	EMATaskModel task1 = TestObjectFactory.getTaskModel();
+	EMATaskModel task2 = TestObjectFactory.getTaskModel();
+	UserModel user1 = TestObjectFactory.getUserModel("test1", "testing1");
+	UserModel user2 = TestObjectFactory.getUserModel("test2", "testing2");
 	Person person1;
 	
 	@Before
@@ -86,7 +87,7 @@ public class UserManagementServiceTest {
 		Map<UUID, RoleModel> roleMap = Arrays.asList(this.role1, this.role2).stream().collect(Collectors.toMap(r -> r.getRoleId(), r -> r));
 		when(this.repo.getRoleMap(Arrays.asList(this.user1, this.user2))).thenReturn(roleMap);
 		
-		Map<UUID, TaskModel> taskMap = Arrays.asList(this.task1, this.task2).stream().collect(Collectors.toMap(t -> t.getTaskId(), t -> t));
+		Map<UUID, EMATaskModel> taskMap = Arrays.asList(this.task1, this.task2).stream().collect(Collectors.toMap(t -> t.getTaskId(), t -> t));
 		when(this.repo.getTaskMap()).thenReturn(taskMap);
 	}
 	
@@ -159,7 +160,7 @@ public class UserManagementServiceTest {
 		when(this.repo.getUserModel(anyString())).thenReturn(Optional.empty());
 		this.service.createUser("testing");
 		
-		ArgumentCaptor<UserByIdModel> argument = ArgumentCaptor.forClass(UserByIdModel.class);
+		ArgumentCaptor<UserModel> argument = ArgumentCaptor.forClass(UserModel.class);
 		verify(this.repo).saveUser(argument.capture());
 		assertEquals("Bruce", argument.getValue().getFirstName());
 		assertEquals("Wayne", argument.getValue().getLastName());

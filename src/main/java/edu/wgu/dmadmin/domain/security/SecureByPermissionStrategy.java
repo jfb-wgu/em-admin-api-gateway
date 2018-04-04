@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import edu.wgu.common.domain.AuthzIdentityKeys;
 import edu.wgu.dmadmin.config.ApplicationContextHolder;
-import edu.wgu.dmadmin.model.security.UserByIdModel;
+import edu.wgu.dmadmin.model.security.UserModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.security.authz.domain.AuthorizationInfo;
 import edu.wgu.security.authz.strategy.AuthorizationStrategy;
@@ -20,7 +20,7 @@ public class SecureByPermissionStrategy implements AuthorizationStrategy {
 		RequestBean requestBean = ApplicationContextHolder.getContext().getBean(RequestBean.class);
 
 		String userId = null;
-		Optional<UserByIdModel> user = null;
+		Optional<UserModel> user = null;
 		Optional<AuthzIdentityKeys> identityKeys = AuthzIdentityKeys.retrieveFrom(request);
 
 		if (identityKeys.isPresent()) {
