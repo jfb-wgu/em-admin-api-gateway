@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Table(keyspace = "dm", name = "task_by_course")
+@Table(keyspace = "dm", name = "task_by_id")
 public class EMATaskModel {
 
 	@Column(name = "assessment_name")
