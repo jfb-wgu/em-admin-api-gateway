@@ -20,7 +20,7 @@ public class TestObjectFactory {
 	static UUID submissionId = UUID.randomUUID();
 	static String evaluatorId = "evaluator";
 	static String employeeId = "employeeId";
-	static UUID assessmentId = UUID.randomUUID();
+	static Long assessmentId = new Random().nextLong();
 	static Random random = new Random();
 	static UUID evaluationId = UUID.randomUUID();
 	static UUID taskId = UUID.randomUUID();
@@ -111,10 +111,9 @@ public class TestObjectFactory {
 	
     public static EMATaskModel getTaskModel() {
 		EMATaskModel taskModel = new EMATaskModel();
-        taskModel.setCourseId(new Long(123345));
         taskModel.setAssessmentName("Assessment 1");
         taskModel.setAssessmentCode("A1A1");
-        taskModel.setAssessmentId(UUID.randomUUID());
+        taskModel.setAssessmentId(new Random().nextLong());
         taskModel.setTaskName("Task Name");
         taskModel.setTaskId(UUID.randomUUID());
         taskModel.setTaskOrder(1);

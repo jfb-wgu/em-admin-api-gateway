@@ -11,12 +11,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Table(keyspace = "dm", name = "task_by_course")
+@Table(keyspace = "dm", name = "task_by_id")
 public class EMATaskModel {
-
-	@PartitionKey(0)
-	@Column(name = "course_id")
-	Long courseId;
 
 	@Column(name = "assessment_name")
 	String assessmentName;
@@ -24,8 +20,9 @@ public class EMATaskModel {
 	@Column(name = "assessment_code")
 	String assessmentCode;
 
+	@PartitionKey(0)
 	@Column(name = "assessment_id")
-	UUID assessmentId;
+	Long assessmentId;
 
 	@Column(name = "task_name")
 	String taskName;

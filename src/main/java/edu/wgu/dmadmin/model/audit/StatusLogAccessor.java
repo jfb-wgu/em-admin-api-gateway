@@ -10,7 +10,7 @@ import com.datastax.driver.mapping.annotations.Query;
 @Accessor
 public interface StatusLogAccessor {
     @Query("select * from dm.status_log where assessment_id = ?")
-    Result<StatusLogModel> getAssessmentStatus(UUID assessmentId);
+    Result<StatusLogModel> getAssessmentStatus(Long assessmentId);
     
     @Query("select * from dm.status_log where activity_date >= ? ALLOW FILTERING")
     Result<StatusLogModel> getAssessmentStatusByDate(Date activityDate);

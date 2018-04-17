@@ -16,7 +16,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import edu.wgu.dmadmin.model.security.UserModel;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,6 +30,7 @@ import edu.wgu.dmadmin.domain.security.User;
 import edu.wgu.dmadmin.exception.UserNotFoundException;
 import edu.wgu.dmadmin.model.publish.EMATaskModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
+import edu.wgu.dmadmin.model.security.UserModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 
@@ -52,6 +52,7 @@ public class UserManagementServiceTest {
 	
 	RoleModel role1 = TestObjectFactory.getRoleModel("role1");
 	RoleModel role2 = TestObjectFactory.getRoleModel("role2");
+
 	EMATaskModel task1 = TestObjectFactory.getTaskModel();
 	EMATaskModel task2 = TestObjectFactory.getTaskModel();
 	UserModel user1 = TestObjectFactory.getUserModel("test1", "testing1");

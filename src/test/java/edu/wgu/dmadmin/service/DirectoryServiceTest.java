@@ -15,7 +15,6 @@ import javax.naming.InvalidNameException;
 import javax.naming.Name;
 import javax.naming.ldap.LdapName;
 
-import edu.wgu.dmadmin.model.security.UserModel;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,6 +28,7 @@ import edu.wgu.dmadmin.domain.security.LdapLookup;
 import edu.wgu.dmadmin.domain.security.LdapUser;
 import edu.wgu.dmadmin.model.publish.EMATaskModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
+import edu.wgu.dmadmin.model.security.UserModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 
@@ -50,6 +50,7 @@ public class DirectoryServiceTest {
 	
 	RoleModel role1 = TestObjectFactory.getRoleModel("role1");
 	RoleModel role2 = TestObjectFactory.getRoleModel("role2");
+
 	EMATaskModel task1 = TestObjectFactory.getTaskModel();
 	EMATaskModel task2 = TestObjectFactory.getTaskModel();
 	UserModel user1 = TestObjectFactory.getUserModel("test1", "testing1");

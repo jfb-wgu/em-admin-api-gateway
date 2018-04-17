@@ -63,7 +63,7 @@ public class HealthService {
 		this.rabbitTemplate = template;
 	}
 
-	public List<StatusEntry> compareDRFData(List<UUID> assessments) {
+	public List<StatusEntry> compareDRFData(List<Long> assessments) {
 		List<StatusLogModel> stats = this.cassandraRepo.getAssessmentStatus(assessments);
 		List<DRF> drfs = this.oracleRepo
 				.findByTitleIn(assessments.stream().map(a -> a.toString()).collect(Collectors.toList()));
@@ -124,7 +124,7 @@ public class HealthService {
 		return result;
 	}
 
-	public AssessmentModel processAssessmentUpdate(String studentId, UUID assessmentId) {
+	public AssessmentModel processAssessmentUpdate(String studentId, Long assessmentId) {
 		List<EMATaskModel> basicTasks = this.cassandraRepo.getBasicTasksByAssessment(assessmentId);
 		List<DRF> drfs = this.oracleRepo.findByWguainfSpridenBannerIdAndTitle(studentId,	assessmentId.toString());
 		List<DRFTask> drfTasks = drfs.stream().map(drf -> drf.getTasks()).collect(ArrayList::new, ArrayList::addAll, ArrayList::addAll);
@@ -178,7 +178,7 @@ public class HealthService {
 		return model;
 	}
 	
-	public AssessmentModel resendAssessmentUpdate(String studentId, UUID assessmentId) {
+	public AssessmentModel resendAssessmentUpdate(String studentId, Long assessmentId) {
 		AssessmentModel model = this.processAssessmentUpdate(studentId, assessmentId);
 		
 		if (model != null) {

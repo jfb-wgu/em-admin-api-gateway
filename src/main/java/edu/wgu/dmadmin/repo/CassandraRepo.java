@@ -25,8 +25,8 @@ import edu.wgu.dmadmin.exception.UserNotFoundException;
 import edu.wgu.dmadmin.model.audit.ActivityLogByUserModel;
 import edu.wgu.dmadmin.model.audit.StatusLogAccessor;
 import edu.wgu.dmadmin.model.audit.StatusLogModel;
-import edu.wgu.dmadmin.model.publish.TaskAccessor;
 import edu.wgu.dmadmin.model.publish.EMATaskModel;
+import edu.wgu.dmadmin.model.publish.TaskAccessor;
 import edu.wgu.dmadmin.model.security.PermissionModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
 import edu.wgu.dmadmin.model.security.SecurityAccessor;
@@ -163,7 +163,7 @@ public class CassandraRepo {
 		return this.taskAccessor.getAllBasics().all();
 	}
 
-	public List<StatusLogModel> getAssessmentStatus(List<UUID> assessmentIds) {
+	public List<StatusLogModel> getAssessmentStatus(List<Long> assessmentIds) {
 		List<StatusLogModel> models = new ArrayList<>();
 		
 		assessmentIds.forEach(id -> {
@@ -177,7 +177,7 @@ public class CassandraRepo {
 		return this.statusAccessor.getAssessmentStatusByDate(activityDate).all();
 	}
 
-	public List<EMATaskModel> getBasicTasksByAssessment(UUID assessmentId) {
+	public List<EMATaskModel> getBasicTasksByAssessment(Long assessmentId) {
 		return this.taskAccessor.getBasicTasksByAssessment(assessmentId).all();
 	}
 
