@@ -30,7 +30,7 @@ public class StatusEntry implements Comparable<StatusEntry> {
 	
 	public StatusEntry(StatusLogModel model) {
 		this.submissionId = model.getSubmissionId();
-		this.assessmentId = model.getAssessmentId();
+		this.assessmentId = model.getPamsAssessmentId();
 		this.taskId = model.getTaskId();
 		this.studentId = model.getStudentId();
 		this.status = model.getNewStatus();
