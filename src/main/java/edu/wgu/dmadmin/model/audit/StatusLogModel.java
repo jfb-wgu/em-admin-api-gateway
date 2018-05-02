@@ -30,8 +30,8 @@ public class StatusLogModel {
 	@Column(name="course_code")
 	String courseCode;
 
-	@Column(name="assessment_id")
-	Long assessmentId;
+	@Column(name="pams_assessment_id")
+	Long pamsAssessmentId;
 	
 	@Column(name="task_id")
 	UUID taskId;

@@ -113,7 +113,7 @@ public class TestObjectFactory {
 		EMATaskModel taskModel = new EMATaskModel();
         taskModel.setAssessmentName("Assessment 1");
         taskModel.setAssessmentCode("A1A1");
-        taskModel.setAssessmentId(new Random().nextLong());
+        taskModel.setPamsAssessmentId(new Random().nextLong());
         taskModel.setTaskName("Task Name");
         taskModel.setTaskId(UUID.randomUUID());
         taskModel.setTaskOrder(1);
