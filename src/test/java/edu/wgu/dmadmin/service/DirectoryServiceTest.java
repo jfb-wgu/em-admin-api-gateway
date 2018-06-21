@@ -26,7 +26,7 @@ import edu.wgu.dmadmin.domain.person.Person;
 import edu.wgu.dmadmin.domain.security.LdapGroup;
 import edu.wgu.dmadmin.domain.security.LdapLookup;
 import edu.wgu.dmadmin.domain.security.LdapUser;
-import edu.wgu.dmadmin.model.publish.EMATaskModel;
+import edu.wgu.dmadmin.model.publish.TaskModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
 import edu.wgu.dmadmin.model.security.UserModel;
 import edu.wgu.dmadmin.repo.CassandraRepo;
@@ -51,8 +51,8 @@ public class DirectoryServiceTest {
 	RoleModel role1 = TestObjectFactory.getRoleModel("role1");
 	RoleModel role2 = TestObjectFactory.getRoleModel("role2");
 
-	EMATaskModel task1 = TestObjectFactory.getTaskModel();
-	EMATaskModel task2 = TestObjectFactory.getTaskModel();
+	TaskModel task1 = TestObjectFactory.getTaskModel();
+	TaskModel task2 = TestObjectFactory.getTaskModel();
 	UserModel user1 = TestObjectFactory.getUserModel("test1", "testing1");
 	UserModel user2 = TestObjectFactory.getUserModel("test2", "testing2");
 	Person person1;

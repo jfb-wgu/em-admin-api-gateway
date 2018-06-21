@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import edu.wgu.dmadmin.domain.security.User;
-import edu.wgu.dmadmin.model.publish.EMATaskModel;
+import edu.wgu.dmadmin.model.publish.TaskModel;
 import edu.wgu.dmadmin.model.security.PermissionModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
 import edu.wgu.dmadmin.model.security.UserModel;
@@ -109,8 +109,8 @@ public class TestObjectFactory {
 		return model;
 	}
 	
-    public static EMATaskModel getTaskModel() {
-		EMATaskModel taskModel = new EMATaskModel();
+    public static TaskModel getTaskModel() {
+		TaskModel taskModel = new TaskModel();
         taskModel.setAssessmentName("Assessment 1");
         taskModel.setAssessmentCode("A1A1");
         taskModel.setPamsAssessmentId(new Random().nextLong());

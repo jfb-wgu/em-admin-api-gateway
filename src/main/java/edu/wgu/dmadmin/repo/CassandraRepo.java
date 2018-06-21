@@ -9,30 +9,28 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.datastax.driver.core.Session;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
-
 import edu.wgu.common.exception.AuthorizationException;
+import edu.wgu.dmadmin.domain.report.Competency;
+import edu.wgu.dmadmin.domain.report.EmaEvaluationAspectRecord;
+import edu.wgu.dmadmin.domain.report.EmaTaskRubricRecord;
 import edu.wgu.dmadmin.domain.security.Permissions;
 import edu.wgu.dmadmin.domain.security.RequestBean;
 import edu.wgu.dmadmin.domain.security.User;
 import edu.wgu.dmadmin.exception.UserNotFoundException;
 import edu.wgu.dmadmin.model.audit.ActivityLogByUserModel;
-import edu.wgu.dmadmin.model.audit.StatusLogAccessor;
-import edu.wgu.dmadmin.model.audit.StatusLogModel;
-import edu.wgu.dmadmin.model.publish.EMATaskModel;
+import edu.wgu.dmadmin.model.evaluation.EvaluationAccessor;
+import edu.wgu.dmadmin.model.evaluation.EvaluationModel;
+import edu.wgu.dmadmin.model.publish.TaskModel;
 import edu.wgu.dmadmin.model.publish.TaskAccessor;
 import edu.wgu.dmadmin.model.security.PermissionModel;
 import edu.wgu.dmadmin.model.security.RoleModel;
 import edu.wgu.dmadmin.model.security.SecurityAccessor;
 import edu.wgu.dmadmin.model.security.UserModel;
-import edu.wgu.dmadmin.model.submission.SubmissionAccessor;
-import edu.wgu.dmadmin.model.submission.SubmissionModel;
 import edu.wgu.dmadmin.util.DateUtil;
 
 @Repository("cassandra")
@@ -47,8 +45,7 @@ public class CassandraRepo {
 	MappingManager mappingManager;
 	SecurityAccessor securityAccessor;
 	TaskAccessor taskAccessor;
-	SubmissionAccessor submissionAccessor;
-	StatusLogAccessor statusAccessor;
+	EvaluationAccessor evalAccessor;
 	Mapper<UserModel> userMapper;
 	Mapper<RoleModel> roleMapper;
 	Mapper<PermissionModel> permissionMapper;
@@ -59,8 +56,7 @@ public class CassandraRepo {
 		this.mappingManager = new MappingManager(session);
 		this.securityAccessor = this.mappingManager.createAccessor(SecurityAccessor.class);
 		this.taskAccessor = this.mappingManager.createAccessor(TaskAccessor.class);
-		this.submissionAccessor = this.mappingManager.createAccessor(SubmissionAccessor.class);
-		this.statusAccessor = this.mappingManager.createAccessor(StatusLogAccessor.class);
+		this.evalAccessor = this.mappingManager.createAccessor(EvaluationAccessor.class);
 		this.userMapper = this.mappingManager.mapper(UserModel.class);
 		this.permissionMapper = this.mappingManager.mapper(PermissionModel.class);
 		this.roleMapper = this.mappingManager.mapper(RoleModel.class);
@@ -117,10 +113,6 @@ public class CassandraRepo {
 		this.userMapper.delete(userId);
 	}
 
-	public void saveActivityLogEntry(ActivityLogByUserModel model) {
-		this.activityMapper.save(model);
-	}
-
 	public void savePermission(PermissionModel model) {
 		model.setDateUpdated(DateUtil.getZonedNow());
 		this.permissionMapper.save(model);
@@ -159,34 +151,8 @@ public class CassandraRepo {
 		return this.securityAccessor.getRoles(roleIds).all();
 	}
 
-	public List<EMATaskModel> getTaskBasics() {
+	public List<TaskModel> getTaskBasics() {
 		return this.taskAccessor.getAllBasics().all();
-	}
-
-	public List<StatusLogModel> getAssessmentStatus(List<Long> assessmentIds) {
-		List<StatusLogModel> models = new ArrayList<>();
-		
-		assessmentIds.forEach(id -> {
-			models.addAll(this.statusAccessor.getAssessmentStatus(id).all());
-		});
-		
-		return models;
-	}
-
-	public List<StatusLogModel> getAssessmentStatus(Date activityDate) {
-		return this.statusAccessor.getAssessmentStatusByDate(activityDate).all();
-	}
-
-	public List<EMATaskModel> getBasicTasksByAssessment(Long assessmentId) {
-		return this.taskAccessor.getBasicTasksByAssessment(assessmentId).all();
-	}
-
-	public Optional<SubmissionModel> getLastSubmissionForTask(String studentId, UUID taskId) {
-		return Optional.ofNullable(this.submissionAccessor.getLastSubmissionByStudentAndTask(studentId, taskId));
-	}
-
-	public Optional<StatusLogModel> getLastStatus(String studentId, UUID taskId) {
-		return Optional.ofNullable(this.statusAccessor.getLastStatusEntry(studentId, taskId));
 	}
 
 	public List<User> saveUsers(String userId, List<User> users, boolean checkSystem) {
@@ -264,9 +230,50 @@ public class CassandraRepo {
 		return permissions;
 	}
 
-	public Map<UUID, EMATaskModel> getTaskMap() {
-		Map<UUID, EMATaskModel> tasks = this.getTaskBasics().stream()
+	public Map<UUID, TaskModel> getTaskMap() {
+		Map<UUID, TaskModel> tasks = this.getTaskBasics().stream()
 				.collect(Collectors.toMap(t -> t.getTaskId(), t -> t));
 		return tasks;
+	}
+	
+	public List<Competency> getCompetencies(Date datePublished) {
+	    List<TaskModel> tasks = this.taskAccessor.getCompetencies(datePublished).all();
+	    List<Competency> competencies = new ArrayList<>();
+	    
+	    tasks.forEach(task -> {
+	        task.getCompetencies().forEach(c -> {
+	            competencies.add(new Competency(c, task.getTaskId()));
+	        });
+	    });
+	    
+	    return competencies;
+	}
+	
+	public List<EmaTaskRubricRecord> getRubrics(Date datePublished) {
+	    List<TaskModel> tasks = this.taskAccessor.getRubrics(datePublished).all();
+	    List<EmaTaskRubricRecord> records = new ArrayList<>();
+	    
+	    tasks.forEach(task -> {
+	        task.getRubric().getAspects().forEach(aspect -> {
+	            aspect.getAnchors().forEach(anchor -> {
+	                records.add(new EmaTaskRubricRecord(anchor, aspect, task));
+	            });
+	        });
+	    });
+	    
+	    return records;
+	}
+	
+	public List<EmaEvaluationAspectRecord> getEvaluationAspects(Date dateCompleted) {
+	    List<EvaluationModel> evaluations = this.evalAccessor.getEvaluations(dateCompleted).all();
+	    List<EmaEvaluationAspectRecord> records = new ArrayList<>();
+	    
+	    evaluations.forEach(eval -> {
+	        eval.getAspects().values().forEach(aspect -> {
+	            records.add(new EmaEvaluationAspectRecord(aspect, eval));
+	        });
+	    });
+	    
+	    return records;
 	}
 }
