@@ -22,6 +22,9 @@ public class EvaluationModel {
     @PartitionKey(1)
     @Column(name = "evaluation_id")
     UUID evaluationId;
+    
+    @Column(name = "submission_id")
+    UUID submissionId;
 
     @Column(name = "aspects")
     @Frozen

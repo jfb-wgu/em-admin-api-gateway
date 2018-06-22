@@ -10,6 +10,7 @@ import lombok.Data;
 public class EmaEvaluationAspectRecord {
     private String evaluatorId;
     private UUID evaluationId;
+    private UUID submissionId;
     private String aspectName;
     private int passingScore;
     private int assignedScore;
@@ -20,6 +21,7 @@ public class EmaEvaluationAspectRecord {
     public EmaEvaluationAspectRecord(EvaluationAspectModel aspect, EvaluationModel eval) {
         this.setEvaluatorId(eval.getEvaluatorId());
         this.setEvaluationId(eval.getEvaluationId());
+        this.setSubmissionId(eval.getSubmissionId());
         this.setAspectName(aspect.getAspectName());
         this.setPassingScore(aspect.getPassingScore());
         this.setAssignedScore(aspect.getAssignedScore());
