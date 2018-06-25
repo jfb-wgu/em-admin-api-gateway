@@ -19,7 +19,7 @@ public class EmaEvaluationAspectRecord {
     private String comments;
     private String status;
     
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy HH:mm:ss")
     private Date dateCompleted;
     
     public EmaEvaluationAspectRecord(EvaluationAspectModel aspect, EvaluationModel eval) {
