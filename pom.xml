@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>dm-admin</artifactId>
@@ -69,24 +70,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.amqp</groupId>
-			<artifactId>spring-rabbit</artifactId>
-			<version>2.0.1.RELEASE</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-messaging</artifactId>
-			<version>5.0.2.RELEASE</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.amqp</groupId>
-			<artifactId>spring-amqp</artifactId>
-			<version>2.0.1.RELEASE</version>
-		</dependency>
-
-		<dependency>
 			<groupId>com.datastax.cassandra</groupId>
 			<artifactId>cassandra-driver-core</artifactId>
 			<version>3.4.0</version>
@@ -124,23 +107,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>edu.wgu</groupId>
-			<artifactId>dream-catcher-client</artifactId>
-			<version>0.2.14</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc7</artifactId>
-			<version>12.1.0.1.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>2.8.0</version>
@@ -157,33 +123,29 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.9.5</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.9.5</version>
 		</dependency>
- 		
+
 		<dependency>
-		    <groupId>ch.qos.logback</groupId>
-		    <artifactId>logback-classic</artifactId>
-		    <version>1.2.3</version>
-		 </dependency>
-		
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+
 		<dependency>
-		    <groupId>ch.qos.logback</groupId>
-		    <artifactId>logback-core</artifactId>
-		    <version>1.2.3</version>
-	 	</dependency>
- 		
- 		
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+
 	</dependencies>
 
 	<profiles>
 		<profile>
-			<!-- Local profile runs Spring app using local profile which causes the 
-				application-local.properties file to be used instead of application.properties 
-				(specifies development SQL server instead of HSQL, etc -->
 			<id>local</id>
 			<build>
 				<plugins>
@@ -199,9 +161,6 @@
 			</build>
 		</profile>
 		<profile>
-			<!-- Development profile runs Spring app using dev profile which causes 
-				the application-dev.properties file to be used instead of application.properties 
-				(specifies development SQL server instead of HSQL, etc -->
 			<id>dev</id>
 			<build>
 				<plugins>
@@ -217,9 +176,6 @@
 			</build>
 		</profile>
 		<profile>
-			<!-- Development profile runs Spring app using dev profile which causes 
-				the application-dev.properties file to be used instead of application.properties 
-				(specifies development SQL server instead of HSQL, etc -->
 			<id>stress</id>
 			<build>
 				<plugins>
@@ -239,9 +195,6 @@
 
 	<build>
 		<plugins>
-
-			<!-- Plugin is used to build the fat / executable jar; this must reside 
-				here w/ specification of main application class -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
