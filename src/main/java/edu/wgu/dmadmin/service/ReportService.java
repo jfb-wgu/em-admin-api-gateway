@@ -17,49 +17,40 @@ public class ReportService {
     private CassandraRepo cassandraRepo;
 
     public List<Competency> getTaskCompetencies(Date datePublished) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(datePublished);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return this.cassandraRepo.getCompetencies(cal.getTime());
+        return this.cassandraRepo.getCompetencies(startOfDay(datePublished));
     }
 
     public List<EmaTaskRubricRecord> getRubrics(Date datePublished) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(datePublished);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return this.cassandraRepo.getRubrics(cal.getTime());
+        return this.cassandraRepo.getRubrics(startOfDay(datePublished));
     }
 
     public List<EmaEvaluationAspectRecord> getEvaluationAspects(Date dateCompleted) {
+        return this.cassandraRepo.getEvaluationAspects(startOfDay(dateCompleted));
+    }
+
+    public List<EmaEvaluationAspectRecord> getEvaluationAspects(Date startDate, Date endDate) {
+        return this.cassandraRepo.getEvaluationAspects(startOfDay(startDate), endOfDay(endDate));
+    }
+    
+    private static Date startOfDay(Date input) {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(dateCompleted);
+        cal.setTime(input);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
-        return this.cassandraRepo.getEvaluationAspects(cal.getTime());
-    }
-
-    public List<EmaEvaluationAspectRecord> getEvaluationAspects(Date startDate, Date endDate) {
-        Calendar startCal = Calendar.getInstance();
-        startCal.setTime(startDate);
-        startCal.set(Calendar.HOUR_OF_DAY, 0);
-        startCal.set(Calendar.MINUTE, 0);
-        startCal.set(Calendar.SECOND, 0);
-        startCal.set(Calendar.MILLISECOND, 0);
         
-        Calendar endCal = Calendar.getInstance();
-        endCal.setTime(endDate);
-        endCal.set(Calendar.HOUR_OF_DAY, 23);
-        endCal.set(Calendar.MINUTE, 59);
-        endCal.set(Calendar.SECOND, 59);
-        endCal.set(Calendar.MILLISECOND, 9999);
-        return this.cassandraRepo.getEvaluationAspects(startCal.getTime(), endCal.getTime());
+        return cal.getTime();
+    }
+    
+    private static Date endOfDay(Date input) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(input);
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 9999);
+        
+        return cal.getTime();
     }
 }
