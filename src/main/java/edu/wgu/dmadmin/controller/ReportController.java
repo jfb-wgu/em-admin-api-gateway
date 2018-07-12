@@ -71,4 +71,18 @@ public class ReportController {
             @PathVariable @DateTimeFormat(iso=ISO.DATE) final Date dateCompleted) {
         return ResponseEntity.ok(this.service.getEvaluationAspects(dateCompleted));
     }
+    
+    @Audit
+    @Secured(strategies = {SecureByRolesStrategy.class})
+    @HasAnyRole(Role.EMPLOYEE)
+    @RequestMapping(value = {"/evaluation/aspects/{startDate}/{endDate}"}, method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation("List evaluation aspects for completed evaluations.")
+    @ApiImplicitParam(name = "Authorization", value = "employee", dataType = "string",
+            paramType = "header", required = true)
+    public ResponseEntity<List<EmaEvaluationAspectRecord>> getEvaluationAspects(
+            @PathVariable @DateTimeFormat(iso=ISO.DATE) final Date startDate,
+            @PathVariable @DateTimeFormat(iso=ISO.DATE) final Date endDate) {
+        return ResponseEntity.ok(this.service.getEvaluationAspects(startDate, endDate));
+    }
 }
