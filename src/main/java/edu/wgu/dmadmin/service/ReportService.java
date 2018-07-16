@@ -29,6 +29,10 @@ public class ReportService {
     }
 
     public List<EmaEvaluationAspectRecord> getEvaluationAspects(Date startDate, Date endDate) {
+        if (startDate.after(endDate)) {
+            throw new IllegalArgumentException("Start date must be before end date.");
+        }
+        
         return this.cassandraRepo.getEvaluationAspects(startOfDay(startDate), endOfDay(endDate));
     }
     
