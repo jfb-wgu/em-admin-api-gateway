@@ -48,7 +48,8 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-eureka</artifactId>
 		</dependency>
-
+		
+		
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-feign</artifactId>
@@ -142,6 +143,24 @@
 			<version>1.2.3</version>
 		</dependency>
 
+		<dependency>
+		    <groupId>io.netty</groupId>
+		    <artifactId>netty-transport-native-epoll</artifactId>
+		    <version>4.1.19.Final</version>
+		</dependency>
+		
+		 <dependency>
+		    <groupId>io.netty</groupId>
+		    <artifactId>netty-codec-http</artifactId>
+		    <version>4.1.19.Final</version>
+		</dependency>
+		
+		<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-devtools</artifactId>
+		<optional>true</optional>
+		</dependency>
+	
 	</dependencies>
 
 	<profiles>
