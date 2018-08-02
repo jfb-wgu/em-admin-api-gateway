@@ -34,6 +34,9 @@ public class EvaluationModel {
 
     @Column(name = "date_completed")
     Date dateCompleted;
+    
+    @Column(name = "date_updated")
+    Date dateUpdated;
 
     String status;
 }
