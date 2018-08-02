@@ -286,9 +286,16 @@ public class CassandraRepo {
     
     public List<EmaEvaluationAspectRecord> getEvaluationAspects(Date startDate, Date endDate) {
         List<EvaluationModel> evaluations = this.evalAccessor.getEvaluations(startDate, endDate).all();
+        List<EvaluationModel> reviewed = this.evalAccessor.getReviewedEvaluations(startDate, endDate).all();
         List<EmaEvaluationAspectRecord> records = new ArrayList<>();
 
         evaluations.forEach(eval -> {
+            eval.getAspects().values().forEach(aspect -> {
+                records.add(new EmaEvaluationAspectRecord(aspect, eval));
+            });
+        });
+        
+        reviewed.forEach(eval -> {
             eval.getAspects().values().forEach(aspect -> {
                 records.add(new EmaEvaluationAspectRecord(aspect, eval));
             });

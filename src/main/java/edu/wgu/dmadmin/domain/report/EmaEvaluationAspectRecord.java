@@ -22,6 +22,9 @@ public class EmaEvaluationAspectRecord {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy HH:mm:ss")
     private Date dateCompleted;
     
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy HH:mm:ss")
+    private Date dateUpdated;
+    
     public EmaEvaluationAspectRecord(EvaluationAspectModel aspect, EvaluationModel eval) {
         this.setEvaluatorId(eval.getEvaluatorId());
         this.setEvaluationId(eval.getEvaluationId());
@@ -32,6 +35,7 @@ public class EmaEvaluationAspectRecord {
         this.setAssignedScore(aspect.getAssignedScore());
         this.setComments(aspect.getComments());
         this.setDateCompleted(eval.getDateCompleted());
+        this.setDateUpdated(eval.getDateUpdated());
         this.setStatus(eval.getStatus());
     }
 }
