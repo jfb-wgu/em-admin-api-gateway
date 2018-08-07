@@ -16,8 +16,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import edu.wgu.dmadmin.model.security.UserModel;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,13 +24,13 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import edu.wgu.dmadmin.domain.security.Role;
-import edu.wgu.dmadmin.exception.RoleNotFoundException;
-import edu.wgu.dmadmin.model.security.PermissionModel;
-import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.repo.CassandraRepo;
-import edu.wgu.dmadmin.util.DateUtil;
+import edu.wgu.dm.admin.domain.security.Role;
+import edu.wgu.dm.admin.exception.RoleNotFoundException;
+import edu.wgu.dm.admin.model.security.PermissionModel;
+import edu.wgu.dm.admin.model.security.RoleModel;
+import edu.wgu.dm.admin.model.security.UserModel;
+import edu.wgu.dm.admin.repo.CassandraRepo;
+import edu.wgu.dm.admin.util.DateUtil;
 
 public class RoleServiceTest {
 	

@@ -25,13 +25,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import edu.wgu.dmadmin.domain.person.Person;
-import edu.wgu.dmadmin.domain.security.User;
-import edu.wgu.dmadmin.exception.UserNotFoundException;
-import edu.wgu.dmadmin.model.publish.TaskModel;
-import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.security.UserModel;
-import edu.wgu.dmadmin.repo.CassandraRepo;
+import edu.wgu.dm.admin.domain.person.Person;
+import edu.wgu.dm.admin.domain.security.User;
+import edu.wgu.dm.admin.exception.UserNotFoundException;
+import edu.wgu.dm.admin.model.publish.TaskModel;
+import edu.wgu.dm.admin.model.security.RoleModel;
+import edu.wgu.dm.admin.model.security.UserModel;
+import edu.wgu.dm.admin.repo.CassandraRepo;
+import edu.wgu.dm.admin.service.PersonService;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 
 @RunWith(MockitoJUnitRunner.class)

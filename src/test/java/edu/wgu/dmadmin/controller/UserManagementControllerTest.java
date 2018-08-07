@@ -31,16 +31,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import edu.wgu.dmadmin.domain.person.Person;
-import edu.wgu.dmadmin.domain.security.User;
-import edu.wgu.dmadmin.domain.security.UserListResponse;
-import edu.wgu.dmadmin.domain.security.UserResponse;
-import edu.wgu.dmadmin.model.security.UserModel;
-import edu.wgu.dmadmin.service.UserManagementService;
+import edu.wgu.dm.admin.controller.UserManagementController;
+import edu.wgu.dm.admin.domain.person.Person;
+import edu.wgu.dm.admin.domain.security.User;
+import edu.wgu.dm.admin.domain.security.UserListResponse;
+import edu.wgu.dm.admin.domain.security.UserResponse;
+import edu.wgu.dm.admin.model.security.UserModel;
+import edu.wgu.dm.admin.service.UserManagementService;
+import edu.wgu.dm.admin.util.DateUtil;
+import edu.wgu.dm.admin.util.IdentityUtil;
 import edu.wgu.dmadmin.test.TestObjectFactory;
-import edu.wgu.dmadmin.util.DateUtil;
-import edu.wgu.dmadmin.util.IdentityUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserManagementControllerTest {
