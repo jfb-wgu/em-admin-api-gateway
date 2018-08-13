@@ -11,11 +11,10 @@ import edu.wgu.dm.converter.entitydto.GenericConverter;
 import edu.wgu.dm.dto.publish.Competency;
 import edu.wgu.dm.ema.repo.CompetencyRepository;
 import edu.wgu.dm.ema.repo.EvaluationRepository;
-import edu.wgu.dm.ema.repo.PermissionRepository;
 import edu.wgu.dm.ema.repo.TaskRepository;
+import edu.wgu.dm.entity.EvaluationStatus;
 import edu.wgu.dm.entity.evaluation.EvaluationModel;
 import edu.wgu.dm.entity.publish.TaskModel;
-import edu.wgu.dm.util.enums.EvaluationStatus;
 
 public class AdminRepository {
 
