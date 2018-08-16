@@ -27,9 +27,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import edu.wgu.dm.common.exception.UserIdNotFoundException;
 import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.dto.security.User;
-import edu.wgu.dm.entity.publish.TaskModel;
-import edu.wgu.dm.entity.security.RoleModel;
-import edu.wgu.dm.entity.security.UserModel;
+import edu.wgu.dm.entity.publish.TaskEntity;
+import edu.wgu.dm.entity.security.RoleEntity;
+import edu.wgu.dm.entity.security.UserEntity;
 import edu.wgu.dm.repo.ema.RoleRepository;
 import edu.wgu.dm.repository.admin.AdminRepository;
 import edu.wgu.dm.service.admin.PersonService;
@@ -57,13 +57,13 @@ public class UserManagementServiceTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    RoleModel role1 = TestObjectFactory.getRoleModel("role1");
-    RoleModel role2 = TestObjectFactory.getRoleModel("role2");
+    RoleEntity role1 = TestObjectFactory.getRoleModel("role1");
+    RoleEntity role2 = TestObjectFactory.getRoleModel("role2");
 
-    TaskModel task1 = TestObjectFactory.getTaskModel();
-    TaskModel task2 = TestObjectFactory.getTaskModel();
-    UserModel user1 = TestObjectFactory.getUserModel("test1", "testing1");
-    UserModel user2 = TestObjectFactory.getUserModel("test2", "testing2");
+    TaskEntity task1 = TestObjectFactory.getTaskModel();
+    TaskEntity task2 = TestObjectFactory.getTaskModel();
+    UserEntity user1 = TestObjectFactory.getUserModel("test1", "testing1");
+    UserEntity user2 = TestObjectFactory.getUserModel("test2", "testing2");
     Person person1 = new Person();
     Person person2 = new Person();;
 
@@ -109,7 +109,7 @@ public class UserManagementServiceTest {
 
     @Test
     public void testGetUser() {
-        when(this.repo.getUserById("123")).thenReturn(UserModel.toUser(user1));
+        when(this.repo.getUserById("123")).thenReturn(UserEntity.toUser(user1));
         this.service.getUser("123");
         verify(this.repo).getUserById("123");
     }
@@ -124,7 +124,7 @@ public class UserManagementServiceTest {
 
     @Test
     public void testAddUser() {
-        User evaluator = UserModel.toUser(user1).get();
+        User evaluator = UserEntity.toUser(user1).get();
         this.service.addUsers(this.user1.getUserId(), Arrays.asList(evaluator));
         verify(this.repo).saveUsers(anyList());
     }
@@ -132,7 +132,7 @@ public class UserManagementServiceTest {
     @Test
     public void testAddUsers() {
         List<User> users = Arrays.asList(this.user1, this.user2).stream()
-                .map(u -> UserModel.toUser(u).get()).collect(Collectors.toList());
+                .map(u -> UserEntity.toUser(u).get()).collect(Collectors.toList());
 
         when(this.pService.getPersonByUsername(user1.getUserId())).thenReturn(this.person1);
         when(this.pService.getPersonByUsername(user2.getUserId())).thenReturn(this.person2);
@@ -155,7 +155,7 @@ public class UserManagementServiceTest {
     @Test
     public void testGetUsers() {
         when(service.getUsers())
-                .thenReturn(UserModel.toUsers(Arrays.asList(this.user1, this.user2)));
+                .thenReturn(UserEntity.toUsers(Arrays.asList(this.user1, this.user2)));
         List<User> result = service.getUsers();
         assertEquals(2, result.size());
         assertEquals(1, result.get(0).getRoleNames().size());
@@ -163,9 +163,9 @@ public class UserManagementServiceTest {
 
     @Test
     public void testGetUsersMissingData() {
-        when(this.repo.getAllRoles()).thenReturn(RoleModel.toRoles(Arrays.asList(this.role1)));
+        when(this.repo.getAllRoles()).thenReturn(RoleEntity.toRoles(Arrays.asList(this.role1)));
         when(service.getUsers())
-                .thenReturn(UserModel.toUsers(Arrays.asList(this.user1, this.user2)));
+                .thenReturn(UserEntity.toUsers(Arrays.asList(this.user1, this.user2)));
         List<User> result = this.service.getUsers();
         assertEquals(2, result.size());
         assertEquals(1, result.get(0).getRoleNames().size());
@@ -176,7 +176,7 @@ public class UserManagementServiceTest {
 
     @Test
     public void testGetUsersForTask() {
-        when(repo.getAllUsers()).thenReturn(Arrays.asList(UserModel.toUser(user2).get()));
+        when(repo.getAllUsers()).thenReturn(Arrays.asList(UserEntity.toUser(user2).get()));
         List<User> result = this.service.getUsersForTask(this.task2.getTaskId());
         assertEquals(result.get(0).getUserId(), this.user2.getUserId());
     }
@@ -186,7 +186,7 @@ public class UserManagementServiceTest {
     public void testCreateUser() {
         when(this.repo.getUserById(anyString())).thenReturn(Optional.empty());
         when(this.pService.getPersonByUsername(user1.getUserId())).thenReturn(this.person1);
-        when(repo.saveUser(any())).thenReturn(UserModel.toUser(user1));
+        when(repo.saveUser(any())).thenReturn(UserEntity.toUser(user1));
         this.service.createUser(user1.getUserId());
 
         ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);

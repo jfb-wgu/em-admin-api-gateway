@@ -22,9 +22,9 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import edu.wgu.dm.common.exception.PermissionNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
-import edu.wgu.dm.entity.security.PermissionModel;
-import edu.wgu.dm.entity.security.RoleModel;
-import edu.wgu.dm.entity.security.UserModel;
+import edu.wgu.dm.entity.security.PermissionEntity;
+import edu.wgu.dm.entity.security.RoleEntity;
+import edu.wgu.dm.entity.security.UserEntity;
 import edu.wgu.dm.repository.admin.AdminRepository;
 import edu.wgu.dm.service.admin.PermissionService;
 import edu.wgu.dm.util.DateUtil;
@@ -46,21 +46,21 @@ public class PermissionServiceTest {
     String userId1 = "user1";
     String userId2 = "user2";
 
-    PermissionModel permission1 = new PermissionModel();
-    PermissionModel permission2 = new PermissionModel();
+    PermissionEntity permission1 = new PermissionEntity();
+    PermissionEntity permission2 = new PermissionEntity();
 
-    RoleModel role1 = new RoleModel();
-    RoleModel role2 = new RoleModel();
+    RoleEntity role1 = new RoleEntity();
+    RoleEntity role2 = new RoleEntity();
 
-    UserModel user1 = new UserModel();
-    UserModel user2 = new UserModel();
+    UserEntity user1 = new UserEntity();
+    UserEntity user2 = new UserEntity();
 
-    List<PermissionModel> permissions;
+    List<PermissionEntity> permissions;
     List<Permission> permissiondtos;
     Permission permDto1;
     Permission permDto2;
-    List<RoleModel> roles;
-    List<UserModel> users;
+    List<RoleEntity> roles;
+    List<UserEntity> users;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();

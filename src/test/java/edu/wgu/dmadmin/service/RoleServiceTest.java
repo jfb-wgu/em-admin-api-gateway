@@ -23,8 +23,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import edu.wgu.dm.common.exception.RoleNotFoundException;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.User;
-import edu.wgu.dm.entity.security.RoleModel;
-import edu.wgu.dm.entity.security.UserModel;
+import edu.wgu.dm.entity.security.RoleEntity;
+import edu.wgu.dm.entity.security.UserEntity;
 import edu.wgu.dm.repo.ema.RoleRepository;
 import edu.wgu.dm.repository.admin.AdminRepository;
 import edu.wgu.dm.service.admin.RoleService;
@@ -49,13 +49,13 @@ public class RoleServiceTest {
     Long roleId2 = random.nextLong();
     String userId1 = "user1";
     String userId2 = "user2";
-    RoleModel role1 = new RoleModel();
-    RoleModel role2 = new RoleModel();
+    RoleEntity role1 = new RoleEntity();
+    RoleEntity role2 = new RoleEntity();
 
-    UserModel user1 = new UserModel();
-    UserModel user2 = new UserModel();
+    UserEntity user1 = new UserEntity();
+    UserEntity user2 = new UserEntity();
 
-    List<RoleModel> roleEntities = new ArrayList<>();
+    List<RoleEntity> roleEntities = new ArrayList<>();
     List<Role> roles = new ArrayList<>();
     Role role = new Role();
 

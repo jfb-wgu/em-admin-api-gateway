@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Random;
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.entity.AssessmentType;
-import edu.wgu.dm.entity.publish.AssessmentModel;
-import edu.wgu.dm.entity.publish.TaskModel;
-import edu.wgu.dm.entity.security.PermissionModel;
-import edu.wgu.dm.entity.security.RoleModel;
-import edu.wgu.dm.entity.security.UserModel;
+import edu.wgu.dm.entity.publish.AssessmentEntity;
+import edu.wgu.dm.entity.publish.TaskEntity;
+import edu.wgu.dm.entity.security.PermissionEntity;
+import edu.wgu.dm.entity.security.RoleEntity;
+import edu.wgu.dm.entity.security.UserEntity;
 import edu.wgu.dm.util.DateUtil;
 
 public class TestObjectFactory {
@@ -25,28 +25,28 @@ public class TestObjectFactory {
 	static Long evaluationId = random.nextLong();
 	static Long taskId = random.nextLong();
 
-    public static UserModel getUserModel() {
-        UserModel user = getUserModel(evaluatorFirstName, evaluatorLastName, evaluatorId,
-                new ArrayList<RoleModel>(), new ArrayList<PermissionModel>(),
-                new ArrayList<TaskModel>(), new ArrayList<String>(), employeeId);
-        RoleModel role = getRoleModel("role");
-        PermissionModel permission1 = getPermission("test1", "dashboard");
-        PermissionModel permission2 = getPermission("test2", "evaluator");
+    public static UserEntity getUserModel() {
+        UserEntity user = getUserModel(evaluatorFirstName, evaluatorLastName, evaluatorId,
+                new ArrayList<RoleEntity>(), new ArrayList<PermissionEntity>(),
+                new ArrayList<TaskEntity>(), new ArrayList<String>(), employeeId);
+        RoleEntity role = getRoleModel("role");
+        PermissionEntity permission1 = getPermission("test1", "dashboard");
+        PermissionEntity permission2 = getPermission("test2", "evaluator");
         role.getPermissions().add(permission1);
         role.getPermissions().add(permission2);
         user.getRoles().add(role);
         return user;
     }
 
-	public static UserModel getUserModel(String inUserId, String inEmployeeId) {
-		return getUserModel(evaluatorFirstName, evaluatorLastName, inUserId, new ArrayList<RoleModel>(), new ArrayList<PermissionModel>(),
-				new ArrayList<TaskModel>(), new ArrayList<String>(), inEmployeeId);
+	public static UserEntity getUserModel(String inUserId, String inEmployeeId) {
+		return getUserModel(evaluatorFirstName, evaluatorLastName, inUserId, new ArrayList<RoleEntity>(), new ArrayList<PermissionEntity>(),
+				new ArrayList<TaskEntity>(), new ArrayList<String>(), inEmployeeId);
 	}
 
-	public static UserModel getUserModel(String firstName, String lastName, String userId, List<RoleModel> roles,
-            List<PermissionModel> permissions, List<TaskModel> tasks, List<String> landings,
+	public static UserEntity getUserModel(String firstName, String lastName, String userId, List<RoleEntity> roles,
+            List<PermissionEntity> permissions, List<TaskEntity> tasks, List<String> landings,
             String inEmployeeId) {
-        UserModel user = new UserModel();
+        UserEntity user = new UserEntity();
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setUserId(userId);
@@ -71,17 +71,17 @@ public class TestObjectFactory {
         return user;
     }
 
-	public static RoleModel getRoleModel(String role) {
+	public static RoleEntity getRoleModel(String role) {
 		return getRoleModel(role, random.nextLong());
 	}
 
-	public static RoleModel getRoleModel(String role, Long roleId) {
-		return getRoleModel(role, roleId, new ArrayList<PermissionModel>(), "testing role");
+	public static RoleEntity getRoleModel(String role, Long roleId) {
+		return getRoleModel(role, roleId, new ArrayList<PermissionEntity>(), "testing role");
 	}
 
-    public static RoleModel getRoleModel(String role, Long roleId,
-            List<PermissionModel> permissions, String description) {
-        RoleModel model = new RoleModel();
+    public static RoleEntity getRoleModel(String role, Long roleId,
+            List<PermissionEntity> permissions, String description) {
+        RoleEntity model = new RoleEntity();
         model.setDateCreated(DateUtil.getZonedNow());
         model.setRole(role);
         model.setPermissions(permissions);
@@ -90,13 +90,13 @@ public class TestObjectFactory {
         return model;
     }
 
-	public static PermissionModel getPermission(String permission, String landing) {
+	public static PermissionEntity getPermission(String permission, String landing) {
 		return getPermissionModel(permission, random.nextLong(), "test permission", landing, "test type");
 	}
 
-	public static PermissionModel getPermissionModel(String permission, Long permissionId, String description,
+	public static PermissionEntity getPermissionModel(String permission, Long permissionId, String description,
             String landing, String type) {
-        PermissionModel model = new PermissionModel();
+        PermissionEntity model = new PermissionEntity();
         model.setDateCreated(DateUtil.getZonedNow());
         model.setPermission(permission);
         model.setLanding(landing);
@@ -106,9 +106,9 @@ public class TestObjectFactory {
         return model;
     }
 	
-    public static TaskModel getTaskModel() {
-		TaskModel taskModel = new TaskModel();
-		AssessmentModel assessment = new AssessmentModel();
+    public static TaskEntity getTaskModel() {
+		TaskEntity taskModel = new TaskEntity();
+		AssessmentEntity assessment = new AssessmentEntity();
 		assessment.setAssessmentName("Assessment 1");
 		assessment.setAssessmentCode("A1A1");
 		assessment.setPamsAssessmentId(new Random().nextLong());

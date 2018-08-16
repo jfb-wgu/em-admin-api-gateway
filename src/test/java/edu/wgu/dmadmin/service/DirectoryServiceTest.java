@@ -19,9 +19,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import edu.wgu.dm.dto.security.LdapGroup;
 import edu.wgu.dm.dto.security.LdapUser;
 import edu.wgu.dm.dto.security.Person;
-import edu.wgu.dm.entity.publish.TaskModel;
-import edu.wgu.dm.entity.security.RoleModel;
-import edu.wgu.dm.entity.security.UserModel;
+import edu.wgu.dm.entity.publish.TaskEntity;
+import edu.wgu.dm.entity.security.RoleEntity;
+import edu.wgu.dm.entity.security.UserEntity;
 import edu.wgu.dm.repository.admin.AdminRepository;
 import edu.wgu.dm.service.admin.DirectoryService;
 import edu.wgu.dm.service.admin.PersonService;
@@ -44,13 +44,13 @@ public class DirectoryServiceTest {
 
     DirectoryService service;
 
-    RoleModel role1 = TestObjectFactory.getRoleModel("role1");
-    RoleModel role2 = TestObjectFactory.getRoleModel("role2");
+    RoleEntity role1 = TestObjectFactory.getRoleModel("role1");
+    RoleEntity role2 = TestObjectFactory.getRoleModel("role2");
 
-    TaskModel task1 = TestObjectFactory.getTaskModel();
-    TaskModel task2 = TestObjectFactory.getTaskModel();
-    UserModel user1 = TestObjectFactory.getUserModel("test1", "testing1");
-    UserModel user2 = TestObjectFactory.getUserModel("test2", "testing2");
+    TaskEntity task1 = TestObjectFactory.getTaskModel();
+    TaskEntity task2 = TestObjectFactory.getTaskModel();
+    UserEntity user1 = TestObjectFactory.getUserModel("test1", "testing1");
+    UserEntity user2 = TestObjectFactory.getUserModel("test2", "testing2");
     Person person1;
 
 
