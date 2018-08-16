@@ -115,12 +115,5 @@ public class UserManagementController {
 		UserListResponse result = new UserListResponse(this.service.getUsersForTask(taskId));
 		return ResponseEntity.ok().body(result);
 	}
-	
-	public void setUserManagementService(UserManagementService umService) {
-		this.service = umService;
-	}
-	
-	public void setIdentityUtil(IdentityUtil util) {
-		this.iUtil = util;
-	}
+ 
 }

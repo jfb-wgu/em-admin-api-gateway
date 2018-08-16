@@ -23,10 +23,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 import edu.wgu.dm.common.exception.RoleNotFoundException;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.User;
-import edu.wgu.dm.ema.repo.RoleRepository;
 import edu.wgu.dm.entity.security.RoleModel;
 import edu.wgu.dm.entity.security.UserModel;
-import edu.wgu.dm.repo.DMRepository;
+import edu.wgu.dm.repo.ema.RoleRepository;
+import edu.wgu.dm.repository.admin.AdminRepository;
 import edu.wgu.dm.service.admin.RoleService;
 import edu.wgu.dm.util.DateUtil;
 
@@ -34,7 +34,7 @@ import edu.wgu.dm.util.DateUtil;
 public class RoleServiceTest {
 
     @Mock
-    DMRepository repo;
+    AdminRepository repo;
 
     @Mock
     RoleRepository roleRepo;
@@ -144,22 +144,24 @@ public class RoleServiceTest {
         Role newRole = new Role();
         newRole.setRole("newRoleToSave");
         newRole.setPermissions(Arrays.asList(permissionId1));
+        newRole.setRoleId(random.nextLong());
+        newRole.setDateCreated(DateUtil.getZonedNow());
         Role[] newRoles = {newRole};
 
+        //  Setup no existing roles is found
         when(repo.getRolesByRole(newRole.getRole())).thenReturn(Optional.empty());
-        RoleModel rm = new RoleModel(newRole);
-        rm.setRoleId(random.nextLong());
-        rm.setDateCreated(DateUtil.getZonedNow());
-        when(roleRepo.save(any(RoleModel.class))).thenReturn(rm);
-        ArgumentCaptor<RoleModel> argument = ArgumentCaptor.forClass(RoleModel.class);
+        when(repo.getRoleById(newRole.getRoleId())).thenReturn(Optional.empty());
+        
+        when(repo.saveOrUpdateRole(any(Role.class))).thenReturn(newRole);
+      
+        ArgumentCaptor<Role> argument = ArgumentCaptor.forClass(Role.class);
 
         // Act
         List<Role> result = this.service.saveRoles(newRoles);
 
         // Assert
-        verify(roleRepo).save(argument.capture());
-        assertEquals(this.permissionId1,
-                argument.getValue().getPermissions().iterator().next().getPermissionId());
+        verify(repo).saveOrUpdateRole(argument.capture());
+        assertEquals(this.permissionId1, argument.getValue().getPermissions().iterator().next());
         System.out.println(argument.getValue());
         assertNotNull(result.get(0).getRoleId());
         assertNotNull(result.get(0).getDateCreated());
@@ -170,29 +172,29 @@ public class RoleServiceTest {
     public void testUpdateRoles() {
         // Arrange
         Long roleId = random.nextLong();
+        
         Role role = new Role();
         role.setRoleId(roleId);
         role.setPermissions(Arrays.asList(permissionId1, permissionId2));
+        role.setDateUpdated(DateUtil.getZonedNow());
         Role[] newRoles = {role};
-
+        
         Role existingRole = new Role();
         existingRole.setRoleId(roleId);
         existingRole.setRole("existingRole");
         existingRole.setRoleDescription("Description for ExistingRole");
         List<Long> permissionIds = Arrays.asList(permissionId1);
         existingRole.setPermissions(permissionIds);
-
+        
         when(repo.getRoleById(roleId)).thenReturn(Optional.of(existingRole));
-        RoleModel rm = new RoleModel(role);
-        when(roleRepo.save(any(RoleModel.class))).thenReturn(rm);
-
-        ArgumentCaptor<RoleModel> argument = ArgumentCaptor.forClass(RoleModel.class);
+        when(repo.saveOrUpdateRole(any(Role.class))).thenReturn(role);
+        ArgumentCaptor<Role> argument = ArgumentCaptor.forClass(Role.class);
 
         // Act
         List<Role> result = this.service.saveRoles(newRoles);
 
         // Assert
-        verify(roleRepo).save(argument.capture());
+        verify(repo).saveOrUpdateRole(argument.capture());
         assertEquals(2, argument.getValue().getPermissions().size());
         assertEquals(existingRole.getRoleDescription(), argument.getValue().getRoleDescription());
         assertEquals(existingRole.getRole(), argument.getValue().getRole());

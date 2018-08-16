@@ -15,21 +15,24 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @WguSoaApplication
 @EnableSwagger2
-@ComponentScan(basePackages = {"edu.wgu.dmadmin", "edu.wgu.dm.config","edu.wgu.dm.audit"})
+@ComponentScan(basePackages = {"edu.wgu.dm.admin", "edu.wgu.dm.config", "edu.wgu.dm.audit",
+        "edu.wgu.dm.service.admin", "edu.wgu.dm.repository.admin","edu.wgu.dm.converter",
+        "edu.wgu.dm.service.ldap","edu.wgu.dm.util","edu.wgu.security.service"})
 @EntityScan("edu.wgu.dm.entity")
-@EnableJpaRepositories("edu.wgu.dm.ema.repo")
-@EnableFeignClients(basePackages = {"edu.wgu.dmadmin.service", "edu.wgu.dreamcatcher.client"})
+@EnableJpaRepositories(basePackages = {"edu.wgu.dm.repo.ema"})
+@EnableFeignClients(basePackages = {"edu.wgu.dm.service", "edu.wgu.dreamcatcher.client"})
 @EnableTransactionManagement
 @EnableAspectJAutoProxy
 public class Application extends SpringBootServletInitializer {
 
-   /**
-    * Allows the app to run as a web app in an executable fat jar.
-    *
-    * @param args
-    */
+    /**
+     * Allows the app to run as a web app in an executable fat jar.
+     *
+     * @param args
+     */
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplicationBuilder(Application.class).bannerMode(Mode.OFF).build();
+        SpringApplication app =
+                new SpringApplicationBuilder(Application.class).bannerMode(Mode.OFF).build();
         app.run(args);
     }
 
@@ -38,8 +41,8 @@ public class Application extends SpringBootServletInitializer {
      */
     @Override
     protected SpringApplicationBuilder configure(final SpringApplicationBuilder application) {
-       application.sources(Application.class);
-       application.bannerMode(Mode.OFF);
-       return super.configure(application);
+        application.sources(Application.class);
+        application.bannerMode(Mode.OFF);
+        return super.configure(application);
     }
 }

@@ -73,8 +73,5 @@ public class RoleController {
 	public void deleteRole(@PathVariable final Long roleId) {
 		this.service.deleteRole(roleId);
 	}
-	
-	public void setRoleService(RoleService rService) {
-		this.service = rService;
-	}
+ 
 }

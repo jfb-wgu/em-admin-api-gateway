@@ -1,6 +1,7 @@
 package edu.wgu.dm.admin.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -12,6 +13,18 @@ public class LdapConfig {
 
     @Autowired
     Environment env;
+    
+    @Value("${ldap.group.dmAdmin}")
+    private String adminGroup;
+
+    @Value("${ldap.group.dmPublish}")
+    private String publishGroup;
+
+    @Value("${ldap.group.dmFaculty}")
+    private String facultyGroup;
+
+    @Value("${ldap.group.dmEvaluator}")
+    private String evaluatorGroup;
 
     @Bean
     public LdapContextSource contextSource () {

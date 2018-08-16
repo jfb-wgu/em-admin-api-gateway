@@ -30,41 +30,43 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("v1/admin")
 public class PermissionController {
 
-	@Autowired
-	private PermissionService service;
+    @Autowired
+    private PermissionService service;
 
-	@Audit
-	@Secured(strategies = { SecureByPermissionStrategy.class })
-	@HasAnyRole(Permissions.ROLE_CREATE)
-	@RequestMapping(value = "/permissions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiOperation("List all permissions.")
-	@ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string", paramType = "header", required = true)
-	public ResponseEntity<List<Permission>> getPermissions() {
-		return ResponseEntity.ok(this.service.getPermissions());
-	}
-	
-	@Audit
-	@Secured(strategies = { SecureByPermissionStrategy.class })
-	@HasAnyRole(Permissions.ROLE_CREATE)
-	@RequestMapping(value = "/permissions/{permissionId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiOperation("Get details for specified permission.")
-	@ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string", paramType = "header", required = true)
-	public ResponseEntity<Permission> getPermission(@PathVariable final Long permissionId) {
-		return ResponseEntity.ok(this.service.getPermission(permissionId));
-	}
+    @Audit
+    @Secured(strategies = {SecureByPermissionStrategy.class})
+    @HasAnyRole(Permissions.ROLE_CREATE)
+    @RequestMapping(value = "/permissions", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation("List all permissions.")
+    @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
+            paramType = "header", required = true)
+    public ResponseEntity<List<Permission>> getPermissions() {
+        return ResponseEntity.ok(this.service.getPermissions());
+    }
 
-	@Audit
-	@Secured(strategies = { SecureByPermissionStrategy.class })
-	@HasAnyRole(Permissions.ROLE_CREATE)
-	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	@RequestMapping(value = "/permissions", method = RequestMethod.POST)
-	@ApiOperation("Add one or more permissions.")
-	@ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string", paramType = "header", required = true)
-	public void addPermissions(@RequestBody Permission[] permissions) {
-		this.service.savePermissions(permissions);
-	}
-	
-	public void setPermissionService(PermissionService pService) {
-		this.service = pService;
-	}
+    @Audit
+    @Secured(strategies = {SecureByPermissionStrategy.class})
+    @HasAnyRole(Permissions.ROLE_CREATE)
+    @RequestMapping(value = "/permissions/{permissionId}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation("Get details for specified permission.")
+    @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
+            paramType = "header", required = true)
+    public ResponseEntity<Permission> getPermission(@PathVariable final Long permissionId) {
+        return ResponseEntity.ok(this.service.getPermission(permissionId));
+    }
+
+    @Audit
+    @Secured(strategies = {SecureByPermissionStrategy.class})
+    @HasAnyRole(Permissions.ROLE_CREATE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @RequestMapping(value = "/permissions", method = RequestMethod.POST)
+    @ApiOperation("Add one or more permissions.")
+    @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
+            paramType = "header", required = true)
+    public void addPermissions(@RequestBody Permission[] permissions) {
+        this.service.savePermissions(permissions);
+    }
+
 }

@@ -5,9 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import edu.wgu.dm.dto.security.Permissions;
 import edu.wgu.dm.dto.security.Person;
@@ -36,7 +36,7 @@ public class UserInfoController {
 
 	@Audit
 	@IgnoreAuthorization
-	@RequestMapping(value = "/person", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value = "/person", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ApiOperation("View details about the current user.")
 	@ApiImplicitParam(name = "Authorization", value = "All authenticated", dataType = "string", paramType = "header", required = true)
 	public ResponseEntity<Person> getPerson(HttpServletRequest request) throws ParseException {
@@ -46,14 +46,10 @@ public class UserInfoController {
 	@Audit
 	@Secured(strategies = { SecureByPermissionStrategy.class })
 	@HasAnyRole(Permissions.USER_SEARCH)
-	@RequestMapping(value = "/person/{bannerId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value = "/person/{bannerId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ApiOperation("View details about the specified user.")
 	@ApiImplicitParam(name = "Authorization", value = "User-Search permission", dataType = "string", paramType = "header", required = true)
 	public ResponseEntity<Person> getPerson(@PathVariable final String bannerId) {
 		return ResponseEntity.ok(this.service.getPersonByUserId(bannerId));
-	}
-
-	public void setUserInfoService(UserInfoService uiService) {
-		this.service = uiService;
 	}
 }

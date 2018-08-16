@@ -10,14 +10,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
+import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,17 +25,15 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wgu.dm.admin.controller.UserManagementController;
-import edu.wgu.dm.admin.domain.person.Person;
-import edu.wgu.dm.admin.domain.security.User;
-import edu.wgu.dm.admin.domain.security.UserListResponse;
-import edu.wgu.dm.admin.domain.security.UserResponse;
-import edu.wgu.dm.admin.model.security.UserModel;
-import edu.wgu.dm.admin.service.UserManagementService;
-import edu.wgu.dm.admin.util.DateUtil;
-import edu.wgu.dm.admin.util.IdentityUtil;
+import edu.wgu.dm.dto.security.Person;
+import edu.wgu.dm.dto.security.User;
+import edu.wgu.dm.dto.security.UserListResponse;
+import edu.wgu.dm.dto.security.UserResponse;
+import edu.wgu.dm.service.admin.UserManagementService;
+import edu.wgu.dm.util.DateUtil;
+import edu.wgu.dm.util.IdentityUtil;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -55,14 +49,14 @@ public class UserManagementControllerTest {
 
     MockMvc mockMvc;
     ObjectMapper mapper = new ObjectMapper();
-
+    Random random = new Random();
     private String userId = "123456";
-    private UUID taskId = UUID.randomUUID();
-
+    private Long taskId = random.nextLong();
+    
     private Person person;
-    private Set<UUID> teams;
+    private List<Long> teams;
     private User user;
-    private UserModel userModel;
+   
 
     @Before
     public void setUp() throws Exception {
@@ -70,32 +64,33 @@ public class UserManagementControllerTest {
         this.mockMvc = standaloneSetup(this.controller).build();
 
         when(this.iUtil.getUserId()).thenReturn(this.userId);
+        teams = new ArrayList<>();
+        teams.add(random.nextLong());
+        teams.add(random.nextLong());
+        teams.add(random.nextLong());
 
-        this.teams = new HashSet<>();
-        this.teams.add(UUID.randomUUID());
-        this.teams.add(UUID.randomUUID());
-        this.teams.add(UUID.randomUUID());
+        List<Long> tasks = new ArrayList<>();
+        tasks.add(random.nextLong());
+        tasks.add(random.nextLong());
+        tasks.add(random.nextLong());
 
-        Set<UUID> tasks = new HashSet<>();
-        tasks.add(UUID.randomUUID());
-        tasks.add(UUID.randomUUID());
-        tasks.add(UUID.randomUUID());
-
-        Set<String> roles = new HashSet<>();
+        List<String> roles = new ArrayList<>();
         roles.add("roles");
 
-        Set<String> permissions = new HashSet<>();
+        List<String> permissions = new ArrayList<>();
         permissions.add("Student");
 
-        Set<UUID> emaRoles = new HashSet<>();
-        emaRoles.add(UUID.randomUUID());
-        emaRoles.add(UUID.randomUUID());
-        emaRoles.add(UUID.randomUUID());
+        List<Long> emaRoles = new ArrayList<>();
+        emaRoles.add(random.nextLong());
+        emaRoles.add(random.nextLong());
+        emaRoles.add(random.nextLong());
 
-        Set<String> landings = new HashSet<>();
+
+        List<String> landings = new ArrayList<>();
         landings.add("hi");
         landings.add("there");
         landings.add("Jim!");
+
 
         this.person = new Person();
         this.person.setIsEmployee(Boolean.FALSE);
@@ -103,7 +98,7 @@ public class UserManagementControllerTest {
         this.person.setFirstName("Bruce");
         this.person.setLastName("Wayne");
         this.person.setPidm(new Long(1234566));
-        this.person.setUserInfo(TestObjectFactory.getUserModel());
+        this.person.setUserInfo(TestObjectFactory.getUserModel().toUser());
         this.person.setUsername("UserName");
         this.person.setEmaRoles(emaRoles);
         this.person.setLandings(landings);
@@ -116,15 +111,9 @@ public class UserManagementControllerTest {
         this.person.setTeams(this.teams);
         this.person.setWguEmailAddress("bwayne@wgu.edu");
 
-        this.userModel = TestObjectFactory.getUserModel("Peter", "Parker", this.userId, emaRoles, permissions, tasks, landings, "234");
-        this.user = TestObjectFactory.getUser("Peter", "Parker", this.userId, emaRoles, permissions, tasks, landings, "234");
-
-        this.userModel.setRoles(emaRoles);
-        this.userModel.setTeams(this.teams);
-        this.userModel.setLandings(landings);
-        this.userModel.setPermissions(permissions);
-        this.userModel.setTasks(tasks);
-
+        this.user = TestObjectFactory.getUser("Peter", "Parker", this.userId, emaRoles, permissions,
+                tasks, landings, "234");
+ 
         this.user.setRoles(emaRoles);
         this.user.setTeams(this.teams);
         this.user.setLandings(landings);
@@ -179,8 +168,8 @@ public class UserManagementControllerTest {
         String userName = "pParker";
         String url = "/v1/users/" + userName;
 
-        this.userModel.setTeams(this.teams);
-        when(this.userService.createUser(userName)).thenReturn(this.userModel);
+        
+        when(this.userService.createUser(userName)).thenReturn(this.user);
 
         MvcResult result = this.mockMvc.perform(post(url))
                 .andExpect(status().isOk())
@@ -243,7 +232,7 @@ public class UserManagementControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        ArgumentCaptor<UUID> arg1 = ArgumentCaptor.forClass(UUID.class);
+        ArgumentCaptor<Long> arg1 = ArgumentCaptor.forClass(Long.class);
 
         verify(this.userService).getUsersForTask(arg1.capture());
         assertEquals(this.taskId, arg1.getValue());

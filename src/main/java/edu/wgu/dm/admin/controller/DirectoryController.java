@@ -53,8 +53,5 @@ public class DirectoryController {
     		@ApiParam(allowableValues = "DM_Admin, DM_Evaluator, DM_Publish, DM_Faculty") @PathVariable final String group) {
         return new ResponseEntity<Set<Person>>(this.service.getMissingUsers(group), HttpStatus.OK);
     }
-    
-    public void setDirectoryService(DirectoryService dService) {
-    		this.service = dService;
-    }
+ 
 }

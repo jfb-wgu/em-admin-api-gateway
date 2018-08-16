@@ -25,7 +25,7 @@ import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.entity.security.PermissionModel;
 import edu.wgu.dm.entity.security.RoleModel;
 import edu.wgu.dm.entity.security.UserModel;
-import edu.wgu.dm.repo.DMRepository;
+import edu.wgu.dm.repository.admin.AdminRepository;
 import edu.wgu.dm.service.admin.PermissionService;
 import edu.wgu.dm.util.DateUtil;
 
@@ -33,7 +33,7 @@ import edu.wgu.dm.util.DateUtil;
 public class PermissionServiceTest {
 
     @Mock
-    DMRepository repo;
+    AdminRepository repo;
 
     @InjectMocks
     PermissionService service;

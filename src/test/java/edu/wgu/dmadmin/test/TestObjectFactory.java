@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import edu.wgu.dm.dto.security.User;
+import edu.wgu.dm.entity.AssessmentType;
 import edu.wgu.dm.entity.publish.AssessmentModel;
 import edu.wgu.dm.entity.publish.TaskModel;
 import edu.wgu.dm.entity.security.PermissionModel;
@@ -111,6 +112,7 @@ public class TestObjectFactory {
 		assessment.setAssessmentName("Assessment 1");
 		assessment.setAssessmentCode("A1A1");
 		assessment.setPamsAssessmentId(new Random().nextLong());
+		assessment.setAssessmentType(AssessmentType.P);
         taskModel.setAssessment(assessment);
         taskModel.setTaskName("Task Name");
         taskModel.setTaskId(random.nextLong());
