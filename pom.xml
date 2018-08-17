@@ -91,12 +91,7 @@
 			<version>3.7</version>
 		</dependency>
 
-		<dependency>
-			<groupId>edu.wgu</groupId>
-			<artifactId>dm-audit</artifactId>
-			<version>1.2.0</version>
-		</dependency>
-
+ 
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
