@@ -6,38 +6,32 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.UUID;
-
 import javax.naming.Name;
 import javax.naming.ldap.LdapName;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import edu.wgu.dmadmin.domain.person.Person;
-import edu.wgu.dmadmin.domain.security.LdapUser;
-import edu.wgu.dmadmin.domain.security.User;
-import edu.wgu.dmadmin.model.security.UserModel;
-import edu.wgu.dmadmin.service.DirectoryService;
-import edu.wgu.dmadmin.test.TestObjectFactory;
-import edu.wgu.dmadmin.util.DateUtil;
-import edu.wgu.dmadmin.util.IdentityUtil;
+import edu.wgu.dm.admin.controller.DirectoryController;
+import edu.wgu.dm.dto.security.LdapUser;
+import edu.wgu.dm.dto.security.Person;
+import edu.wgu.dm.service.admin.DirectoryService;
+import edu.wgu.dm.util.DateUtil;
+import edu.wgu.dm.util.IdentityUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DirectoryControllerTest {
+
     @InjectMocks
     private DirectoryController controller;
 
@@ -53,76 +47,22 @@ public class DirectoryControllerTest {
     private String userId = "123456";
 
     private Person person;
-    private Set<UUID> teams;
-    private User user;
-    private UserModel userModel;
-
+   
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        this.mockMvc = standaloneSetup(this.controller).build();
-
+         this.mockMvc = standaloneSetup(this.controller).build();
         when(this.iUtil.getUserId()).thenReturn(this.userId);
-
-        this.teams = new HashSet<>();
-        this.teams.add(UUID.randomUUID());
-        this.teams.add(UUID.randomUUID());
-        this.teams.add(UUID.randomUUID());
-
-        Set<UUID> tasks = new HashSet<>();
-        tasks.add(UUID.randomUUID());
-        tasks.add(UUID.randomUUID());
-        tasks.add(UUID.randomUUID());
-
-        Set<String> roles = new HashSet<>();
-        roles.add("roles");
-
-        Set<String> permissions = new HashSet<>();
-        permissions.add("Student");
-
-        Set<UUID> emaRoles = new HashSet<>();
-        emaRoles.add(UUID.randomUUID());
-        emaRoles.add(UUID.randomUUID());
-        emaRoles.add(UUID.randomUUID());
-
-        Set<String> landings = new HashSet<>();
-        landings.add("hi");
-        landings.add("there");
-        landings.add("Jim!");
-
         this.person = new Person();
         this.person.setIsEmployee(Boolean.FALSE);
         this.person.setStudentId(this.userId);
         this.person.setFirstName("Bruce");
         this.person.setLastName("Wayne");
         this.person.setPidm(new Long(1234566));
-        this.person.setUserInfo(TestObjectFactory.getUserModel());
         this.person.setUsername("UserName");
-        this.person.setEmaRoles(emaRoles);
-        this.person.setLandings(landings);
         this.person.setLastLogin(DateUtil.getZonedNow());
-        this.person.setPermissions(permissions);
         this.person.setPersonType("Student");
         this.person.setPrimaryPhone("123-555-5555");
-        this.person.setRoles(roles);
-        this.person.setTasks(tasks);
-        this.person.setTeams(this.teams);
         this.person.setWguEmailAddress("bwayne@wgu.edu");
-
-        this.userModel = TestObjectFactory.getUserModel("Peter", "Parker", this.userId, emaRoles, permissions, tasks, landings, "234");
-        this.user = TestObjectFactory.getUser("Peter", "Parker", this.userId, emaRoles, permissions, tasks, landings, "234");
-
-        this.userModel.setRoles(emaRoles);
-        this.userModel.setTeams(this.teams);
-        this.userModel.setLandings(landings);
-        this.userModel.setPermissions(permissions);
-        this.userModel.setTasks(tasks);
-
-        this.user.setRoles(emaRoles);
-        this.user.setTeams(this.teams);
-        this.user.setLandings(landings);
-        this.user.setPermissions(permissions);
-        this.user.setTasks(tasks);
     }
 
     @Test
@@ -135,7 +75,7 @@ public class DirectoryControllerTest {
         Set<Name> names = new HashSet<>();
         names.add(ldapName);
 
-        Set<LdapUser> ldapUsers = new HashSet<>();
+        List<LdapUser> ldapUsers = new ArrayList<>();
         LdapUser ldapUser = new LdapUser();
         ldapUser.setSAMAccountName("Accoutname");
         ldapUser.setGivenName("givenName");
@@ -149,11 +89,10 @@ public class DirectoryControllerTest {
 
         when(this.directoryService.getMembersForGroup(group)).thenReturn(ldapUsers);
 
-        MvcResult result = this.mockMvc.perform(get(url))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = this.mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 
-        assertEquals(this.mapper.writeValueAsString(ldapUsers), result.getResponse().getContentAsString());
+        assertEquals(this.mapper.writeValueAsString(ldapUsers),
+                result.getResponse().getContentAsString());
 
         ArgumentCaptor<String> arg1 = ArgumentCaptor.forClass(String.class);
 
@@ -171,9 +110,7 @@ public class DirectoryControllerTest {
 
         when(this.directoryService.getMissingUsers(group)).thenReturn(userSet);
 
-        this.mockMvc.perform(get(url))
-                .andExpect(status().isOk())
-                .andReturn();
+        this.mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 
         ArgumentCaptor<String> arg1 = ArgumentCaptor.forClass(String.class);
 

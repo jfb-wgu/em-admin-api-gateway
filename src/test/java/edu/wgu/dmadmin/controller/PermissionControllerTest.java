@@ -8,12 +8,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
-
+import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,12 +23,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import edu.wgu.dmadmin.domain.security.Permission;
-import edu.wgu.dmadmin.service.PermissionService;
-import edu.wgu.dmadmin.util.DateUtil;
+import edu.wgu.dm.admin.controller.PermissionController;
+import edu.wgu.dm.dto.security.Permission;
+import edu.wgu.dm.service.admin.PermissionService;
+import edu.wgu.dm.util.DateUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PermissionControllerTest {
@@ -42,6 +39,8 @@ public class PermissionControllerTest {
 
     private MockMvc mockMvc;
     private ObjectMapper mapper = new ObjectMapper();
+    
+    Random random = new Random();
 
     @Before
     public void setUp() throws Exception {
@@ -59,7 +58,7 @@ public class PermissionControllerTest {
         permission.setPermission("Admin");
         permission.setPermissionDescription("Able to do everything");
         permission.setLanding("Landing");
-        permission.setPermissionId(UUID.randomUUID());
+        permission.setPermissionId(random.nextLong());
         permission.setPermissionDescription("description");
         permission.setDateUpdated(DateUtil.getZonedNow());
         permission.setPermissionType("amdin");
@@ -87,7 +86,7 @@ public class PermissionControllerTest {
         permission.setPermission("Admin");
         permission.setPermissionDescription("Able to do everything");
         permission.setLanding("Landing");
-        permission.setPermissionId(UUID.randomUUID());
+        permission.setPermissionId(random.nextLong());
         permission.setPermissionDescription("description");
         permission.setDateUpdated(DateUtil.getZonedNow());
         permission.setPermissionType("amdin");

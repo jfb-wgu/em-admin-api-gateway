@@ -3,192 +3,192 @@ package edu.wgu.dmadmin.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-
-import edu.wgu.dmadmin.model.security.UserModel;
+import java.util.Random;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import edu.wgu.dm.common.exception.PermissionNotFoundException;
+import edu.wgu.dm.dto.security.Permission;
+import edu.wgu.dm.entity.security.PermissionEntity;
+import edu.wgu.dm.entity.security.RoleEntity;
+import edu.wgu.dm.entity.security.UserEntity;
+import edu.wgu.dm.repository.admin.AdminRepository;
+import edu.wgu.dm.service.admin.PermissionService;
+import edu.wgu.dm.util.DateUtil;
 
-import edu.wgu.dmadmin.domain.security.Permission;
-import edu.wgu.dmadmin.model.security.PermissionModel;
-import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.repo.CassandraRepo;
-import edu.wgu.dmadmin.util.DateUtil;
-
+@RunWith(MockitoJUnitRunner.class)
 public class PermissionServiceTest {
-	
-	PermissionService service = new PermissionService();
-	
-	CassandraRepo repo = mock(CassandraRepo.class);
-	
-	UUID permissionId1 = UUID.randomUUID();
-	UUID permissionId2 = UUID.randomUUID();
-	UUID roleId1 = UUID.randomUUID();
-	UUID roleId2 = UUID.randomUUID();
-	String userId1 = "user1";
-	String userId2 = "user2";
-	
-	PermissionModel permission1 = new PermissionModel();
-	PermissionModel permission2 = new PermissionModel();
-	
-	RoleModel role1 = new RoleModel();
-	RoleModel role2 = new RoleModel();
 
-	UserModel user1 = new UserModel();
-	UserModel user2 = new UserModel();
-	
-	List<PermissionModel> permissions;
-	List<RoleModel> roles;
-	List<UserModel> users;
-	
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-	
-	@Before
-	public void initialize() {
-		this.service.setCassandraRepo(this.repo);
-		
-		this.permission1.setPermissionId(this.permissionId1);
-		this.permission2.setPermissionId(this.permissionId2);
-		this.permission1.setPermission("permission1");
-		this.permission1.setLanding("landing");
-		this.permission2.setPermission("permission2");
-		this.permissions = Arrays.asList(this.permission1, this.permission2);
-		
-		this.role1.setRoleId(this.roleId1);
-		this.role2.setRoleId(this.roleId2);
-		this.role1.setPermissions(new HashSet<UUID>(Arrays.asList(this.permissionId1)));
-		this.role2.setPermissions(new HashSet<UUID>(Arrays.asList(this.permissionId1, this.permissionId2)));
-		this.roles = Arrays.asList(this.role1, this.role2);
-		
-		this.user1.setRoles(new HashSet<UUID>(Arrays.asList(this.roleId1)));
-		this.user2.setRoles(new HashSet<UUID>(Arrays.asList(this.roleId2)));
-		this.users = Arrays.asList(this.user1, this.user2);
-		
-		when(this.repo.getPermissions()).thenReturn(this.permissions);
-		when(this.repo.getUsers()).thenReturn(this.users);
-	}
+    @Mock
+    AdminRepository repo;
 
-	@Test
-	public void testGetPermissions() {
-		List<Permission> result = this.service.getPermissions();
-		assertEquals(this.permissions.size(), result.size());
-	}
-	
-	@Test
-	public void testGetNoPermissions() {
-		when(this.repo.getPermissions()).thenReturn(Collections.emptyList());
-		
-		List<Permission> result = this.service.getPermissions();
-		assertEquals(0, result.size());
-	}
-	
-	@Test
-	public void testSavePermissions() {
-		Permission newPermission = new Permission();
-		newPermission.setPermission("newPermission");
-		Permission[] newPermissions = {newPermission};
-		
-		when(this.repo.getPermission(any(UUID.class))).thenReturn(Optional.empty());
-		
-		ArgumentCaptor<PermissionModel> argument = ArgumentCaptor.forClass(PermissionModel.class);
-		
-		this.service.savePermissions(newPermissions);
-		verify(this.repo).savePermission(argument.capture());
-		assertNotNull(argument.getValue().getPermissionId());
-		assertNotNull(argument.getValue().getDateCreated());
-	}
-	
-	@Test
-	public void testUpdatePermissions() {
-		Permission newPermission = new Permission(this.permission1);
-		newPermission.setPermission("newPermission");
-		Permission[] newPermissions = {newPermission};
-		
-		when(this.repo.getPermission(this.permissionId1)).thenReturn(Optional.of(this.permission1));
-		
-		ArgumentCaptor<PermissionModel> argument = ArgumentCaptor.forClass(PermissionModel.class);
-		
-		this.service.savePermissions(newPermissions);
-		verify(this.repo).savePermission(argument.capture());
-		assertEquals(this.permissionId1, argument.getValue().getPermissionId());
-		assertNotNull("newPermission", argument.getValue().getPermission());
-		
-		verify(this.repo).getUsersForPermission(this.permission1.getPermission());
-		verify(this.repo).saveUsers(any());
-	}
-	
-	@Test
-	public void testUpdatePermissionsSamePermission() {
-		Permission newPermission = new Permission(this.permission1);
-		newPermission.setLanding("test");
-		Permission[] newPermissions = {newPermission};
-		
-		when(this.repo.getPermission(this.permissionId1)).thenReturn(Optional.of(this.permission1));
-		
-		ArgumentCaptor<PermissionModel> argument = ArgumentCaptor.forClass(PermissionModel.class);
-		
-		this.service.savePermissions(newPermissions);
-		verify(this.repo).savePermission(argument.capture());
-		assertEquals(this.permissionId1, argument.getValue().getPermissionId());
-		assertNotNull("newPermission", argument.getValue().getPermission());
-		
-		verify(this.repo).getUsersForPermission(this.permission1.getPermission());
-		verify(this.repo).saveUsers(any());
-	}
-	
-	@Test
-	public void testUpdatePermissionDescription() {
-		Permission newPermission = new Permission(this.permission1);
-		newPermission.setPermissionDescription("new description");
-		Permission[] newPermissions = {newPermission};
-		
-		when(this.repo.getPermission(this.permissionId1)).thenReturn(Optional.of(this.permission1));
-		
-		ArgumentCaptor<PermissionModel> argument = ArgumentCaptor.forClass(PermissionModel.class);
-		
-		this.service.savePermissions(newPermissions);
-		verify(this.repo).savePermission(argument.capture());
-		assertEquals(this.permissionId1, argument.getValue().getPermissionId());
-		assertNotNull("newPermission", argument.getValue().getPermission());
-		
-		verify(this.repo, never()).getUsersForPermission(this.permission1.getPermission());
-		verify(this.repo, never()).saveUsers(any());
-	}
-	
-	@Test
-	public void testUpdatePermissionDescriptionHasDate() {
-		Permission newPermission = new Permission(this.permission1);
-		newPermission.setPermissionDescription("new description");
-		Date test = DateUtil.getZonedNow();
-		newPermission.setDateCreated(test);
-		Permission[] newPermissions = {newPermission};
-		
-		when(this.repo.getPermission(this.permissionId1)).thenReturn(Optional.of(this.permission1));
-		
-		ArgumentCaptor<PermissionModel> argument = ArgumentCaptor.forClass(PermissionModel.class);
-		
-		this.service.savePermissions(newPermissions);
-		verify(this.repo).savePermission(argument.capture());
-		assertEquals(this.permissionId1, argument.getValue().getPermissionId());
-		assertNotNull("newPermission", argument.getValue().getPermission());
-		assertEquals(test, argument.getValue().getDateCreated());
-		
-		verify(this.repo, never()).getUsersForPermission(this.permission1.getPermission());
-		verify(this.repo, never()).saveUsers(any());
-	}
+    @InjectMocks
+    PermissionService service;
+
+    Random random = new Random();
+    Long permissionId1 = random.nextLong();
+    Long permissionId2 = random.nextLong();
+    Long roleId1 = random.nextLong();
+    Long roleId2 = random.nextLong();
+    String userId1 = "user1";
+    String userId2 = "user2";
+
+    PermissionEntity permission1 = new PermissionEntity();
+    PermissionEntity permission2 = new PermissionEntity();
+
+    RoleEntity role1 = new RoleEntity();
+    RoleEntity role2 = new RoleEntity();
+
+    UserEntity user1 = new UserEntity();
+    UserEntity user2 = new UserEntity();
+
+    List<PermissionEntity> permissions;
+    List<Permission> permissiondtos;
+    Permission permDto1;
+    Permission permDto2;
+    List<RoleEntity> roles;
+    List<UserEntity> users;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @Before
+    public void initialize() {
+        permission1.setPermissionId(permissionId1);
+        permission1.setPermission("permission1");
+        permission1.setLanding("landing");
+        permission2.setPermissionId(permissionId2);
+        permission2.setPermission("permission2");
+        permissions = Arrays.asList(permission1, permission2);
+        permDto1 = permission1.toPermission();
+        permDto2 = permission2.toPermission();
+        role1.setRoleId(roleId1);
+        role2.setRoleId(roleId2);
+        roles = Arrays.asList(role1, role2);
+        users = Arrays.asList(user1, user2);
+    }
+
+    @Test
+    public void testGetPermissions() {
+        permissiondtos = Arrays.asList(permDto1, permDto2);
+        when(repo.getAllPermissions()).thenReturn(permissiondtos);
+        List<Permission> result = service.getPermissions();
+        assertEquals(permissiondtos.size(), result.size());
+    }
+
+    @Test(expected = PermissionNotFoundException.class)
+    public void testPermissionNotFound() {
+        when(repo.getPermissionById(123L)).thenReturn(Optional.empty());
+        Permission result = service.getPermission(123L);
+    }
+
+    @Test
+    public void testGetNoPermissions() {
+        permissiondtos = Arrays.asList(permDto1, permDto2);
+        when(repo.getAllPermissions()).thenReturn(permissiondtos);
+        when(repo.getAllPermissions()).thenReturn(Collections.emptyList());
+        List<Permission> result = service.getPermissions();
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    public void testSavePermissions() {
+        // Arrange
+        Permission newPermission = new Permission();
+        newPermission.setPermission("newPermission");
+        newPermission.setPermissionId(1234L);
+        Permission[] newPermissions = {newPermission};
+        when(repo.getPermissionById(any(Long.class))).thenReturn(Optional.empty());
+        when(repo.getPermissionByPermission(any(String.class))).thenReturn(Optional.empty());
+        ArgumentCaptor<Permission> argument = ArgumentCaptor.forClass(Permission.class);
+
+        // Act
+        service.savePermissions(newPermissions);
+
+        // Assert
+        verify(repo).savePermission(argument.capture());
+        assertNotNull(argument.getValue().getPermission());
+        assertEquals(newPermission.getPermissionId(), argument.getValue().getPermissionId());
+    }
+
+    @Test
+    public void testUpdatePermissionDescription() {
+        // Arrange
+        Permission newPermission = new Permission();
+        newPermission.setPermission(permission1.getPermission());
+        String permissionDescription = "This is updated Description";
+        newPermission.setPermissionDescription(permissionDescription);
+        Permission[] newPermissions = {newPermission};
+        when(repo.getPermissionById(any(Long.class))).thenReturn(Optional.empty());
+        when(repo.getPermissionByPermission(any(String.class)))
+                .thenReturn(Optional.of(permission1.toPermission()));
+        ArgumentCaptor<Permission> argument = ArgumentCaptor.forClass(Permission.class);
+
+        // Act
+        service.savePermissions(newPermissions);
+
+        // Assert
+        verify(repo).savePermission(argument.capture());
+        assertEquals(permissionId1, argument.getValue().getPermissionId());
+        assertEquals(newPermission.getPermission(), argument.getValue().getPermission());
+        assertEquals(permissionDescription, argument.getValue().getPermissionDescription());
+    }
+
+    @Test
+    public void testUpdatePermissionsSamePermission() {
+        // arrange
+        Permission newPermission = permission1.toPermission();
+        newPermission.setLanding("test");
+        Permission[] newPermissions = {newPermission};
+        when(repo.getPermissionById(any(Long.class))).thenReturn(Optional.of(newPermission));
+        ArgumentCaptor<Permission> argument = ArgumentCaptor.forClass(Permission.class);
+
+        // act
+        service.savePermissions(newPermissions);
+
+        // assert
+        verify(repo).savePermission(argument.capture());
+        assertEquals(permissionId1, argument.getValue().getPermissionId());
+        assertEquals(newPermission.getPermission(), argument.getValue().getPermission());
+        assertEquals("test", argument.getValue().getLanding());
+    }
+
+
+
+    @Test
+    public void testUpdatePermissionDescriptionHasDate() {
+        // arrange
+        Permission newPermission = permission1.toPermission();
+        String permissionDescription = "new description";
+        newPermission.setPermissionDescription(permissionDescription);
+        Date test = DateUtil.getZonedNow();
+        newPermission.setDateUpdated(test);
+        Permission[] newPermissions = {newPermission};
+        when(repo.getPermissionById(any(Long.class)))
+                .thenReturn(Optional.of(permission1.toPermission()));
+        ArgumentCaptor<Permission> argument = ArgumentCaptor.forClass(Permission.class);
+
+        // act
+        service.savePermissions(newPermissions);
+
+        // assert
+        verify(repo).savePermission(argument.capture());
+        assertEquals(permissionId1, argument.getValue().getPermissionId());
+        assertEquals(permissionDescription, argument.getValue().getPermissionDescription());
+        assertNotNull("newPermission", argument.getValue().getPermission());
+        assertEquals(test, argument.getValue().getDateUpdated());
+    }
 }

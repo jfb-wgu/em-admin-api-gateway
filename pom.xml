@@ -70,17 +70,7 @@
 			<artifactId>spring-ldap-core</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>com.datastax.cassandra</groupId>
-			<artifactId>cassandra-driver-core</artifactId>
-			<version>3.4.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.datastax.cassandra</groupId>
-			<artifactId>cassandra-driver-mapping</artifactId>
-			<version>3.4.0</version>
-		</dependency>
+		 
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -101,12 +91,7 @@
 			<version>3.7</version>
 		</dependency>
 
-		<dependency>
-			<groupId>edu.wgu</groupId>
-			<artifactId>dm-audit</artifactId>
-			<version>1.2.0</version>
-		</dependency>
-
+ 
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
@@ -159,6 +144,25 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-devtools</artifactId>
 		<optional>true</optional>
+		</dependency>
+		
+		<!--  RDB Related dependencies  -->
+	 	<dependency>
+			<groupId>edu.wgu</groupId>
+			<artifactId>dm-worker</artifactId>
+			<version>0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
 		</dependency>
 	
 	</dependencies>

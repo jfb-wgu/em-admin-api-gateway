@@ -1,121 +1,121 @@
 package edu.wgu.dmadmin.test;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
-
-import edu.wgu.dmadmin.domain.security.User;
-import edu.wgu.dmadmin.model.publish.TaskModel;
-import edu.wgu.dmadmin.model.security.PermissionModel;
-import edu.wgu.dmadmin.model.security.RoleModel;
-import edu.wgu.dmadmin.model.security.UserModel;
-import edu.wgu.dmadmin.util.DateUtil;
+import edu.wgu.dm.dto.security.User;
+import edu.wgu.dm.entity.AssessmentType;
+import edu.wgu.dm.entity.publish.AssessmentEntity;
+import edu.wgu.dm.entity.publish.TaskEntity;
+import edu.wgu.dm.entity.security.PermissionEntity;
+import edu.wgu.dm.entity.security.RoleEntity;
+import edu.wgu.dm.entity.security.UserEntity;
+import edu.wgu.dm.util.DateUtil;
 
 public class TestObjectFactory {
+    static Random random = new Random();
 
 	static String evaluatorLastName = "Wayne";
 	static String evaluatorFirstName = "Bruce";
-	static String studentId = "student";
-	static UUID submissionId = UUID.randomUUID();
 	static String evaluatorId = "evaluator";
 	static String employeeId = "employeeId";
-	static Long assessmentId = new Random().nextLong();
-	static Random random = new Random();
-	static UUID evaluationId = UUID.randomUUID();
-	static UUID taskId = UUID.randomUUID();
+	static String studentId = "student";
+	static Long submissionId =  random.nextLong();
+	static Long assessmentId = random.nextLong();
+	static Long evaluationId = random.nextLong();
+	static Long taskId = random.nextLong();
 
-	public static UserModel getUserModel() {
-		UserModel user = getUserModel(evaluatorFirstName, evaluatorLastName, evaluatorId, new HashSet<UUID>(),
-				new HashSet<String>(), new HashSet<UUID>(), new HashSet<String>(), employeeId);
+    public static UserEntity getUserModel() {
+        UserEntity user = getUserModel(evaluatorFirstName, evaluatorLastName, evaluatorId,
+                new ArrayList<RoleEntity>(), new ArrayList<PermissionEntity>(),
+                new ArrayList<TaskEntity>(), new ArrayList<String>(), employeeId);
+        RoleEntity role = getRoleModel("role");
+        PermissionEntity permission1 = getPermission("test1", "dashboard");
+        PermissionEntity permission2 = getPermission("test2", "evaluator");
+        role.getPermissions().add(permission1);
+        role.getPermissions().add(permission2);
+        user.getRoles().add(role);
+        return user;
+    }
 
-		user.getRoles().add(UUID.randomUUID());
-		user.getLandings().add("dashboard");
-		user.getLandings().add("evaluator");
-		user.getPermissions().add("test1");
-		user.getPermissions().add("test2");
-
-		return user;
+	public static UserEntity getUserModel(String inUserId, String inEmployeeId) {
+		return getUserModel(evaluatorFirstName, evaluatorLastName, inUserId, new ArrayList<RoleEntity>(), new ArrayList<PermissionEntity>(),
+				new ArrayList<TaskEntity>(), new ArrayList<String>(), inEmployeeId);
 	}
 
-	public static UserModel getUserModel(String inUserId, String inEmployeeId) {
-		return getUserModel(evaluatorFirstName, evaluatorLastName, inUserId, new HashSet<UUID>(), new HashSet<String>(),
-				new HashSet<UUID>(), new HashSet<String>(), inEmployeeId);
+	public static UserEntity getUserModel(String firstName, String lastName, String userId, List<RoleEntity> roles,
+            List<PermissionEntity> permissions, List<TaskEntity> tasks, List<String> landings,
+            String inEmployeeId) {
+        UserEntity user = new UserEntity();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setUserId(userId);
+        user.setRoles(roles);
+        user.setTasks(tasks);
+        user.setEmployeeId(inEmployeeId);
+        return user;
+    }
+
+	public static User getUser(String firstName, String lastName, String userId, List<Long> roles,
+            List<String> permissions, List<Long> tasks, List<String> landings,
+            String inEmployeeId) {
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setUserId(userId);
+        user.setLandings(landings);
+        user.setPermissions(permissions);
+        user.setRoles(roles);
+        user.setTasks(tasks);
+        user.setEmployeeId(inEmployeeId);
+        return user;
+    }
+
+	public static RoleEntity getRoleModel(String role) {
+		return getRoleModel(role, random.nextLong());
 	}
 
-	public static UserModel getUserModel(String firstName, String lastName, String userId, Set<UUID> roles,
-			Set<String> permissions, Set<UUID> tasks, Set<String> landings, String inEmployeeId) {
-		UserModel user = new UserModel();
-		user.setFirstName(firstName);
-		user.setLastName(lastName);
-		user.setUserId(userId);
-		user.setLandings(landings);
-		user.setPermissions(permissions);
-		user.setRoles(roles);
-		user.setTasks(tasks);
-		user.setEmployeeId(inEmployeeId);
-
-		return user;
+	public static RoleEntity getRoleModel(String role, Long roleId) {
+		return getRoleModel(role, roleId, new ArrayList<PermissionEntity>(), "testing role");
 	}
 
-	public static User getUser(String firstName, String lastName, String userId, Set<UUID> roles,
-			Set<String> permissions, Set<UUID> tasks, Set<String> landings, String inEmployeeId) {
-		User user = new User();
-		user.setFirstName(firstName);
-		user.setLastName(lastName);
-		user.setUserId(userId);
-		user.setLandings(landings);
-		user.setPermissions(permissions);
-		user.setRoles(roles);
-		user.setTasks(tasks);
-		user.setEmployeeId(inEmployeeId);
+    public static RoleEntity getRoleModel(String role, Long roleId,
+            List<PermissionEntity> permissions, String description) {
+        RoleEntity model = new RoleEntity();
+        model.setDateCreated(DateUtil.getZonedNow());
+        model.setRole(role);
+        model.setPermissions(permissions);
+        model.setRoleDescription(description);
+        model.setRoleId(roleId);
+        return model;
+    }
 
-		return user;
+	public static PermissionEntity getPermission(String permission, String landing) {
+		return getPermissionModel(permission, random.nextLong(), "test permission", landing, "test type");
 	}
 
-	public static RoleModel getRoleModel(String role) {
-		return getRoleModel(role, UUID.randomUUID());
-	}
-
-	public static RoleModel getRoleModel(String role, UUID roleId) {
-		return getRoleModel(role, roleId, new HashSet<UUID>(), "testing role");
-	}
-
-	public static RoleModel getRoleModel(String role, UUID roleId, Set<UUID> permissions, String description) {
-		RoleModel model = new RoleModel();
-		model.setDateCreated(DateUtil.getZonedNow());
-		model.setRole(role);
-		model.setPermissions(permissions);
-		model.setRoleDescription(description);
-		model.setRoleId(roleId);
-
-		return model;
-	}
-
-	public static PermissionModel getPermission(String permission, String landing) {
-		return getPermissionModel(permission, UUID.randomUUID(), "test permission", landing, "test type");
-	}
-
-	public static PermissionModel getPermissionModel(String permission, UUID permissionId, String description,
-			String landing, String type) {
-		PermissionModel model = new PermissionModel();
-		model.setDateCreated(DateUtil.getZonedNow());
-		model.setPermission(permission);
-		model.setLanding(landing);
-		model.setPermissionDescription(description);
-		model.setPermissionId(permissionId);
-		model.setPermissionType(type);
-
-		return model;
-	}
+	public static PermissionEntity getPermissionModel(String permission, Long permissionId, String description,
+            String landing, String type) {
+        PermissionEntity model = new PermissionEntity();
+        model.setDateCreated(DateUtil.getZonedNow());
+        model.setPermission(permission);
+        model.setLanding(landing);
+        model.setPermissionDescription(description);
+        model.setPermissionId(permissionId);
+        model.setPermissionType(type);
+        return model;
+    }
 	
-    public static TaskModel getTaskModel() {
-		TaskModel taskModel = new TaskModel();
-        taskModel.setAssessmentName("Assessment 1");
-        taskModel.setAssessmentCode("A1A1");
-        taskModel.setPamsAssessmentId(new Random().nextLong());
+    public static TaskEntity getTaskModel() {
+		TaskEntity taskModel = new TaskEntity();
+		AssessmentEntity assessment = new AssessmentEntity();
+		assessment.setAssessmentName("Assessment 1");
+		assessment.setAssessmentCode("A1A1");
+		assessment.setPamsAssessmentId(new Random().nextLong());
+		assessment.setAssessmentType(AssessmentType.P);
+        taskModel.setAssessment(assessment);
         taskModel.setTaskName("Task Name");
-        taskModel.setTaskId(UUID.randomUUID());
+        taskModel.setTaskId(random.nextLong());
         taskModel.setTaskOrder(1);
         return taskModel;
     }

@@ -9,14 +9,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
+import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,167 +24,173 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import edu.wgu.dmadmin.domain.security.Role;
-import edu.wgu.dmadmin.service.RoleService;
-import edu.wgu.dmadmin.util.DateUtil;
+import edu.wgu.dm.admin.controller.RoleController;
+import edu.wgu.dm.dto.security.Role;
+import edu.wgu.dm.service.admin.RoleService;
+import edu.wgu.dm.util.DateUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RoleControllerTest {
-	@InjectMocks
-	private RoleController roleController;
 
-	@Mock
-	private RoleService securityService;
+    @InjectMocks
+    private RoleController roleController;
 
-	private MockMvc mockMvc;
-	private ObjectMapper mapper = new ObjectMapper();
-	private UUID roleId = UUID.randomUUID();
+    @Mock
+    private RoleService securityService;
 
-	@Before
-	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
-		this.mockMvc = standaloneSetup(this.roleController).build();
-	}
+    private MockMvc mockMvc;
+    private ObjectMapper mapper = new ObjectMapper();
+    Random random = new Random();
+    private Long roleId = random.nextLong();
 
-	@Test
-	public void testAddRoles() throws Exception {
-		String url = "/v1/admin/roles";
-		Set<UUID> permissions = new HashSet<>();
-		permissions.add(UUID.randomUUID());
-		permissions.add(UUID.randomUUID());
 
-		Set<String> permissionNames = new HashSet<>();
-		permissionNames.add("1");
-		permissionNames.add("2");
-		permissionNames.add("3");
+    @Before
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        this.mockMvc = standaloneSetup(this.roleController).build();
+    }
 
-		Role[] roles = new Role[1];
-		Role role = new Role();
-		role.setDateCreated(DateUtil.getZonedNow());
-		role.setRole("Admin");
-		role.setPermissions(permissions);
-		role.setDateUpdated(DateUtil.getZonedNow());
-		role.setRoleId(UUID.randomUUID());
-		role.setPermissionNames(permissionNames);
-		role.setRoleDescription("Description");
-		roles[0] = role;
+    @Test
+    public void testAddRoles() throws Exception {
+        String url = "/v1/admin/roles";
+        List<Long> permissions = new ArrayList<>();
+        permissions.add(random.nextLong());
+        permissions.add(random.nextLong());
 
-		List<Role> roleList = new ArrayList<>();
-		roleList.add(role);
+        List<String> permissionNames = new ArrayList<>();
+        permissionNames.add("1");
+        permissionNames.add("2");
+        permissionNames.add("3");
 
-		when(this.securityService.saveRoles(roles)).thenReturn(roleList);
+        Role[] roles = new Role[1];
+        Role role = new Role();
+        role.setDateCreated(DateUtil.getZonedNow());
+        role.setRole("Admin");
+        role.setPermissions(permissions);
+        role.setDateUpdated(DateUtil.getZonedNow());
+        role.setRoleId(random.nextLong());
+        role.setPermissionNames(permissionNames);
+        role.setRoleDescription("Description");
+        roles[0] = role;
 
-		MvcResult result = this.mockMvc.perform(
-				post(url).contentType(MediaType.APPLICATION_JSON).content(this.mapper.writeValueAsString(roles)))
-				.andExpect(status().isOk()).andReturn();
+        List<Role> roleList = new ArrayList<>();
+        roleList.add(role);
 
-		assertEquals(this.mapper.writeValueAsString(roleList), result.getResponse().getContentAsString());
+        when(this.securityService.saveRoles(roles)).thenReturn(roleList);
 
-		ArgumentCaptor<Role[]> arg1 = ArgumentCaptor.forClass(Role[].class);
+        MvcResult result = this.mockMvc
+                .perform(post(url).contentType(MediaType.APPLICATION_JSON)
+                        .content(this.mapper.writeValueAsString(roles)))
+                .andExpect(status().isOk()).andReturn();
 
-		verify(this.securityService).saveRoles(arg1.capture());
-		assertEquals(Arrays.toString(roles), Arrays.toString(arg1.getValue()));
-	}
+        assertEquals(this.mapper.writeValueAsString(roleList),
+                result.getResponse().getContentAsString());
 
-	@Test
-	public void testGetRoles() throws Exception {
-		String url = "/v1/admin/roles";
-		Set<UUID> permissions = new HashSet<>();
-		permissions.add(UUID.randomUUID());
-		permissions.add(UUID.randomUUID());
+        ArgumentCaptor<Role[]> arg1 = ArgumentCaptor.forClass(Role[].class);
 
-		Set<String> permissionNames = new HashSet<>();
-		permissionNames.add("1");
-		permissionNames.add("2");
-		permissionNames.add("3");
+        verify(this.securityService).saveRoles(arg1.capture());
+        assertEquals(Arrays.toString(roles), Arrays.toString(arg1.getValue()));
+    }
 
-		Role role = new Role();
-		role.setDateCreated(DateUtil.getZonedNow());
-		role.setRole("Admin");
-		role.setPermissions(permissions);
-		role.setDateUpdated(DateUtil.getZonedNow());
-		role.setRoleId(UUID.randomUUID());
-		role.setPermissionNames(permissionNames);
-		role.setRoleDescription("Description");
+    @Test
+    public void testGetRoles() throws Exception {
+        String url = "/v1/admin/roles";
+        List<Long> permissions = new ArrayList<>();
+        permissions.add(random.nextLong());
+        permissions.add(random.nextLong());
 
-		List<Role> roleList = new ArrayList<>();
-		roleList.add(role);
+        List<String> permissionNames = new ArrayList<>();
+        permissionNames.add("1");
+        permissionNames.add("2");
+        permissionNames.add("3");
 
-		when(this.securityService.getRoles()).thenReturn(roleList);
+        Role role = new Role();
+        role.setDateCreated(DateUtil.getZonedNow());
+        role.setRole("Admin");
+        role.setPermissions(permissions);
+        role.setDateUpdated(DateUtil.getZonedNow());
+        role.setRoleId(random.nextLong());
+        role.setPermissionNames(permissionNames);
+        role.setRoleDescription("Description");
 
-		MvcResult result = this.mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
+        List<Role> roleList = new ArrayList<>();
+        roleList.add(role);
 
-		assertEquals(this.mapper.writeValueAsString(roleList), result.getResponse().getContentAsString());
+        when(this.securityService.getRoles()).thenReturn(roleList);
 
-		verify(this.securityService).getRoles();
-	}
+        MvcResult result = this.mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 
-	@Test
-	public void testGetRole() throws Exception {
-		String url = "/v1/admin/roles/" + this.roleId;
-		Set<UUID> permissions = new HashSet<>();
-		Set<String> permissionNames = new HashSet<>();
+        assertEquals(this.mapper.writeValueAsString(roleList),
+                result.getResponse().getContentAsString());
 
-		permissions.add(UUID.randomUUID());
-		permissions.add(UUID.randomUUID());
+        verify(this.securityService).getRoles();
+    }
 
-		permissionNames.add("1");
-		permissionNames.add("2");
-		permissionNames.add("3");
+    @Test
+    public void testGetRole() throws Exception {
+        String url = "/v1/admin/roles/" + this.roleId;
+        List<Long> permissions = new ArrayList<>();
+        List<String> permissionNames = new ArrayList<>();
 
-		Role role = new Role();
-		role.setDateCreated(DateUtil.getZonedNow());
-		role.setRole("Admin");
-		role.setPermissions(permissions);
-		role.setDateUpdated(DateUtil.getZonedNow());
-		role.setRoleId(UUID.randomUUID());
-		role.setPermissionNames(permissionNames);
-		role.setRoleDescription("Description");
+        permissions.add(random.nextLong());
+        permissions.add(random.nextLong());
 
-		when(this.securityService.getRole(this.roleId)).thenReturn(role);
+        permissionNames.add("1");
+        permissionNames.add("2");
+        permissionNames.add("3");
 
-		MvcResult result = this.mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
+        Role role = new Role();
+        role.setDateCreated(DateUtil.getZonedNow());
+        role.setRole("Admin");
+        role.setPermissions(permissions);
+        role.setDateUpdated(DateUtil.getZonedNow());
+        role.setRoleId(random.nextLong());
+        role.setPermissionNames(permissionNames);
+        role.setRoleDescription("Description");
 
-		assertEquals(this.mapper.writeValueAsString(role), result.getResponse().getContentAsString());
+        when(this.securityService.getRole(this.roleId)).thenReturn(role);
 
-		ArgumentCaptor<UUID> arg1 = ArgumentCaptor.forClass(UUID.class);
+        MvcResult result = this.mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 
-		verify(this.securityService).getRole(arg1.capture());
-		assertEquals(this.roleId, arg1.getValue());
-	}
+        assertEquals(this.mapper.writeValueAsString(role),
+                result.getResponse().getContentAsString());
 
-	@Test
-	public void testDeleteRole() throws Exception {
-		String url = "/v1/admin/roles/" + this.roleId;
-		Set<UUID> permissions = new HashSet<>();
-		Set<String> permissionNames = new HashSet<>();
+        ArgumentCaptor<Long> arg1 = ArgumentCaptor.forClass(Long.class);
 
-		permissions.add(UUID.randomUUID());
-		permissions.add(UUID.randomUUID());
+        verify(this.securityService).getRole(arg1.capture());
+        assertEquals(this.roleId, arg1.getValue());
+    }
 
-		permissionNames.add("1");
-		permissionNames.add("2");
-		permissionNames.add("3");
+    @Test
+    public void testDeleteRole() throws Exception {
+        String url = "/v1/admin/roles/" + this.roleId;
+        List<Long> permissions = new ArrayList<>();
+        List<String> permissionNames = new ArrayList<>();
 
-		Role role = new Role();
-		role.setDateCreated(DateUtil.getZonedNow());
-		role.setRole("Admin");
-		role.setPermissions(permissions);
-		role.setDateUpdated(DateUtil.getZonedNow());
-		role.setRoleId(UUID.randomUUID());
-		role.setPermissionNames(permissionNames);
-		role.setRoleDescription("Description");
+        permissions.add(random.nextLong());
+        permissions.add(random.nextLong());
 
-		doNothing().when(this.securityService).deleteRole(this.roleId);
+        permissionNames.add("1");
+        permissionNames.add("2");
+        permissionNames.add("3");
 
-		this.mockMvc.perform(delete(url)).andExpect(status().isNoContent()).andReturn();
+        Role role = new Role();
+        role.setDateCreated(DateUtil.getZonedNow());
+        role.setRole("Admin");
+        role.setPermissions(permissions);
+        role.setDateUpdated(DateUtil.getZonedNow());
+        role.setRoleId(random.nextLong());
+        role.setPermissionNames(permissionNames);
+        role.setRoleDescription("Description");
 
-		ArgumentCaptor<UUID> arg1 = ArgumentCaptor.forClass(UUID.class);
+        doNothing().when(this.securityService).deleteRole(this.roleId);
 
-		verify(this.securityService).deleteRole(arg1.capture());
-		assertEquals(this.roleId, arg1.getValue());
-	}
+        this.mockMvc.perform(delete(url)).andExpect(status().isNoContent()).andReturn();
+
+        ArgumentCaptor<Long> arg1 = ArgumentCaptor.forClass(Long.class);
+
+        verify(this.securityService).deleteRole(arg1.capture());
+        assertEquals(this.roleId, arg1.getValue());
+    }
 }
