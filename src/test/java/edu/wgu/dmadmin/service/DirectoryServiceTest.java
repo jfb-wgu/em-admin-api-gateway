@@ -16,16 +16,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import edu.wgu.dm.admin.repository.AdminRepository;
+import edu.wgu.dm.admin.service.DirectoryService;
+import edu.wgu.dm.admin.service.LdapLookup;
+import edu.wgu.dm.admin.service.PersonService;
 import edu.wgu.dm.dto.security.LdapGroup;
 import edu.wgu.dm.dto.security.LdapUser;
 import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.entity.publish.TaskEntity;
 import edu.wgu.dm.entity.security.RoleEntity;
 import edu.wgu.dm.entity.security.UserEntity;
-import edu.wgu.dm.repository.admin.AdminRepository;
-import edu.wgu.dm.service.admin.DirectoryService;
-import edu.wgu.dm.service.admin.PersonService;
-import edu.wgu.dm.service.ldap.LdapLookup;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 
 @RunWith(MockitoJUnitRunner.class)

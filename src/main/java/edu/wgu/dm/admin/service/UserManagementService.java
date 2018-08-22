@@ -1,4 +1,4 @@
-package edu.wgu.dm.service.admin;
+package edu.wgu.dm.admin.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,15 +7,15 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.wgu.common.exception.AuthorizationException;
+import edu.wgu.dm.admin.repository.AdminRepository;
 import edu.wgu.dm.common.exception.UserIdNotFoundException;
 import edu.wgu.dm.dto.security.BulkCreateResponse;
 import edu.wgu.dm.dto.security.BulkUsers;
-import edu.wgu.dm.dto.security.Permissions;
 import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.entity.security.PermissionEntity;
 import edu.wgu.dm.entity.security.RoleEntity;
-import edu.wgu.dm.repository.admin.AdminRepository;
+import edu.wgu.dm.util.Permissions;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 

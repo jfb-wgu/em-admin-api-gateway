@@ -1,4 +1,4 @@
-package edu.wgu.dm.service.admin;
+package edu.wgu.dm.admin.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;

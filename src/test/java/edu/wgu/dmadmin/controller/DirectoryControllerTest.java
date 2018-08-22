@@ -23,9 +23,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wgu.dm.admin.controller.DirectoryController;
+import edu.wgu.dm.admin.service.DirectoryService;
 import edu.wgu.dm.dto.security.LdapUser;
 import edu.wgu.dm.dto.security.Person;
-import edu.wgu.dm.service.admin.DirectoryService;
 import edu.wgu.dm.util.DateUtil;
 import edu.wgu.dm.util.IdentityUtil;
 

@@ -20,13 +20,13 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import edu.wgu.dm.admin.repository.AdminRepository;
+import edu.wgu.dm.admin.service.PermissionService;
 import edu.wgu.dm.common.exception.PermissionNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.entity.security.PermissionEntity;
 import edu.wgu.dm.entity.security.RoleEntity;
 import edu.wgu.dm.entity.security.UserEntity;
-import edu.wgu.dm.repository.admin.AdminRepository;
-import edu.wgu.dm.service.admin.PermissionService;
 import edu.wgu.dm.util.DateUtil;
 
 @RunWith(MockitoJUnitRunner.class)

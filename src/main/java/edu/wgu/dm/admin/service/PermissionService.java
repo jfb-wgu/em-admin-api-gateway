@@ -1,13 +1,13 @@
-package edu.wgu.dm.service.admin;
+package edu.wgu.dm.admin.service;
 
 import java.util.List;
 import java.util.Optional;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import edu.wgu.dm.admin.repository.AdminRepository;
 import edu.wgu.dm.common.exception.PermissionNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
-import edu.wgu.dm.repository.admin.AdminRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
