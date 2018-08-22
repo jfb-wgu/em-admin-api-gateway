@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import edu.wgu.common.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.AdminRepository;
 import edu.wgu.dm.common.exception.UserIdNotFoundException;
@@ -15,6 +17,7 @@ import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.entity.security.PermissionEntity;
 import edu.wgu.dm.entity.security.RoleEntity;
+import edu.wgu.dm.service.feign.PersonService;
 import edu.wgu.dm.util.Permissions;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
