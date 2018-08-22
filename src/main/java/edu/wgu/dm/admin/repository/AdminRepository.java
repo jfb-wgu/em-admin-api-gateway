@@ -1,4 +1,4 @@
-package edu.wgu.dm.repository.admin;
+package edu.wgu.dm.admin.repository;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,14 +10,14 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import edu.wgu.dm.admin.domain.report.EmaEvaluationAspectRecord;
-import edu.wgu.dm.admin.domain.report.EmaTaskRubricRecord;
-import edu.wgu.dm.converter.entitydto.GenericConverter;
+import edu.wgu.dm.dto.admin.report.EmaEvaluationAspectRecord;
+import edu.wgu.dm.dto.admin.report.EmaTaskRubricRecord;
 import edu.wgu.dm.dto.publish.Competency;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.entity.EvaluationStatus;
+import edu.wgu.dm.entity.converter.DtoCreationHelper;
 import edu.wgu.dm.entity.evaluation.EvaluationEntity;
 import edu.wgu.dm.entity.publish.TaskEntity;
 import edu.wgu.dm.entity.security.PermissionEntity;
@@ -47,9 +47,6 @@ public class AdminRepository {
     private TaskRepository taskRepo;
 
     @Autowired
-    GenericConverter converter;
-
-    @Autowired
     RoleRepository roleRepo;
 
     @Autowired
@@ -63,7 +60,7 @@ public class AdminRepository {
 
     public List<Competency> getTaskCompetencies(Date datePublished) {
         return competencyRepo.getCompetencies(datePublished).stream()
-                .map(entity -> converter.toCompetency(entity)).collect(Collectors.toList());
+                .map(entity -> DtoCreationHelper.toCompetency(entity)).collect(Collectors.toList());
     }
 
     public List<EmaEvaluationAspectRecord> getEvaluationAspects(Date startOfDay, Date endOfDay) {
@@ -73,7 +70,7 @@ public class AdminRepository {
                         startOfDay, endOfDay, EvaluationStatus.COMPLETED);
         list.forEach(eval -> {
             eval.getEvaluationAspects().forEach(aspect -> {
-                aspectRecords.add(converter.toEmaEvaluationAspectRecord(aspect, eval));
+                aspectRecords.add(DtoCreationHelper.toEmaEvaluationAspectRecord(aspect, eval));
             });
         });
         return aspectRecords;
@@ -87,7 +84,7 @@ public class AdminRepository {
         list.stream().forEach(task -> {
             task.getAspects().forEach(aspect -> {
                 aspect.getAnchors().forEach(anchor -> {
-                    taskRecords.add(converter.toEmaTaskRubricRecord(anchor, aspect, task));
+                    taskRecords.add(DtoCreationHelper.toEmaTaskRubricRecord(anchor, aspect, task));
                 });
             });
         });

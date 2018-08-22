@@ -1,4 +1,4 @@
-package edu.wgu.dm.service.admin;
+package edu.wgu.dm.admin.service;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;

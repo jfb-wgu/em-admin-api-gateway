@@ -24,6 +24,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+import edu.wgu.dm.admin.repository.AdminRepository;
+import edu.wgu.dm.admin.service.PersonService;
+import edu.wgu.dm.admin.service.UserManagementService;
 import edu.wgu.dm.common.exception.UserIdNotFoundException;
 import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.dto.security.User;
@@ -31,9 +34,6 @@ import edu.wgu.dm.entity.publish.TaskEntity;
 import edu.wgu.dm.entity.security.RoleEntity;
 import edu.wgu.dm.entity.security.UserEntity;
 import edu.wgu.dm.repo.ema.RoleRepository;
-import edu.wgu.dm.repository.admin.AdminRepository;
-import edu.wgu.dm.service.admin.PersonService;
-import edu.wgu.dm.service.admin.UserManagementService;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 
 @RunWith(MockitoJUnitRunner.class)

@@ -1,4 +1,4 @@
-package edu.wgu.dm.service.admin;
+package edu.wgu.dm.admin.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +8,10 @@ import javax.transaction.Transactional;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import edu.wgu.dm.admin.repository.AdminRepository;
 import edu.wgu.dm.common.exception.RoleNotFoundException;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.User;
-import edu.wgu.dm.repository.admin.AdminRepository;
 import edu.wgu.dm.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 

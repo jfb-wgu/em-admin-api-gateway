@@ -26,8 +26,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wgu.dm.admin.controller.RoleController;
+import edu.wgu.dm.admin.service.RoleService;
 import edu.wgu.dm.dto.security.Role;
-import edu.wgu.dm.service.admin.RoleService;
 import edu.wgu.dm.util.DateUtil;
 
 @RunWith(MockitoJUnitRunner.class)

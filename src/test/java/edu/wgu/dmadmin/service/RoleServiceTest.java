@@ -20,14 +20,14 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import edu.wgu.dm.admin.repository.AdminRepository;
+import edu.wgu.dm.admin.service.RoleService;
 import edu.wgu.dm.common.exception.RoleNotFoundException;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.entity.security.RoleEntity;
 import edu.wgu.dm.entity.security.UserEntity;
 import edu.wgu.dm.repo.ema.RoleRepository;
-import edu.wgu.dm.repository.admin.AdminRepository;
-import edu.wgu.dm.service.admin.RoleService;
 import edu.wgu.dm.util.DateUtil;
 
 @RunWith(MockitoJUnitRunner.class)

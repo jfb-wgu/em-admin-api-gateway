@@ -1,4 +1,4 @@
-package edu.wgu.dm.service.admin;
+package edu.wgu.dm.admin.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,11 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Service;
+import edu.wgu.dm.admin.repository.AdminRepository;
 import edu.wgu.dm.dto.security.LdapGroup;
 import edu.wgu.dm.dto.security.LdapUser;
 import edu.wgu.dm.dto.security.Person;
-import edu.wgu.dm.repository.admin.AdminRepository;
-import edu.wgu.dm.service.ldap.LdapLookup;
 import lombok.RequiredArgsConstructor;
 
 @Service
