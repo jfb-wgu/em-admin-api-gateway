@@ -8,6 +8,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import edu.wgu.autoconfigure.WguSoaApplication;
@@ -21,6 +22,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableFeignClients(basePackages = {"edu.wgu.dm.service.feign"})
 @EnableTransactionManagement
 @EnableAspectJAutoProxy
+@EnableJpaAuditing
 public class Application extends SpringBootServletInitializer {
 
     /**
