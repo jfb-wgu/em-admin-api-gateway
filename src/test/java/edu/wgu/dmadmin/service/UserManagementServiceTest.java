@@ -7,14 +7,12 @@ import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,7 +24,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-
 import edu.wgu.dm.admin.repository.AdminRepository;
 import edu.wgu.dm.admin.service.UserManagementService;
 import edu.wgu.dm.common.exception.UserIdNotFoundException;

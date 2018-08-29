@@ -4,11 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Optional;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
-
 import edu.wgu.dm.admin.repository.AdminRepository;
 import edu.wgu.dm.admin.service.UserInfoService;
 import edu.wgu.dm.common.exception.UserNotFoundException;

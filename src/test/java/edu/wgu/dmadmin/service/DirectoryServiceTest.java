@@ -3,23 +3,19 @@ package edu.wgu.dmadmin.service;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import javax.naming.InvalidNameException;
 import javax.naming.Name;
 import javax.naming.ldap.LdapName;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
 import edu.wgu.dm.admin.repository.AdminRepository;
 import edu.wgu.dm.admin.service.DirectoryService;
 import edu.wgu.dm.admin.service.LdapLookup;
