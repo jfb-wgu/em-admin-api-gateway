@@ -18,6 +18,7 @@ import edu.wgu.dm.admin.repository.AdminRepository;
 import edu.wgu.dm.dto.security.LdapGroup;
 import edu.wgu.dm.dto.security.LdapUser;
 import edu.wgu.dm.dto.security.Person;
+import edu.wgu.dm.service.feign.PersonService;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -30,7 +31,7 @@ public class DirectoryService {
     final AdminRepository repo;
 
     final LdapLookup lookup;
- 
+
     public List<LdapUser> getMembersForGroup(String groupName) {
         List<Name> members = new ArrayList<Name>();
 

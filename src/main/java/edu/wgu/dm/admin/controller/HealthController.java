@@ -22,17 +22,19 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("v1/health")
 public class HealthController {
-	
-	@Autowired
-	private HealthService service;
 
-	@Audit
-	@Secured(strategies = { SecureByPermissionStrategy.class })
-	@HasAnyRole(Permissions.SYSTEM)
-	@RequestMapping(value = { "/environment" }, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiOperation("List environment variables for this server.")
-	@ApiImplicitParam(name = "Authorization", value = "SYSTEM permission", dataType = "string", paramType = "header", required = true)
-	public ResponseEntity<Map<String, String>> getEnvironment() {
-		return ResponseEntity.ok(this.service.getEnvironment());
-	}
+    @Autowired
+    private HealthService service;
+
+    @Audit
+    @Secured(strategies = {SecureByPermissionStrategy.class})
+    @HasAnyRole(Permissions.SYSTEM)
+    @RequestMapping(value = {"/environment"}, method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation("List environment variables for this server.")
+    @ApiImplicitParam(name = "Authorization", value = "SYSTEM permission", dataType = "string",
+            paramType = "header", required = true)
+    public ResponseEntity<Map<String, String>> getEnvironment() {
+        return ResponseEntity.ok(this.service.getEnvironment());
+    }
 }

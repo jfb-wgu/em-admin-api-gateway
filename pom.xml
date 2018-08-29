@@ -14,10 +14,11 @@
 	</parent>
 
 	<properties>
-		<start-class>edu.wgu.dmadmin.Application</start-class>
+		<start-class>edu.wgu.dm.admin.Application</start-class>
 		<wgu.soa.starter.version>1.5.3</wgu.soa.starter.version>
 		<wgu.soa.autoconfigure.version>1.3.1</wgu.soa.autoconfigure.version>
 		<sonar.tests>src/test/java</sonar.tests>
+		<hibernate.version>5.2.17.Final</hibernate.version>
 	</properties>
 
 	<dependencies>

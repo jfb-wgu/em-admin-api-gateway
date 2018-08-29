@@ -28,28 +28,31 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("v1")
 public class UserInfoController {
 
-	@Autowired
-	private UserInfoService service;
+    @Autowired
+    private UserInfoService service;
 
-	@Autowired
-	private IdentityUtil iUtil;
+    @Autowired
+    private IdentityUtil iUtil;
 
-	@Audit
-	@IgnoreAuthorization
-	@GetMapping(value = "/person", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiOperation("View details about the current user.")
-	@ApiImplicitParam(name = "Authorization", value = "All authenticated", dataType = "string", paramType = "header", required = true)
-	public ResponseEntity<Person> getPerson(HttpServletRequest request) throws ParseException {
-		return ResponseEntity.ok(this.service.getPersonFromRequest(request, this.iUtil.getUserId()));
-	}
+    @Audit
+    @IgnoreAuthorization
+    @GetMapping(value = "/person", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation("View details about the current user.")
+    @ApiImplicitParam(name = "Authorization", value = "All authenticated", dataType = "string",
+            paramType = "header", required = true)
+    public ResponseEntity<Person> getPerson(HttpServletRequest request) throws ParseException {
+        return ResponseEntity
+                .ok(this.service.getPersonFromRequest(request, this.iUtil.getUserId()));
+    }
 
-	@Audit
-	@Secured(strategies = { SecureByPermissionStrategy.class })
-	@HasAnyRole(Permissions.USER_SEARCH)
-	@GetMapping(value = "/person/{bannerId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiOperation("View details about the specified user.")
-	@ApiImplicitParam(name = "Authorization", value = "User-Search permission", dataType = "string", paramType = "header", required = true)
-	public ResponseEntity<Person> getPerson(@PathVariable final String bannerId) {
-		return ResponseEntity.ok(this.service.getPersonByUserId(bannerId));
-	}
+    @Audit
+    @Secured(strategies = {SecureByPermissionStrategy.class})
+    @HasAnyRole(Permissions.USER_SEARCH)
+    @GetMapping(value = "/person/{bannerId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation("View details about the specified user.")
+    @ApiImplicitParam(name = "Authorization", value = "User-Search permission", dataType = "string",
+            paramType = "header", required = true)
+    public ResponseEntity<Person> getPerson(@PathVariable final String bannerId) {
+        return ResponseEntity.ok(this.service.getPersonByUserId(bannerId));
+    }
 }

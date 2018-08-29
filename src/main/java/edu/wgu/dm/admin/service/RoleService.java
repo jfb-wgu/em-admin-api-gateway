@@ -21,7 +21,7 @@ public class RoleService {
 
     @Autowired
     private AdminRepository adminRepo;
- 
+
 
     /**
      * Get All Role DTO

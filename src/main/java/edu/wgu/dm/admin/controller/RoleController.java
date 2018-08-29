@@ -30,48 +30,55 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("v1/admin")
 public class RoleController {
 
-	@Autowired
-	private RoleService service;
+    @Autowired
+    private RoleService service;
 
-	@Audit
-	@Secured(strategies = { SecureByPermissionStrategy.class })
-	@HasAnyRole(Permissions.ROLE_CREATE)
-	@RequestMapping(value = "/roles", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiOperation("Add one or more roles.")
-	@ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string", paramType = "header", required = true)
-	public List<Role> addRoles(@RequestBody Role[] roles) {
-		return this.service.saveRoles(roles);
-	}
+    @Audit
+    @Secured(strategies = {SecureByPermissionStrategy.class})
+    @HasAnyRole(Permissions.ROLE_CREATE)
+    @RequestMapping(value = "/roles", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation("Add one or more roles.")
+    @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
+            paramType = "header", required = true)
+    public List<Role> addRoles(@RequestBody Role[] roles) {
+        return this.service.saveRoles(roles);
+    }
 
-	@Audit
-	@Secured(strategies = { SecureByPermissionStrategy.class })
-	@HasAnyRole(Permissions.ROLE_CREATE)
-	@RequestMapping(value = "/roles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiOperation("List all roles.")
-	@ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string", paramType = "header", required = true)
-	public ResponseEntity<List<Role>> getRoles() {
-		return ResponseEntity.ok(this.service.getRoles());
-	}
+    @Audit
+    @Secured(strategies = {SecureByPermissionStrategy.class})
+    @HasAnyRole(Permissions.ROLE_CREATE)
+    @RequestMapping(value = "/roles", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation("List all roles.")
+    @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
+            paramType = "header", required = true)
+    public ResponseEntity<List<Role>> getRoles() {
+        return ResponseEntity.ok(this.service.getRoles());
+    }
 
-	@Audit
-	@Secured(strategies = { SecureByPermissionStrategy.class })
-	@HasAnyRole(Permissions.ROLE_CREATE)
-	@RequestMapping(value = "/roles/{roleId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiOperation("Get details for specified role.")
-	@ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string", paramType = "header", required = true)
-	public ResponseEntity<Role> getRole(@PathVariable final Long roleId) {
-		return ResponseEntity.ok(this.service.getRole(roleId));
-	}
+    @Audit
+    @Secured(strategies = {SecureByPermissionStrategy.class})
+    @HasAnyRole(Permissions.ROLE_CREATE)
+    @RequestMapping(value = "/roles/{roleId}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation("Get details for specified role.")
+    @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
+            paramType = "header", required = true)
+    public ResponseEntity<Role> getRole(@PathVariable final Long roleId) {
+        return ResponseEntity.ok(this.service.getRole(roleId));
+    }
 
-	@Audit
-	@Secured(strategies = { SecureByPermissionStrategy.class })
-	@HasAnyRole(Permissions.ROLE_CREATE)
-	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	@RequestMapping(value = "/roles/{roleId}", method = RequestMethod.DELETE)
-	@ApiOperation("Delete specified role.")
-	@ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string", paramType = "header", required = true)
-	public void deleteRole(@PathVariable final Long roleId) {
-		this.service.deleteRole(roleId);
-	}
- 
+    @Audit
+    @Secured(strategies = {SecureByPermissionStrategy.class})
+    @HasAnyRole(Permissions.ROLE_CREATE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @RequestMapping(value = "/roles/{roleId}", method = RequestMethod.DELETE)
+    @ApiOperation("Delete specified role.")
+    @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
+            paramType = "header", required = true)
+    public void deleteRole(@PathVariable final Long roleId) {
+        this.service.deleteRole(roleId);
+    }
+
 }

@@ -35,23 +35,28 @@ public class DirectoryController {
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.DIRECTORY_SEARCH)
-    @RequestMapping(value = "/users/ldap/{group}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiOperation("Get the users in the specified Active Directory group.")
-	@ApiImplicitParam(name = "Authorization", value = "Directory-Search permission", dataType = "string", paramType = "header", required = true)
-    public ResponseEntity<List<LdapUser>> getMembersForGroup(
-    		@ApiParam(allowableValues = "DM_Admin, DM_Evaluator, DM_Publish, DM_Faculty") @PathVariable final String group) {
-        return new ResponseEntity<List<LdapUser>>(this.service.getMembersForGroup(group), HttpStatus.OK);
+    @RequestMapping(value = "/users/ldap/{group}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation("Get the users in the specified Active Directory group.")
+    @ApiImplicitParam(name = "Authorization", value = "Directory-Search permission",
+            dataType = "string", paramType = "header", required = true)
+    public ResponseEntity<List<LdapUser>> getMembersForGroup(@ApiParam(
+            allowableValues = "DM_Admin, DM_Evaluator, DM_Publish, DM_Faculty") @PathVariable final String group) {
+        return new ResponseEntity<List<LdapUser>>(this.service.getMembersForGroup(group),
+                HttpStatus.OK);
     }
 
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.DIRECTORY_SEARCH)
-    @RequestMapping(value = "/users/ldap/{group}/missing", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiOperation("Get the users in the specified Active Directory group who do not have users in EMA.")
-	@ApiImplicitParam(name = "Authorization", value = "Directory-Search permission", dataType = "string", paramType = "header", required = true)
-    public ResponseEntity<Set<Person>> getMissingGroupMembers(
-    		@ApiParam(allowableValues = "DM_Admin, DM_Evaluator, DM_Publish, DM_Faculty") @PathVariable final String group) {
+    @RequestMapping(value = "/users/ldap/{group}/missing", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation("Get the users in the specified Active Directory group who do not have users in EMA.")
+    @ApiImplicitParam(name = "Authorization", value = "Directory-Search permission",
+            dataType = "string", paramType = "header", required = true)
+    public ResponseEntity<Set<Person>> getMissingGroupMembers(@ApiParam(
+            allowableValues = "DM_Admin, DM_Evaluator, DM_Publish, DM_Faculty") @PathVariable final String group) {
         return new ResponseEntity<Set<Person>>(this.service.getMissingUsers(group), HttpStatus.OK);
     }
- 
+
 }

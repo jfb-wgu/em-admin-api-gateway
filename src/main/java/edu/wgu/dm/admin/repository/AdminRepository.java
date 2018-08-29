@@ -196,6 +196,6 @@ public class AdminRepository {
     public List<RoleEntity> findAllRoles(@NonNull List<Long> roleIds) {
         return roleRepo.findAll(roleIds);
     }
-    
-    
+
+
 }

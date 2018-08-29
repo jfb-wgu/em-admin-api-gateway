@@ -14,26 +14,25 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class PermissionService {
-    
+
     @Autowired
     private AdminRepository dmRepo;
-    
-   
-	public List<Permission> getPermissions() {
-		return dmRepo.getAllPermissions();
-	}
 
-	public Permission getPermission(Long permissionId) {
-		return dmRepo.getPermissionById(permissionId).orElseThrow(()-> new PermissionNotFoundException(permissionId));
-	}
 
-	/**
-	 * Add or update Permissions. Permission name is unique
-	 * in the permission table.
-	 * 
-	 * @param permission
-	 *            array
-	 */
+    public List<Permission> getPermissions() {
+        return dmRepo.getAllPermissions();
+    }
+
+    public Permission getPermission(Long permissionId) {
+        return dmRepo.getPermissionById(permissionId)
+                .orElseThrow(() -> new PermissionNotFoundException(permissionId));
+    }
+
+    /**
+     * Add or update Permissions. Permission name is unique in the permission table.
+     * 
+     * @param permission array
+     */
     public void savePermissions(Permission[] permissions) {
         if (permissions == null || permissions.length == 0) {
             log.error("Permissions array can not be null or empty");
@@ -72,6 +71,7 @@ public class PermissionService {
 
     /**
      * Copy non null and non blank values from the user supplied permission dto to the existing dto
+     * 
      * @param userSuppliedPermissionDto
      * @param existingPermissionDto
      * @return

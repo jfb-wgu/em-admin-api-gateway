@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class HealthService {
- 
+
     @Autowired
     private Environment env;
 
@@ -35,7 +35,7 @@ public class HealthService {
             }
         }
 
-         Map<String, String> properties =
+        Map<String, String> properties =
                 propertyNames.stream().filter(key -> !key.contains("password")).collect(
                         Collectors.toMap(Function.identity(), key -> env.getProperty(key)));
         return properties;

@@ -15,6 +15,7 @@ import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.entity.security.PermissionEntity;
 import edu.wgu.dm.entity.security.RoleEntity;
+import edu.wgu.dm.service.feign.PersonService;
 import edu.wgu.dm.util.Permissions;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class UserManagementService {
 
     @Autowired
     PersonService personService;
- 
+
 
     public User getUser(String userId) {
         return adminRepo.getUserById(userId).orElseThrow(() -> new UserIdNotFoundException(userId));
@@ -46,7 +47,7 @@ public class UserManagementService {
     }
 
     public List<User> getUsers() {
-         return adminRepo.getAllUsers();
+        return adminRepo.getAllUsers();
     }
 
     public List<User> getUsersForTask(Long taskId) {
@@ -70,7 +71,7 @@ public class UserManagementService {
     public BulkCreateResponse createUsers(String userId, BulkUsers users) {
         List<User> toCreate = new ArrayList<>();
         List<String> failed = new ArrayList<>();
-        
+
         checkIfSystemUser(users.getRoles(), userId);
         users.getUsernames().forEach(name -> {
             try {
