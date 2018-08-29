@@ -10,9 +10,9 @@ import edu.wgu.dm.dto.security.RequestBean;
 @Configuration
 public class RequestConfig {
 
-	@Bean
-	@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-	public RequestBean requestBean() {
-	    return new RequestBean();
-	}
+    @Bean
+    @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public RequestBean requestBean() {
+        return new RequestBean();
+    }
 }

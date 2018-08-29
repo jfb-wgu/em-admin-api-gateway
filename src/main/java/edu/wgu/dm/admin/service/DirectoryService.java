@@ -7,16 +7,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.naming.InvalidNameException;
 import javax.naming.Name;
 import javax.naming.ldap.LdapName;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Service;
-
 import edu.wgu.dm.admin.repository.AdminRepository;
 import edu.wgu.dm.dto.security.LdapGroup;
 import edu.wgu.dm.dto.security.LdapUser;
@@ -34,7 +31,7 @@ public class DirectoryService {
     final AdminRepository repo;
 
     final LdapLookup lookup;
- 
+
     public List<LdapUser> getMembersForGroup(String groupName) {
         List<Name> members = new ArrayList<Name>();
 

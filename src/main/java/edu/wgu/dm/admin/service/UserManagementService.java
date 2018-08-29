@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import edu.wgu.common.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.AdminRepository;
 import edu.wgu.dm.common.exception.UserIdNotFoundException;
@@ -31,7 +29,7 @@ public class UserManagementService {
 
     @Autowired
     PersonService personService;
- 
+
 
     public User getUser(String userId) {
         return adminRepo.getUserById(userId).orElseThrow(() -> new UserIdNotFoundException(userId));
@@ -49,7 +47,7 @@ public class UserManagementService {
     }
 
     public List<User> getUsers() {
-         return adminRepo.getAllUsers();
+        return adminRepo.getAllUsers();
     }
 
     public List<User> getUsersForTask(Long taskId) {
@@ -73,7 +71,7 @@ public class UserManagementService {
     public BulkCreateResponse createUsers(String userId, BulkUsers users) {
         List<User> toCreate = new ArrayList<>();
         List<String> failed = new ArrayList<>();
-        
+
         checkIfSystemUser(users.getRoles(), userId);
         users.getUsernames().forEach(name -> {
             try {

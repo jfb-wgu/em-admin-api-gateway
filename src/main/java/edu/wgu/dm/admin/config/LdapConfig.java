@@ -13,7 +13,7 @@ public class LdapConfig {
 
     @Autowired
     Environment env;
-    
+
     @Value("${ldap.group.dmAdmin}")
     private String adminGroup;
 
@@ -27,8 +27,8 @@ public class LdapConfig {
     private String evaluatorGroup;
 
     @Bean
-    public LdapContextSource contextSource () {
-        LdapContextSource contextSource= new LdapContextSource();
+    public LdapContextSource contextSource() {
+        LdapContextSource contextSource = new LdapContextSource();
         contextSource.setUrl(this.env.getRequiredProperty("ldap.url"));
         contextSource.setUserDn(this.env.getRequiredProperty("ldap.user"));
         contextSource.setPassword(this.env.getRequiredProperty("ldap.password"));
@@ -37,6 +37,6 @@ public class LdapConfig {
 
     @Bean
     public LdapTemplate ldapTemplate() {
-        return new LdapTemplate(contextSource());        
+        return new LdapTemplate(contextSource());
     }
 }
