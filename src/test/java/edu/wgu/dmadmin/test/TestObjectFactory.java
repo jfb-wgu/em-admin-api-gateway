@@ -3,8 +3,8 @@ package edu.wgu.dmadmin.test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import edu.wgu.dm.common.enums.AssessmentType;
 import edu.wgu.dm.dto.security.User;
-import edu.wgu.dm.entity.AssessmentType;
 import edu.wgu.dm.entity.publish.AssessmentEntity;
 import edu.wgu.dm.entity.publish.TaskEntity;
 import edu.wgu.dm.entity.security.PermissionEntity;
@@ -112,7 +112,7 @@ public class TestObjectFactory {
 		assessment.setAssessmentName("Assessment 1");
 		assessment.setAssessmentCode("A1A1");
 		assessment.setPamsAssessmentId(new Random().nextLong());
-		assessment.setAssessmentType(AssessmentType.P);
+		assessment.setAssessmentType(AssessmentType.PRFA);
         taskModel.setAssessment(assessment);
         taskModel.setTaskName("Task Name");
         taskModel.setTaskId(random.nextLong());
