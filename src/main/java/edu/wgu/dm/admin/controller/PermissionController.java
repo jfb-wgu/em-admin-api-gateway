@@ -5,10 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import edu.wgu.dm.admin.service.PermissionService;
@@ -36,8 +37,7 @@ public class PermissionController {
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.ROLE_CREATE)
-    @RequestMapping(value = "/permissions", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/permissions", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("List all permissions.")
     @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
             paramType = "header", required = true)
@@ -48,7 +48,7 @@ public class PermissionController {
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.ROLE_CREATE)
-    @RequestMapping(value = "/permissions/{permissionId}", method = RequestMethod.GET,
+    @GetMapping(value = "/permissions/{permissionId}",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("Get details for specified permission.")
     @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
@@ -61,12 +61,11 @@ public class PermissionController {
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.ROLE_CREATE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @RequestMapping(value = "/permissions", method = RequestMethod.POST)
+    @PostMapping(value = "/permissions")
     @ApiOperation("Add one or more permissions.")
     @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
             paramType = "header", required = true)
     public void addPermissions(@RequestBody Permission[] permissions) {
         this.service.savePermissions(permissions);
     }
-
 }
