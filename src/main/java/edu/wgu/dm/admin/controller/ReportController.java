@@ -7,9 +7,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import edu.wgu.common.domain.Role;
 import edu.wgu.dm.admin.service.ReportService;
@@ -37,7 +37,7 @@ public class ReportController {
     @Audit
     @Secured(strategies = {SecureByRolesStrategy.class})
     @HasAnyRole(Role.EMPLOYEE)
-    @RequestMapping(value = {"/competencies/{datePublished}"}, method = RequestMethod.GET,
+    @GetMapping(value = {"/competencies/{datePublished}"},
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("List competencies for configured assessment tasks.")
     @ApiImplicitParam(name = "Authorization", value = "employee", dataType = "string",
@@ -50,7 +50,7 @@ public class ReportController {
     @Audit
     @Secured(strategies = {SecureByRolesStrategy.class})
     @HasAnyRole(Role.EMPLOYEE)
-    @RequestMapping(value = {"/rubrics/{datePublished}"}, method = RequestMethod.GET,
+    @GetMapping(value = {"/rubrics/{datePublished}"},
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("List rubric aspects and anchors for configured assessment tasks.")
     @ApiImplicitParam(name = "Authorization", value = "employee", dataType = "string",
@@ -63,8 +63,8 @@ public class ReportController {
     @Audit
     @Secured(strategies = {SecureByRolesStrategy.class})
     @HasAnyRole(Role.EMPLOYEE)
-    @RequestMapping(value = {"/evaluation/aspects/{startDate}/{endDate}"},
-            method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = {"/evaluation/aspects/{startDate}/{endDate}"},
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("List evaluation aspects for completed evaluations.")
     @ApiImplicitParam(name = "Authorization", value = "employee", dataType = "string",
             paramType = "header", required = true)

@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import edu.wgu.dm.admin.service.UserManagementService;
@@ -42,8 +44,7 @@ public class UserManagementController {
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_SEARCH)
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/users/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("View the specified EMA user.")
     @ApiImplicitParam(name = "Authorization", value = "User-Search permission", dataType = "string",
             paramType = "header", required = true)
@@ -55,7 +56,7 @@ public class UserManagementController {
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_CREATE)
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    @PostMapping(value = "/users")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @ApiOperation("Add one or more users to the system.  Existing user information will be over-written.")
     @ApiImplicitParam(name = "Authorization", value = "User-Create permission", dataType = "string",
@@ -67,8 +68,7 @@ public class UserManagementController {
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_CREATE)
-    @RequestMapping(value = "/users/{username}", method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/users/{username}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("Create a user skeleton from WGU username.  Existing user information will be over-written.")
     @ApiImplicitParam(name = "Authorization", value = "User-Create permission", dataType = "string",
             paramType = "header", required = true)
@@ -80,8 +80,7 @@ public class UserManagementController {
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_CREATE)
-    @RequestMapping(value = "/users/bulk", method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/users/bulk", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("Create multiple users from WGU usernames.  Existing user information will be preserved.")
     @ApiImplicitParam(name = "Authorization", value = "User-Create permission", dataType = "string",
             paramType = "header", required = true)
@@ -93,7 +92,7 @@ public class UserManagementController {
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_DELETE)
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/users/{userId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @ApiOperation("Remove a user from EMA.")
     @ApiImplicitParam(name = "Authorization", value = "User-Delete permission", dataType = "string",
@@ -105,8 +104,7 @@ public class UserManagementController {
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_SEARCH)
-    @RequestMapping(value = "/users", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("List all EMA users.")
     @ApiImplicitParam(name = "Authorization", value = "User-Search permission", dataType = "string",
             paramType = "header", required = true)
@@ -118,8 +116,7 @@ public class UserManagementController {
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_SEARCH)
-    @RequestMapping(value = "/users/task/{taskId}", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/users/task/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("List all EMA users who are qualified on the specified task.")
     @ApiImplicitParam(name = "Authorization", value = "User-Search permission", dataType = "string",
             paramType = "header", required = true)
@@ -127,5 +124,4 @@ public class UserManagementController {
         UserListResponse result = new UserListResponse(this.service.getUsersForTask(taskId));
         return ResponseEntity.ok().body(result);
     }
-
 }
