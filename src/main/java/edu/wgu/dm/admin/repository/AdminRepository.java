@@ -59,13 +59,13 @@ public class AdminRepository {
     private EntityManager entityManager;
 
     public List<Competency> getTaskCompetencies(Date datePublished) {
-        return competencyRepo.getCompetencies(datePublished).stream()
+        return this.competencyRepo.getCompetencies(datePublished).stream()
                 .map(entity -> DtoCreationHelper.toCompetency(entity)).collect(Collectors.toList());
     }
 
     public List<EmaEvaluationAspectRecord> getEvaluationAspects(Date startOfDay, Date endOfDay) {
         List<EmaEvaluationAspectRecord> aspectRecords = new ArrayList<>();
-        List<EvaluationEntity> list = evaluationRepo
+        List<EvaluationEntity> list = this.evaluationRepo
                 .findByDateCompletedGreaterThanEqualAndDateCompletedLessThanEqualAndStatus(
                         startOfDay, endOfDay, EvaluationStatus.COMPLETED);
         list.forEach(eval -> {
@@ -79,7 +79,7 @@ public class AdminRepository {
     public List<EmaTaskRubricRecord> getTaskRecords(Date datePublished) {
         List<EmaTaskRubricRecord> taskRecords = new ArrayList<>();
         List<TaskEntity> list =
-                taskRepo.findByAssessmentDatePublishedGreaterThanEqual(datePublished);
+                this.taskRepo.findByAssessmentDatePublishedGreaterThanEqual(datePublished);
 
         list.stream().forEach(task -> {
             task.getAspects().forEach(aspect -> {
@@ -98,11 +98,11 @@ public class AdminRepository {
         return this.roleRepo.save(new RoleEntity(role)).getRoleId();
     }
 
-    public void deleteRole(long roleId) {
+    public void deleteRole(Long roleId) {
         this.roleRepo.delete(roleId);
     }
 
-    public Optional<Role> getRoleById(long roleId) {
+    public Optional<Role> getRoleById(Long roleId) {
         return RoleEntity.toRole(this.roleRepo.findOne(roleId));
     }
 
@@ -162,11 +162,11 @@ public class AdminRepository {
         return this.permissionRepo.save(new PermissionEntity(permission)).getPermissionId();
     }
 
-    public void deletePermission(long permissionId) {
+    public void deletePermission(Long permissionId) {
         this.permissionRepo.delete(permissionId);
     }
 
-    public Optional<Permission> getPermissionById(long id) {
+    public Optional<Permission> getPermissionById(Long id) {
         return PermissionEntity.toPermission(this.permissionRepo.findOne(id));
     }
 
@@ -189,13 +189,11 @@ public class AdminRepository {
 
     public Role saveOrUpdateRole(@NonNull Role role) {
         // We are expecting PermissionIds of the existing permissions
-        RoleEntity roleEntity = entityManager.merge(new RoleEntity(role));
+        RoleEntity roleEntity = this.entityManager.merge(new RoleEntity(role));
         return roleEntity.toRole();
     }
 
     public List<RoleEntity> findAllRoles(@NonNull List<Long> roleIds) {
-        return roleRepo.findAll(roleIds);
+        return this.roleRepo.findAll(roleIds);
     }
-
-
 }

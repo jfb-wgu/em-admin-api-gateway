@@ -15,15 +15,15 @@ import edu.wgu.dm.util.DateUtil;
 public class TestObjectFactory {
     static Random random = new Random();
 
-	static String evaluatorLastName = "Wayne";
-	static String evaluatorFirstName = "Bruce";
-	static String evaluatorId = "evaluator";
-	static String employeeId = "employeeId";
-	static String studentId = "student";
-	static Long submissionId =  random.nextLong();
-	static Long assessmentId = random.nextLong();
-	static Long evaluationId = random.nextLong();
-	static Long taskId = random.nextLong();
+    static String evaluatorLastName = "Wayne";
+    static String evaluatorFirstName = "Bruce";
+    static String evaluatorId = "evaluator";
+    static String employeeId = "employeeId";
+    static String studentId = "student";
+    static Long submissionId = random.nextLong();
+    static Long assessmentId = random.nextLong();
+    static Long evaluationId = random.nextLong();
+    static Long taskId = random.nextLong();
 
     public static UserEntity getUserModel() {
         UserEntity user = getUserModel(evaluatorFirstName, evaluatorLastName, evaluatorId,
@@ -38,14 +38,15 @@ public class TestObjectFactory {
         return user;
     }
 
-	public static UserEntity getUserModel(String inUserId, String inEmployeeId) {
-		return getUserModel(evaluatorFirstName, evaluatorLastName, inUserId, new ArrayList<RoleEntity>(), new ArrayList<PermissionEntity>(),
-				new ArrayList<TaskEntity>(), new ArrayList<String>(), inEmployeeId);
-	}
+    public static UserEntity getUserModel(String inUserId, String inEmployeeId) {
+        return getUserModel(evaluatorFirstName, evaluatorLastName, inUserId,
+                new ArrayList<RoleEntity>(), new ArrayList<PermissionEntity>(),
+                new ArrayList<TaskEntity>(), new ArrayList<String>(), inEmployeeId);
+    }
 
-	public static UserEntity getUserModel(String firstName, String lastName, String userId, List<RoleEntity> roles,
-            List<PermissionEntity> permissions, List<TaskEntity> tasks, List<String> landings,
-            String inEmployeeId) {
+    public static UserEntity getUserModel(String firstName, String lastName, String userId,
+            List<RoleEntity> roles, List<PermissionEntity> permissions, List<TaskEntity> tasks,
+            List<String> landings, String inEmployeeId) {
         UserEntity user = new UserEntity();
         user.setFirstName(firstName);
         user.setLastName(lastName);
@@ -56,7 +57,7 @@ public class TestObjectFactory {
         return user;
     }
 
-	public static User getUser(String firstName, String lastName, String userId, List<Long> roles,
+    public static User getUser(String firstName, String lastName, String userId, List<Long> roles,
             List<String> permissions, List<Long> tasks, List<String> landings,
             String inEmployeeId) {
         User user = new User();
@@ -71,13 +72,13 @@ public class TestObjectFactory {
         return user;
     }
 
-	public static RoleEntity getRoleModel(String role) {
-		return getRoleModel(role, random.nextLong());
-	}
+    public static RoleEntity getRoleModel(String role) {
+        return getRoleModel(role, random.nextLong());
+    }
 
-	public static RoleEntity getRoleModel(String role, Long roleId) {
-		return getRoleModel(role, roleId, new ArrayList<PermissionEntity>(), "testing role");
-	}
+    public static RoleEntity getRoleModel(String role, Long roleId) {
+        return getRoleModel(role, roleId, new ArrayList<PermissionEntity>(), "testing role");
+    }
 
     public static RoleEntity getRoleModel(String role, Long roleId,
             List<PermissionEntity> permissions, String description) {
@@ -90,12 +91,13 @@ public class TestObjectFactory {
         return model;
     }
 
-	public static PermissionEntity getPermission(String permission, String landing) {
-		return getPermissionModel(permission, random.nextLong(), "test permission", landing, "test type");
-	}
+    public static PermissionEntity getPermission(String permission, String landing) {
+        return getPermissionModel(permission, random.nextLong(), "test permission", landing,
+                "test type");
+    }
 
-	public static PermissionEntity getPermissionModel(String permission, Long permissionId, String description,
-            String landing, String type) {
+    public static PermissionEntity getPermissionModel(String permission, Long permissionId,
+            String description, String landing, String type) {
         PermissionEntity model = new PermissionEntity();
         model.setDateCreated(DateUtil.getZonedNow());
         model.setPermission(permission);
@@ -105,14 +107,14 @@ public class TestObjectFactory {
         model.setPermissionType(type);
         return model;
     }
-	
+
     public static TaskEntity getTaskModel() {
-		TaskEntity taskModel = new TaskEntity();
-		AssessmentEntity assessment = new AssessmentEntity();
-		assessment.setAssessmentName("Assessment 1");
-		assessment.setAssessmentCode("A1A1");
-		assessment.setPamsAssessmentId(new Random().nextLong());
-		assessment.setAssessmentType(AssessmentType.PRFA);
+        TaskEntity taskModel = new TaskEntity();
+        AssessmentEntity assessment = new AssessmentEntity();
+        assessment.setAssessmentName("Assessment 1");
+        assessment.setAssessmentCode("A1A1");
+        assessment.setPamsAssessmentId(new Random().nextLong());
+        assessment.setAssessmentType(AssessmentType.PRFA);
         taskModel.setAssessment(assessment);
         taskModel.setTaskName("Task Name");
         taskModel.setTaskId(random.nextLong());

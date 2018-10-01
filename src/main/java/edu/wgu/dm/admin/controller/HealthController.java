@@ -4,8 +4,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import edu.wgu.dm.admin.service.HealthService;
 import edu.wgu.dm.audit.Audit;
@@ -29,8 +29,7 @@ public class HealthController {
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.SYSTEM)
-    @RequestMapping(value = {"/environment"}, method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = {"/environment"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("List environment variables for this server.")
     @ApiImplicitParam(name = "Authorization", value = "SYSTEM permission", dataType = "string",
             paramType = "header", required = true)
