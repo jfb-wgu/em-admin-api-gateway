@@ -11,10 +11,10 @@ import edu.wgu.dm.admin.repository.AdminRepository;
 import edu.wgu.dm.common.exception.UserIdNotFoundException;
 import edu.wgu.dm.dto.security.BulkCreateResponse;
 import edu.wgu.dm.dto.security.BulkUsers;
+import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.dto.security.Person;
+import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.User;
-import edu.wgu.dm.entity.security.PermissionEntity;
-import edu.wgu.dm.entity.security.RoleEntity;
 import edu.wgu.dm.service.feign.PersonService;
 import edu.wgu.dm.util.Permissions;
 import lombok.NonNull;
@@ -32,38 +32,38 @@ public class UserManagementService {
 
 
     public User getUser(String userId) {
-        return adminRepo.getUserById(userId).orElseThrow(() -> new UserIdNotFoundException(userId));
+        return this.adminRepo.getUserById(userId).orElseThrow(() -> new UserIdNotFoundException(userId));
     }
 
     public void addUsers(String userId, @NonNull List<User> users) {
         List<Long> roles = new ArrayList<>();
         users.forEach(user -> roles.addAll(user.getRoles()));
         checkIfSystemUser(roles, userId);
-        adminRepo.saveUsers(users);
+        this.adminRepo.saveUsers(users);
     }
 
     public void deleteUser(String userId) {
-        adminRepo.deleteUser(userId);
+        this.adminRepo.deleteUser(userId);
     }
 
     public List<User> getUsers() {
-        return adminRepo.getAllUsers();
+        return this.adminRepo.getAllUsers();
     }
 
     public List<User> getUsersForTask(Long taskId) {
-        return adminRepo.getAllUsers().stream().filter(u -> u.getTasks().contains(taskId)).sorted()
+        return this.adminRepo.getAllUsers().stream().filter(u -> u.getTasks().contains(taskId)).sorted()
                 .collect(Collectors.toList());
     }
 
     public User createUser(String userId) {
-        Person person = personService.getPersonByUsername(userId);
-        User newUser = adminRepo.getUserById(person.getUserId()).orElseGet(() -> {
+        Person person = this.personService.getPersonByUsername(userId);
+        User newUser = this.adminRepo.getUserById(person.getUserId()).orElseGet(() -> {
             User user = new User();
             user.setUserId(person.getUserId());
             user.setFirstName(person.getFirstName());
             user.setLastName(person.getLastName());
             user.setEmployeeId(person.getUsername());
-            return adminRepo.saveUser(user).get();
+            return this.adminRepo.saveUser(user).get();
         });
         return newUser;
     }
@@ -76,7 +76,7 @@ public class UserManagementService {
         users.getUsernames().forEach(name -> {
             try {
                 Person person = this.personService.getPersonByUsername(name);
-                User user = adminRepo.getUserById(person.getUserId()).orElseGet(() -> {
+                User user = this.adminRepo.getUserById(person.getUserId()).orElseGet(() -> {
                     User userdto = new User();
                     userdto.setUserId(person.getUserId());
                     userdto.setFirstName(person.getFirstName());
@@ -94,10 +94,9 @@ public class UserManagementService {
             }
         });
 
-        adminRepo.saveUsers(toCreate);
+        this.adminRepo.saveUsers(toCreate);
         return new BulkCreateResponse(toCreate, failed);
     }
-
 
     /**
      * Validate --> If role has any system permission, only a sys user can assign those.
@@ -106,8 +105,8 @@ public class UserManagementService {
      * @param userId
      */
     public void checkIfSystemUser(@NonNull List<Long> roleIds, String userId) {
-        List<RoleEntity> roles = adminRepo.findAllRoles(roleIds);
-        List<PermissionEntity> permissions = new ArrayList<>();
+        List<Role> roles = this.adminRepo.getAllRoles();
+        List<Permission> permissions = new ArrayList<>();
         roles.forEach(role -> permissions.addAll(role.getPermissions()));
         boolean isAnySysPermissionExist = permissions.stream().anyMatch(
                 permission -> Permissions.SYSTEM.equalsIgnoreCase(permission.getPermission()));
@@ -121,5 +120,4 @@ public class UserManagementService {
             }
         }
     }
-
 }

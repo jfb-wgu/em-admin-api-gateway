@@ -2,14 +2,12 @@ package edu.wgu.dm.admin.repository;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import edu.wgu.dm.common.enums.EvaluationStatus;
 import edu.wgu.dm.dto.admin.report.EmaEvaluationAspectRecord;
 import edu.wgu.dm.dto.admin.report.EmaTaskRubricRecord;
@@ -30,7 +28,6 @@ import edu.wgu.dm.repo.ema.RoleRepository;
 import edu.wgu.dm.repo.ema.TaskRepository;
 import edu.wgu.dm.repo.ema.UserRepository;
 import lombok.AccessLevel;
-import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
 @Repository
@@ -38,13 +35,13 @@ import lombok.experimental.FieldDefaults;
 public class AdminRepository {
 
     @Autowired
-    private CompetencyRepository competencyRepo;
+    CompetencyRepository competencyRepo;
 
     @Autowired
-    private EvaluationRepository evaluationRepo;
+    EvaluationRepository evaluationRepo;
 
     @Autowired
-    private TaskRepository taskRepo;
+    TaskRepository taskRepo;
 
     @Autowired
     RoleRepository roleRepo;
@@ -54,9 +51,6 @@ public class AdminRepository {
 
     @Autowired
     PermissionRepository permissionRepo;
-
-    @Autowired
-    private EntityManager entityManager;
 
     public List<Competency> getTaskCompetencies(Date datePublished) {
         return this.competencyRepo.getCompetencies(datePublished).stream()
@@ -94,10 +88,19 @@ public class AdminRepository {
     /*
      * (non-Javadoc) Role
      */
-    public Long saveRole(Role role) {
-        return this.roleRepo.save(new RoleEntity(role)).getRoleId();
+    @Transactional
+    public Optional<Role> saveRole(Role role) {
+        return RoleEntity.toRole(this.roleRepo.saveAndFlush(new RoleEntity(role)));
     }
 
+    @Transactional
+    public List<Role> saveRoles(List<Role> roles) {
+        List<RoleEntity> entities = this.roleRepo
+                .save(roles.stream().map(r -> new RoleEntity(r)).collect(Collectors.toList()));
+        return RoleEntity.toRoles(entities);
+    }
+
+    @Transactional
     public void deleteRole(Long roleId) {
         this.roleRepo.delete(roleId);
     }
@@ -110,24 +113,20 @@ public class AdminRepository {
         return RoleEntity.toRoles(this.roleRepo.findAll());
     }
 
-    public Optional<Role> getRolesByRole(String role) {
-        return RoleEntity.toRole(this.roleRepo.findByRole(role));
-    }
-
     /*
      * (non-Javadoc) User
      */
 
+    @Transactional
     public Optional<User> saveUser(User user) {
         return UserEntity.toUser(this.userRepo.save(new UserEntity(user)));
     }
 
-    public void saveUsers(List<User> users) {
-        List<UserEntity> usersEntity = new ArrayList<>();
-        users.forEach(user -> {
-            usersEntity.add(new UserEntity(user));
-        });
-        this.userRepo.save(usersEntity);
+    @Transactional
+    public List<User> saveUsers(List<User> users) {
+        List<UserEntity> entities = this.userRepo
+                .save(users.stream().map(u -> new UserEntity(u)).collect(Collectors.toList()));
+        return UserEntity.toUsers(entities);
     }
 
     public Optional<User> getUserById(String userId) {
@@ -146,10 +145,6 @@ public class AdminRepository {
         return UserEntity.toUsers(this.userRepo.findByTasksTaskId(taskId));
     }
 
-    public List<User> getUsersByRole(Long roleId) {
-        return UserEntity.toUsers(this.userRepo.findByRolesRoleId(roleId));
-    }
-
     public void updateLastLogin(String userId) {
         this.userRepo.updateLastLogin(userId);
     }
@@ -158,10 +153,21 @@ public class AdminRepository {
         this.userRepo.delete(userId);
     }
 
+    /*
+     * (non-Javadoc) Permission
+     */
+    @Transactional
     public Long savePermission(Permission permission) {
-        return this.permissionRepo.save(new PermissionEntity(permission)).getPermissionId();
+        return this.permissionRepo.saveAndFlush(new PermissionEntity(permission)).getPermissionId();
     }
 
+    @Transactional
+    public void savePermissions(List<Permission> permissions) {
+        this.permissionRepo.save(permissions.stream().map(p -> new PermissionEntity(p))
+                .collect(Collectors.toList()));
+    }
+
+    @Transactional
     public void deletePermission(Long permissionId) {
         this.permissionRepo.delete(permissionId);
     }
@@ -172,28 +178,5 @@ public class AdminRepository {
 
     public List<Permission> getAllPermissions() {
         return PermissionEntity.toPermissions(this.permissionRepo.findAll());
-    }
-
-    public Optional<Permission> getPermissionByPermission(String permission) {
-        return PermissionEntity.toPermission(this.permissionRepo.findByPermission(permission));
-    }
-
-    public Map<Long, Permission> getPermissionMap() {
-        List<Permission> permissionList = getAllPermissions();
-        Map<Long, Permission> permissions = new HashMap<>();
-        permissionList.forEach(permission -> {
-            permissions.put(permission.getPermissionId(), permission);
-        });
-        return permissions;
-    }
-
-    public Role saveOrUpdateRole(@NonNull Role role) {
-        // We are expecting PermissionIds of the existing permissions
-        RoleEntity roleEntity = this.entityManager.merge(new RoleEntity(role));
-        return roleEntity.toRole();
-    }
-
-    public List<RoleEntity> findAllRoles(@NonNull List<Long> roleIds) {
-        return this.roleRepo.findAll(roleIds);
     }
 }
