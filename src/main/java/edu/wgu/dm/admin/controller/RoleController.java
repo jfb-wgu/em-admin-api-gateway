@@ -42,7 +42,7 @@ public class RoleController {
     @ApiOperation("Add one or more roles.")
     @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
             paramType = "header", required = true)
-    public ResponseEntity<List<Role>> addRoles(@RequestBody Role[] roles) {
+    public ResponseEntity<List<Role>> saveRoles(@RequestBody Role[] roles) {
         return ResponseEntity.ok(this.service.saveRoles(roles));
     }
 
