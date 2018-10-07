@@ -31,12 +31,12 @@ public class RoleService {
      */
     public Role getRole(Long roleId) {
         return this.adminRepo.getRoleById(roleId)
-                .orElseThrow(() -> new RoleNotFoundException(roleId));
+                             .orElseThrow(() -> new RoleNotFoundException(roleId));
     }
 
     /**
-     * Delete a role. Delete cascades on the role_permissions and user_roles table will remove the
-     * role from any users.
+     * Delete a role. Delete cascades on the role_permissions and user_roles table will remove the role
+     * from any users.
      * 
      * @param roleId
      */

@@ -194,5 +194,4 @@ public class UserManagementServiceTest {
         assertEquals("Bruce", argument.getValue().getFirstName());
         assertEquals("Wayne", argument.getValue().getLastName());
     }
-
 }

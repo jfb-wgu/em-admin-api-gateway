@@ -2,6 +2,7 @@ package edu.wgu.dm.admin.service;
 
 import java.util.Date;
 import java.util.List;
+import javax.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.wgu.dm.admin.repository.AdminRepository;
@@ -16,19 +17,18 @@ public class ReportService {
     @Autowired
     private AdminRepository adminRepo;
 
-    public List<Competency> getTaskCompetencies(Date datePublished) {
-        return adminRepo.getTaskCompetencies(DateUtil.startOfDay(datePublished));
+    public List<Competency> getTaskCompetencies(@Nonnull Date datePublished) {
+        return this.adminRepo.getTaskCompetencies(DateUtil.startOfDay(datePublished));
     }
 
-    public List<EmaEvaluationAspectRecord> getEvaluationAspects(Date startDate, Date endDate) {
+    public List<EmaEvaluationAspectRecord> getEvaluationAspects(@Nonnull Date startDate, @Nonnull Date endDate) {
         if (startDate.after(endDate)) {
             throw new IllegalArgumentException("Start date must be before end date.");
         }
-        return adminRepo.getEvaluationAspects(DateUtil.startOfDay(startDate),
-                DateUtil.endOfDay(endDate));
+        return this.adminRepo.getEvaluationAspects(DateUtil.startOfDay(startDate), DateUtil.endOfDay(endDate));
     }
 
-    public List<EmaTaskRubricRecord> getRubrics(Date datePublished) {
-        return adminRepo.getTaskRecords(datePublished);
+    public List<EmaTaskRubricRecord> getRubrics(@Nonnull Date datePublished) {
+        return this.adminRepo.getTaskRecords(datePublished);
     }
 }

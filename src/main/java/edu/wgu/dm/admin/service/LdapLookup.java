@@ -39,7 +39,10 @@ public class LdapLookup {
         try {
             this.ldapTemplate.setIgnorePartialResultException(true);
             LdapGroup group = this.ldapTemplate.findOne(query().base(this.ldapGroupBase)
-                    .where("objectclass").is("group").and(this.groupLookupAttribute).is(groupName),
+                                                               .where("objectclass")
+                                                               .is("group")
+                                                               .and(this.groupLookupAttribute)
+                                                               .is(groupName),
                     LdapGroup.class);
             return group;
         } catch (EmptyResultDataAccessException e) {
@@ -54,7 +57,10 @@ public class LdapLookup {
         try {
             this.ldapTemplate.setIgnorePartialResultException(true);
             List<LdapUser> users = this.ldapTemplate.find(query().base(this.ldapUserBase)
-                    .where("objectclass").is("person").and(this.userLookupAttribute).is(userName),
+                                                                 .where("objectclass")
+                                                                 .is("person")
+                                                                 .and(this.userLookupAttribute)
+                                                                 .is(userName),
                     LdapUser.class);
             return users;
         } catch (EmptyResultDataAccessException e) {

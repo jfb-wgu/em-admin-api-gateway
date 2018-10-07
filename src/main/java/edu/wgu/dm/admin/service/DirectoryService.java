@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 import javax.naming.InvalidNameException;
 import javax.naming.Name;
 import javax.naming.ldap.LdapName;
@@ -32,7 +33,7 @@ public class DirectoryService {
 
     final LdapLookup lookup;
 
-    public List<LdapUser> getMembersForGroup(String groupName) {
+    public List<LdapUser> getMembersForGroup(@Nonnull String groupName) {
         List<Name> members = new ArrayList<Name>();
 
         LdapGroup group = this.lookup.getGroup(groupName);
@@ -47,8 +48,10 @@ public class DirectoryService {
 
         try {
             LdapName ldapGroup = new LdapName(groupName);
-            users = users.stream().filter(user -> user.getGroups().contains(ldapGroup))
-                    .collect(Collectors.toList());
+            users = users.stream()
+                         .filter(user -> user.getGroups()
+                                             .contains(ldapGroup))
+                         .collect(Collectors.toList());
         } catch (InvalidNameException e) {
             logger.debug(Arrays.toString(e.getStackTrace()));
         }
@@ -56,18 +59,19 @@ public class DirectoryService {
         return users;
     }
 
-    public Set<Person> getMissingUsers(String groupName) {
+    public Set<Person> getMissingUsers(@Nonnull String groupName) {
         List<String> accountNames = getMembersForGroup(groupName).stream()
-                .map(member -> member.getSAMAccountName()).collect(Collectors.toList());
+                                                                 .map(member -> member.getSAMAccountName())
+                                                                 .collect(Collectors.toList());
         Set<Person> missing = new HashSet<>();
         accountNames.forEach(account -> {
             try {
                 logger.debug("Looking up user: " + account);
-                Optional<Person> user =
-                        Optional.of(this.personService.getPersonByUsername(account));
+                Optional<Person> user = Optional.of(this.personService.getPersonByUsername(account));
                 if (user.isPresent()) {
                     Person person = user.get();
-                    if (!this.repo.getUserById(person.getUserId()).isPresent())
+                    if (!this.repo.getUserById(person.getUserId())
+                                  .isPresent())
                         missing.add(person);
                 }
             } catch (Exception e) {

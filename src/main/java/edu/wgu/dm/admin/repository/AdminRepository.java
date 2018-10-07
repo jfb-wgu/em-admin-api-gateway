@@ -53,35 +53,40 @@ public class AdminRepository {
     PermissionRepository permissionRepo;
 
     public List<Competency> getTaskCompetencies(Date datePublished) {
-        return this.competencyRepo.getCompetencies(datePublished).stream()
-                .map(entity -> DtoCreationHelper.toCompetency(entity)).collect(Collectors.toList());
+        return this.competencyRepo.getCompetencies(datePublished)
+                                  .stream()
+                                  .map(entity -> DtoCreationHelper.toCompetency(entity))
+                                  .collect(Collectors.toList());
     }
 
     public List<EmaEvaluationAspectRecord> getEvaluationAspects(Date startOfDay, Date endOfDay) {
         List<EmaEvaluationAspectRecord> aspectRecords = new ArrayList<>();
-        List<EvaluationEntity> list = this.evaluationRepo
-                .findByDateCompletedGreaterThanEqualAndDateCompletedLessThanEqualAndStatus(
+        List<EvaluationEntity> list =
+                this.evaluationRepo.findByDateCompletedGreaterThanEqualAndDateCompletedLessThanEqualAndStatus(
                         startOfDay, endOfDay, EvaluationStatus.COMPLETED);
         list.forEach(eval -> {
-            eval.getEvaluationAspects().forEach(aspect -> {
-                aspectRecords.add(DtoCreationHelper.toEmaEvaluationAspectRecord(aspect, eval));
-            });
+            eval.getEvaluationAspects()
+                .forEach(aspect -> {
+                    aspectRecords.add(DtoCreationHelper.toEmaEvaluationAspectRecord(aspect, eval));
+                });
         });
         return aspectRecords;
     }
 
     public List<EmaTaskRubricRecord> getTaskRecords(Date datePublished) {
         List<EmaTaskRubricRecord> taskRecords = new ArrayList<>();
-        List<TaskEntity> list =
-                this.taskRepo.findByAssessmentDatePublishedGreaterThanEqual(datePublished);
+        List<TaskEntity> list = this.taskRepo.findByAssessmentDatePublishedGreaterThanEqual(datePublished);
 
-        list.stream().forEach(task -> {
-            task.getAspects().forEach(aspect -> {
-                aspect.getAnchors().forEach(anchor -> {
-                    taskRecords.add(DtoCreationHelper.toEmaTaskRubricRecord(anchor, aspect, task));
-                });
+        list.stream()
+            .forEach(task -> {
+                task.getAspects()
+                    .forEach(aspect -> {
+                        aspect.getAnchors()
+                              .forEach(anchor -> {
+                                  taskRecords.add(DtoCreationHelper.toEmaTaskRubricRecord(anchor, aspect, task));
+                              });
+                    });
             });
-        });
         return taskRecords;
     }
 
@@ -95,8 +100,9 @@ public class AdminRepository {
 
     @Transactional
     public List<Role> saveRoles(List<Role> roles) {
-        List<RoleEntity> entities = this.roleRepo
-                .save(roles.stream().map(r -> new RoleEntity(r)).collect(Collectors.toList()));
+        List<RoleEntity> entities = this.roleRepo.save(roles.stream()
+                                                            .map(r -> new RoleEntity(r))
+                                                            .collect(Collectors.toList()));
         return RoleEntity.toRoles(entities);
     }
 
@@ -119,13 +125,14 @@ public class AdminRepository {
 
     @Transactional
     public Optional<User> saveUser(User user) {
-        return UserEntity.toUser(this.userRepo.save(new UserEntity(user)));
+        return UserEntity.toUser(this.userRepo.saveAndFlush(new UserEntity(user)));
     }
 
     @Transactional
     public List<User> saveUsers(List<User> users) {
-        List<UserEntity> entities = this.userRepo
-                .save(users.stream().map(u -> new UserEntity(u)).collect(Collectors.toList()));
+        List<UserEntity> entities = this.userRepo.save(users.stream()
+                                                            .map(u -> new UserEntity(u))
+                                                            .collect(Collectors.toList()));
         return UserEntity.toUsers(entities);
     }
 
@@ -145,10 +152,12 @@ public class AdminRepository {
         return UserEntity.toUsers(this.userRepo.findByTasksTaskId(taskId));
     }
 
+    @Transactional
     public void updateLastLogin(String userId) {
         this.userRepo.updateLastLogin(userId);
     }
 
+    @Transactional
     public void deleteUser(String userId) {
         this.userRepo.delete(userId);
     }
@@ -158,13 +167,15 @@ public class AdminRepository {
      */
     @Transactional
     public Long savePermission(Permission permission) {
-        return this.permissionRepo.saveAndFlush(new PermissionEntity(permission)).getPermissionId();
+        return this.permissionRepo.saveAndFlush(new PermissionEntity(permission))
+                                  .getPermissionId();
     }
 
     @Transactional
     public void savePermissions(List<Permission> permissions) {
-        this.permissionRepo.save(permissions.stream().map(p -> new PermissionEntity(p))
-                .collect(Collectors.toList()));
+        this.permissionRepo.save(permissions.stream()
+                                            .map(p -> new PermissionEntity(p))
+                                            .collect(Collectors.toList()));
     }
 
     @Transactional

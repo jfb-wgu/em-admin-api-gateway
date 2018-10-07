@@ -48,8 +48,7 @@ public class PermissionController {
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.ROLE_CREATE)
-    @GetMapping(value = "/permissions/{permissionId}",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/permissions/{permissionId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("Get details for specified permission.")
     @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
             paramType = "header", required = true)

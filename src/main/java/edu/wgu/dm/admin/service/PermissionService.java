@@ -2,6 +2,7 @@ package edu.wgu.dm.admin.service;
 
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.wgu.dm.admin.repository.AdminRepository;
@@ -21,7 +22,7 @@ public class PermissionService {
 
     public Permission getPermission(Long permissionId) {
         return this.dmRepo.getPermissionById(permissionId)
-                .orElseThrow(() -> new PermissionNotFoundException(permissionId));
+                          .orElseThrow(() -> new PermissionNotFoundException(permissionId));
     }
 
     /**
@@ -29,11 +30,7 @@ public class PermissionService {
      * 
      * @param permission array
      */
-    public void savePermissions(Permission[] permissions) {
-        if (permissions == null || permissions.length == 0) {
-            throw new IllegalArgumentException("Permissions array can not be null or empty");
-        }
-        
+    public void savePermissions(@Nonnull Permission[] permissions) {
         this.dmRepo.savePermissions(Arrays.asList(permissions));
     }
 }
