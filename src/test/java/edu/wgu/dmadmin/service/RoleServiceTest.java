@@ -26,6 +26,8 @@ import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.repo.ema.RoleRepository;
 import edu.wgu.dm.util.DateUtil;
+import edu.wgu.dm.util.Permissions;
+import edu.wgu.dmadmin.test.TestObjectFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings("boxing")
@@ -53,7 +55,7 @@ public class RoleServiceTest {
 
     @Captor
     ArgumentCaptor<List<User>> captorUsers;
-    
+
     @Captor
     ArgumentCaptor<List<Role>> captorRoles;
 
@@ -62,13 +64,13 @@ public class RoleServiceTest {
         Permission perm1 = new Permission();
         perm1.setPermissionId(this.permissionId1);
         perm1.setPermission("1");
-        
+
         Permission perm2 = new Permission();
         perm2.setPermissionId(this.permissionId2);
         perm2.setPermission("2");
-        
+
         this.permissions = Arrays.asList(perm1, perm2);
-        
+
         this.role = new Role();
         this.role.setDateCreated(DateUtil.getZonedNow());
         this.role.setRole("Admin");
@@ -76,7 +78,7 @@ public class RoleServiceTest {
         this.role.setDateUpdated(DateUtil.getZonedNow());
         this.role.setRoleId(this.roleId1);
         this.role.setRoleDescription("Description");
-        
+
         this.roleArray = new Role[] {this.role};
         this.roles = Arrays.asList(this.role);
     }
@@ -84,7 +86,9 @@ public class RoleServiceTest {
     @Test
     public void testGetRoles() {
         when(this.repo.getAllRoles()).thenReturn(this.roles);
-        assertEquals(this.service.getRoles().size(), this.roles.size());
+        assertEquals(this.service.getRoles()
+                                 .size(),
+                this.roles.size());
     }
 
     @Test
@@ -105,7 +109,9 @@ public class RoleServiceTest {
         // Arrange
         when(this.repo.getRoleById(anyLong())).thenReturn(Optional.of(this.role));
         // Act + Assert
-        assertEquals(this.service.getRole(this.role.getRoleId()).getRoleId(), this.role.getRoleId());
+        assertEquals(this.service.getRole(this.role.getRoleId())
+                                 .getRoleId(),
+                this.role.getRoleId());
     }
 
     @Test
@@ -121,15 +127,23 @@ public class RoleServiceTest {
     public void testSaveRole() {
         // Arrange
         when(this.repo.saveRoles(this.roles)).thenReturn(this.roles);
-        
+        when(this.repo.getPermissionByName(Permissions.SYSTEM)).thenReturn(
+                Optional.of(TestObjectFactory.getPermission("test")));
+
         // Act
-        List<Role> result = this.service.saveRoles(this.roleArray);
+        List<Role> result = this.service.saveRoles("test", this.roleArray);
 
         // Assert
         verify(this.repo).saveRoles(this.captorRoles.capture());
-        assertEquals(this.permissionId1, this.captorRoles.getValue().get(0).getPermissions().get(0).getPermissionId());
+        assertEquals(this.permissionId1, this.captorRoles.getValue()
+                                                         .get(0)
+                                                         .getPermissions()
+                                                         .get(0)
+                                                         .getPermissionId());
         System.out.println(this.captorRoles.getValue());
-        assertNotNull(result.get(0).getRoleId());
-        assertNotNull(result.get(0).getDateCreated());
+        assertNotNull(result.get(0)
+                            .getRoleId());
+        assertNotNull(result.get(0)
+                            .getDateCreated());
     }
 }

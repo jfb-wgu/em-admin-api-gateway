@@ -50,7 +50,7 @@ public class UserManagementController {
             paramType = "header", required = true)
     public ResponseEntity<UserResponse> getUser(@PathVariable final String userId) {
         UserResponse result = new UserResponse(this.service.getUser(userId));
-        return ResponseEntity.ok().body(result);
+        return ResponseEntity.ok(result);
     }
 
     @Audit
@@ -74,7 +74,7 @@ public class UserManagementController {
             paramType = "header", required = true)
     public ResponseEntity<User> createUser(@PathVariable String username) {
         User result = this.service.createUser(username);
-        return ResponseEntity.ok().body(result);
+        return ResponseEntity.ok(result);
     }
 
     @Audit
@@ -86,7 +86,7 @@ public class UserManagementController {
             paramType = "header", required = true)
     public ResponseEntity<BulkCreateResponse> createUsers(@RequestBody BulkUsers users) {
         BulkCreateResponse result = this.service.createUsers(this.iUtil.getUserId(), users);
-        return ResponseEntity.ok().body(result);
+        return ResponseEntity.ok(result);
     }
 
     @Audit
@@ -110,7 +110,7 @@ public class UserManagementController {
             paramType = "header", required = true)
     public ResponseEntity<UserListResponse> getAllUsers() {
         UserListResponse result = new UserListResponse(this.service.getUsers());
-        return ResponseEntity.ok().body(result);
+        return ResponseEntity.ok(result);
     }
 
     @Audit
@@ -122,6 +122,6 @@ public class UserManagementController {
             paramType = "header", required = true)
     public ResponseEntity<UserListResponse> getUsersForTask(@PathVariable final Long taskId) {
         UserListResponse result = new UserListResponse(this.service.getUsersForTask(taskId));
-        return ResponseEntity.ok().body(result);
+        return ResponseEntity.ok(result);
     }
 }

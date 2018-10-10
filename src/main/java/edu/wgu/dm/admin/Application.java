@@ -18,8 +18,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @WguSoaApplication
 @EnableSwagger2
-@ComponentScan(basePackages = {"edu.wgu.dm.admin", "edu.wgu.dm.config", "edu.wgu.dm.audit",
-        "edu.wgu.security.service", "edu.wgu.dm.util", "edu.wgu.dm.health"})
+@ComponentScan(basePackages = {"edu.wgu.dm.admin", "edu.wgu.dm.config", "edu.wgu.dm.audit", "edu.wgu.security.service",
+        "edu.wgu.dm.util", "edu.wgu.dm.health"})
 @EntityScan("edu.wgu.dm.entity")
 @EnableJpaRepositories(basePackages = {"edu.wgu.dm.repo.ema"})
 @EnableFeignClients(basePackages = {"edu.wgu.dm.service.feign"})
@@ -35,8 +35,8 @@ public class Application extends SpringBootServletInitializer {
      * @param args
      */
     public static void main(String[] args) {
-        SpringApplication app =
-                new SpringApplicationBuilder(Application.class).bannerMode(Mode.OFF).build();
+        SpringApplication app = new SpringApplicationBuilder(Application.class).bannerMode(Mode.OFF)
+                                                                               .build();
         app.run(args);
     }
 

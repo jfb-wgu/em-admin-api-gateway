@@ -38,11 +38,10 @@ public class UserInfoController {
     @IgnoreAuthorization
     @GetMapping(value = "/person", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("View details about the current user.")
-    @ApiImplicitParam(name = "Authorization", value = "All authenticated", dataType = "string",
-            paramType = "header", required = true)
+    @ApiImplicitParam(name = "Authorization", value = "All authenticated", dataType = "string", paramType = "header",
+            required = true)
     public ResponseEntity<Person> getPerson(HttpServletRequest request) throws ParseException {
-        return ResponseEntity
-                .ok(this.service.getPersonFromRequest(request, this.iUtil.getUserId()));
+        return ResponseEntity.ok(this.service.getPersonFromRequest(request, this.iUtil.getUserId()));
     }
 
     @Audit

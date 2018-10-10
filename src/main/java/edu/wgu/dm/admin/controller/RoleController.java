@@ -17,6 +17,7 @@ import edu.wgu.dm.admin.service.RoleService;
 import edu.wgu.dm.audit.Audit;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.security.strategy.SecureByPermissionStrategy;
+import edu.wgu.dm.util.IdentityUtil;
 import edu.wgu.dm.util.Permissions;
 import edu.wgu.security.authz.annotation.HasAnyRole;
 import edu.wgu.security.authz.annotation.Secured;
@@ -28,12 +29,15 @@ import io.swagger.annotations.ApiOperation;
  * @author Jessica Pamdeth
  */
 @RestController
-@Api("Role management services.  Modifying an existing role will affect may users for the role.")
+@Api("Role management services.  Modifying an existing role will affect any users with the role.")
 @RequestMapping("v1/admin")
 public class RoleController {
 
     @Autowired
     private RoleService service;
+    
+    @Autowired
+    private IdentityUtil iUtil;
 
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
@@ -43,7 +47,7 @@ public class RoleController {
     @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
             paramType = "header", required = true)
     public ResponseEntity<List<Role>> saveRoles(@RequestBody Role[] roles) {
-        return ResponseEntity.ok(this.service.saveRoles(roles));
+        return ResponseEntity.ok(this.service.saveRoles(this.iUtil.getUserId(), roles));
     }
 
     @Audit

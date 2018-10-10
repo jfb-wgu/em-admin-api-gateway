@@ -29,6 +29,7 @@ import edu.wgu.dm.admin.service.RoleService;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.util.DateUtil;
+import edu.wgu.dm.util.IdentityUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings("boxing")
@@ -39,6 +40,9 @@ public class RoleControllerTest {
 
     @Mock
     private RoleService securityService;
+    
+    @Mock
+    private IdentityUtil iUtil;
 
     private MockMvc mockMvc;
     private ObjectMapper mapper = new ObjectMapper();
@@ -83,7 +87,8 @@ public class RoleControllerTest {
     public void testAddRoles() throws Exception {
         String url = "/v1/admin/roles";
 
-        when(this.securityService.saveRoles(this.roleArray)).thenReturn(this.roles);
+        when(this.securityService.saveRoles("test", this.roleArray)).thenReturn(this.roles);
+        when(this.iUtil.getUserId()).thenReturn("test");
 
         MvcResult result = this.mockMvc
                 .perform(post(url).contentType(MediaType.APPLICATION_JSON)
@@ -93,10 +98,11 @@ public class RoleControllerTest {
         assertEquals(this.mapper.writeValueAsString(this.roles),
                 result.getResponse().getContentAsString());
 
-        ArgumentCaptor<Role[]> arg1 = ArgumentCaptor.forClass(Role[].class);
+        ArgumentCaptor<String> arg1 = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Role[]> arg2 = ArgumentCaptor.forClass(Role[].class);
 
-        verify(this.securityService).saveRoles(arg1.capture());
-        assertEquals(Arrays.toString(this.roleArray), Arrays.toString(arg1.getValue()));
+        verify(this.securityService).saveRoles(arg1.capture(), arg2.capture());
+        assertEquals(Arrays.toString(this.roleArray), Arrays.toString(arg2.getValue()));
     }
 
     @Test

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import edu.wgu.dm.admin.repository.AdminRepository;
 import edu.wgu.dm.common.exception.PermissionNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
+import lombok.NonNull;
 
 @Service
 public class PermissionService {
@@ -19,9 +20,9 @@ public class PermissionService {
         return this.dmRepo.getAllPermissions();
     }
 
-    public Permission getPermission(Long permissionId) {
+    public Permission getPermission(@NonNull Long permissionId) {
         return this.dmRepo.getPermissionById(permissionId)
-                .orElseThrow(() -> new PermissionNotFoundException(permissionId));
+                          .orElseThrow(() -> new PermissionNotFoundException(permissionId));
     }
 
     /**
@@ -29,11 +30,7 @@ public class PermissionService {
      * 
      * @param permission array
      */
-    public void savePermissions(Permission[] permissions) {
-        if (permissions == null || permissions.length == 0) {
-            throw new IllegalArgumentException("Permissions array can not be null or empty");
-        }
-        
+    public void savePermissions(@NonNull Permission[] permissions) {
         this.dmRepo.savePermissions(Arrays.asList(permissions));
     }
 }

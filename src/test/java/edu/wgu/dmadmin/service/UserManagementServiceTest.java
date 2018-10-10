@@ -1,18 +1,15 @@
 package edu.wgu.dmadmin.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collectors;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,14 +25,15 @@ import edu.wgu.dm.admin.repository.AdminRepository;
 import edu.wgu.dm.admin.service.UserManagementService;
 import edu.wgu.dm.common.exception.UserIdNotFoundException;
 import edu.wgu.dm.dto.security.Person;
+import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.User;
-import edu.wgu.dm.entity.publish.TaskEntity;
-import edu.wgu.dm.entity.security.RoleEntity;
-import edu.wgu.dm.entity.security.UserEntity;
-import edu.wgu.dm.repo.ema.RoleRepository;
+import edu.wgu.dm.dto.security.UserSummary;
+import edu.wgu.dm.dto.security.UserTask;
 import edu.wgu.dm.service.feign.PersonService;
+import edu.wgu.dm.util.Permissions;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 
+@SuppressWarnings("boxing")
 @RunWith(MockitoJUnitRunner.class)
 public class UserManagementServiceTest {
 
@@ -46,72 +44,64 @@ public class UserManagementServiceTest {
     AdminRepository repo;
 
     @Mock
-    RoleRepository roleRepo;
-
-    @Mock
     PersonService pService;
 
     @Captor
-    ArgumentCaptor<ArrayList<User>> captor;
+    ArgumentCaptor<List<User>> captor;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    RoleEntity role1 = TestObjectFactory.getRoleModel("role1");
-    RoleEntity role2 = TestObjectFactory.getRoleModel("role2");
+    User user1 = TestObjectFactory.getUser("Bruce", "Wayne");
+    User user2 = TestObjectFactory.getUser("Bruce", "Almighty");
 
-    TaskEntity task1 = TestObjectFactory.getTaskModel();
-    TaskEntity task2 = TestObjectFactory.getTaskModel();
-    UserEntity user1 = TestObjectFactory.getUserModel("test1", "testing1");
-    UserEntity user2 = TestObjectFactory.getUserModel("test2", "testing2");
-    Person person1 = new Person();
-    Person person2 = new Person();;
+    UserSummary summary1 = TestObjectFactory.getUserSummary("Bruce", "Wayne");
+    UserSummary summary2 = TestObjectFactory.getUserSummary("Bruce", "Almighty");
+
+    Person person1 = TestObjectFactory.getPerson("Bruce", "Wayne");
+    Person person2 = TestObjectFactory.getPerson("Bruce", "Almighty");
 
     Random random = new Random();
+
+    Role role1 = TestObjectFactory.getRole("role1");
+    Role role2 = TestObjectFactory.getRole("role2");
+
+    Long taskId1 = this.random.nextLong();
+    Long taskId2 = this.random.nextLong();
 
     @Before
     public void initialize() {
         MockitoAnnotations.initMocks(this);
 
-        this.user1.getRoles().add(this.role1);
-        this.user1.getTasks().add(this.task1);
-        this.user2.getRoles().add(this.role2);
-        this.user2.getTasks().add(this.task2);
+        this.user1.getRoles()
+                  .add(new Role(this.role1.getRoleId()));
+        this.user1.getTasks()
+                  .add(new UserTask(this.taskId1));
+        this.user2.getRoles()
+                  .add(new Role(this.role2.getRoleId()));
+        this.user2.getTasks()
+                  .add(new UserTask(this.taskId2));
 
-        // when(this.repo.getRoles()).thenReturn(Arrays.asList(this.role1, this.role2));
-        // when(this.repo.getTaskBasics()).thenReturn(Arrays.asList(this.task1, this.task2));
-        // when(this.repo.getUsers()).thenReturn(Arrays.asList(this.user1, this.user2));
-        // when(this.repo.getUserModel(this.user1.getUserId())).thenReturn(Optional.of(this.user1));
-
-        this.person1.setFirstName("Bruce");
-        this.person1.setLastName("Wayne");
-        this.person1.setPidm(random.nextLong());
+        this.person1.setPidm(this.random.nextLong());
         this.person1.setIsEmployee(Boolean.TRUE);
         this.person1.setStudentId(this.user1.getUserId());
 
-        this.person2.setFirstName("Bruce");
-        this.person2.setLastName("Almighty");
-        this.person2.setPidm(random.nextLong());
+        this.person2.setPidm(this.random.nextLong());
         this.person2.setIsEmployee(Boolean.TRUE);
         this.person2.setStudentId(this.user2.getUserId());
 
         when(this.pService.getPersonByBannerId(this.user1.getUserId())).thenReturn(this.person1);
-
-        //
-        // Map<UUID, RoleModel> roleMap = Arrays.asList(this.role1, this.role2).stream()
-        // .collect(Collectors.toMap(r -> r.getRoleId(), r -> r));
-        // when(this.repo.getRoleMap(Arrays.asList(this.user1, this.user2))).thenReturn(roleMap);
-        //
-        // Map<UUID, TaskModel> taskMap = Arrays.asList(this.task1, this.task2).stream()
-        // .collect(Collectors.toMap(t -> t.getTaskId(), t -> t));
-        // when(this.repo.getTaskMap()).thenReturn(taskMap);
     }
 
     @Test
     public void testGetUser() {
-        when(this.repo.getUserById("123")).thenReturn(UserEntity.toUser(user1));
-        this.service.getUser("123");
-        verify(this.repo).getUserById("123");
+        when(this.repo.getUserById(this.user1.getUserId())).thenReturn(Optional.ofNullable(this.user1));
+        ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
+
+        this.service.getUser(this.user1.getUserId());        
+        
+        verify(this.repo).getUserById(argument.capture());
+        assertEquals(this.user1.getUserId(), argument.getValue());
     }
 
     @Test
@@ -124,26 +114,26 @@ public class UserManagementServiceTest {
 
     @Test
     public void testAddUser() {
-        User evaluator = UserEntity.toUser(user1).get();
-        this.service.addUsers(this.user1.getUserId(), Arrays.asList(evaluator));
-        verify(this.repo).saveUsers(anyList());
+        List<User> users = Arrays.asList(this.user1, this.user2);
+        this.service.addUsers("admin", users);
+        verify(this.repo).saveUsers(users);
     }
 
     @Test
     public void testAddUsers() {
-        List<User> users = Arrays.asList(this.user1, this.user2).stream()
-                .map(u -> UserEntity.toUser(u).get()).collect(Collectors.toList());
+        List<User> users = Arrays.asList(this.user1, this.user2);
+        when(this.repo.getRolesByPermission(Permissions.SYSTEM)).thenReturn(Collections.emptyList());
+        
+        this.service.addUsers("admin", users);
 
-        when(this.pService.getPersonByUsername(user1.getUserId())).thenReturn(this.person1);
-        when(this.pService.getPersonByUsername(user2.getUserId())).thenReturn(this.person2);
-        service.addUsers(user1.getUserId(), users);
-
-
-        // verify(this.service).checkIfSystemUser( anyList(), eq(this.user1.getUserId()));
-        verify(repo).saveUsers(captor.capture());
-        System.out.println(captor.getValue());
-        assertEquals(user1.getUserId(), this.captor.getValue().get(0).getUserId());
-        assertEquals(user2.getUserId(), this.captor.getValue().get(1).getUserId());
+        verify(this.repo).saveUsers(this.captor.capture());
+        
+        assertEquals(this.user1.getUserId(), this.captor.getValue()
+                                                        .get(0)
+                                                        .getUserId());
+        assertEquals(this.user2.getUserId(), this.captor.getValue()
+                                                        .get(1)
+                                                        .getUserId());
     }
 
     @Test
@@ -154,45 +144,42 @@ public class UserManagementServiceTest {
 
     @Test
     public void testGetUsers() {
-        when(service.getUsers())
-                .thenReturn(UserEntity.toUsers(Arrays.asList(this.user1, this.user2)));
-        List<User> result = service.getUsers();
+        List<UserSummary> users = Arrays.asList(this.summary1, this.summary2);
+        when(this.service.getUsers()).thenReturn(users);
+        
+        List<UserSummary> result = this.service.getUsers();
+        
         assertEquals(2, result.size());
-        assertEquals(1, result.get(0).getRoleNames().size());
+        assertEquals(this.summary2.getLastName(), result.get(1)
+                                                        .getLastName());
     }
-
-    @Test
-    public void testGetUsersMissingData() {
-        when(this.repo.getAllRoles()).thenReturn(RoleEntity.toRoles(Arrays.asList(this.role1)));
-        when(service.getUsers())
-                .thenReturn(UserEntity.toUsers(Arrays.asList(this.user1, this.user2)));
-        List<User> result = this.service.getUsers();
-        assertEquals(2, result.size());
-        assertEquals(1, result.get(0).getRoleNames().size());
-        assertTrue(result.get(0).getRoleNames().contains(role1.getRole()));
-        assertTrue(result.get(1).getTaskNames().contains(task2.getTaskName()));
-    }
-
 
     @Test
     public void testGetUsersForTask() {
-        when(repo.getAllUsers()).thenReturn(Arrays.asList(UserEntity.toUser(user2).get()));
-        List<User> result = this.service.getUsersForTask(this.task2.getTaskId());
-        assertEquals(result.get(0).getUserId(), this.user2.getUserId());
+        List<UserSummary> usersForTask = Arrays.asList(this.summary1);
+        when(this.repo.getUsersByTask(this.taskId1)).thenReturn(usersForTask);
+        
+        List<UserSummary> result = this.service.getUsersForTask(this.taskId1);
+        
+        assertEquals(result.get(0)
+                           .getUserId(),
+                this.summary1.getUserId());
     }
 
 
     @Test
     public void testCreateUser() {
         when(this.repo.getUserById(anyString())).thenReturn(Optional.empty());
-        when(this.pService.getPersonByUsername(user1.getUserId())).thenReturn(this.person1);
-        when(repo.saveUser(any())).thenReturn(UserEntity.toUser(user1));
-        this.service.createUser(user1.getUserId());
+        when(this.pService.getPersonByUsername(this.person1.getUserId())).thenReturn(this.person1);
+        when(this.repo.saveUser(any())).thenReturn(Optional.of(this.user1));
+        
+        this.service.createUser(this.user1.getUserId());
 
         ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
         verify(this.repo).saveUser(argument.capture());
-        assertEquals("Bruce", argument.getValue().getFirstName());
-        assertEquals("Wayne", argument.getValue().getLastName());
+        assertEquals(this.user1.getFirstName(), argument.getValue()
+                                      .getFirstName());
+        assertEquals(this.user1.getLastName(), argument.getValue()
+                                      .getLastName());
     }
-
 }

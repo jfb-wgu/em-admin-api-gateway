@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.wgu.common.domain.Role;
 import edu.wgu.dm.admin.service.ReportService;
 import edu.wgu.dm.audit.Audit;
-import edu.wgu.dm.dto.admin.report.EmaEvaluationAspectRecord;
-import edu.wgu.dm.dto.admin.report.EmaTaskRubricRecord;
 import edu.wgu.dm.dto.publish.Competency;
+import edu.wgu.dm.dto.report.EmaEvaluationAspectRecord;
+import edu.wgu.dm.dto.report.EmaTaskRubricRecord;
 import edu.wgu.security.authz.annotation.HasAnyRole;
 import edu.wgu.security.authz.annotation.Secured;
 import edu.wgu.security.authz.strategy.SecureByRolesStrategy;
@@ -37,11 +37,10 @@ public class ReportController {
     @Audit
     @Secured(strategies = {SecureByRolesStrategy.class})
     @HasAnyRole(Role.EMPLOYEE)
-    @GetMapping(value = {"/competencies/{datePublished}"},
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = {"/competencies/{datePublished}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("List competencies for configured assessment tasks.")
-    @ApiImplicitParam(name = "Authorization", value = "employee", dataType = "string",
-            paramType = "header", required = true)
+    @ApiImplicitParam(name = "Authorization", value = "employee", dataType = "string", paramType = "header",
+            required = true)
     public ResponseEntity<List<Competency>> getCompetencies(
             @PathVariable @DateTimeFormat(iso = ISO.DATE) final Date datePublished) {
         return ResponseEntity.ok(this.service.getTaskCompetencies(datePublished));
@@ -50,11 +49,10 @@ public class ReportController {
     @Audit
     @Secured(strategies = {SecureByRolesStrategy.class})
     @HasAnyRole(Role.EMPLOYEE)
-    @GetMapping(value = {"/rubrics/{datePublished}"},
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = {"/rubrics/{datePublished}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("List rubric aspects and anchors for configured assessment tasks.")
-    @ApiImplicitParam(name = "Authorization", value = "employee", dataType = "string",
-            paramType = "header", required = true)
+    @ApiImplicitParam(name = "Authorization", value = "employee", dataType = "string", paramType = "header",
+            required = true)
     public ResponseEntity<List<EmaTaskRubricRecord>> getRubrics(
             @PathVariable @DateTimeFormat(iso = ISO.DATE) final Date datePublished) {
         return ResponseEntity.ok(this.service.getRubrics(datePublished));
@@ -63,11 +61,10 @@ public class ReportController {
     @Audit
     @Secured(strategies = {SecureByRolesStrategy.class})
     @HasAnyRole(Role.EMPLOYEE)
-    @GetMapping(value = {"/evaluation/aspects/{startDate}/{endDate}"},
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = {"/evaluation/aspects/{startDate}/{endDate}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation("List evaluation aspects for completed evaluations.")
-    @ApiImplicitParam(name = "Authorization", value = "employee", dataType = "string",
-            paramType = "header", required = true)
+    @ApiImplicitParam(name = "Authorization", value = "employee", dataType = "string", paramType = "header",
+            required = true)
     public ResponseEntity<List<EmaEvaluationAspectRecord>> getEvaluationAspects(
             @PathVariable @DateTimeFormat(iso = ISO.DATE) final Date startDate,
             @PathVariable @DateTimeFormat(iso = ISO.DATE) final Date endDate) {
