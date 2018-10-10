@@ -47,28 +47,30 @@ public class UserInfoControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = standaloneSetup(this.controller).build();
- 
+
         when(this.iUtil.getUserId()).thenReturn(this.userId);
-     }
+    }
 
     @Test
     public void testGetPerson() throws Exception {
         String url = "/v1/person";
 
-        when(this.userService.getPersonFromRequest(any(HttpServletRequest.class), eq(this.userId)))
-                .thenReturn(this.person);
+        when(this.userService.getPersonFromRequest(any(HttpServletRequest.class), eq(this.userId))).thenReturn(
+                this.person);
 
-        MvcResult result = this.mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
+        MvcResult result = this.mockMvc.perform(get(url))
+                                       .andExpect(status().isOk())
+                                       .andReturn();
 
-        assertEquals(this.mapper.writeValueAsString(this.person),
-                result.getResponse().getContentAsString());
+        assertEquals(this.mapper.writeValueAsString(this.person), result.getResponse()
+                                                                        .getContentAsString());
 
         ArgumentCaptor<HttpServletRequest> arg1 = ArgumentCaptor.forClass(HttpServletRequest.class);
         ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
 
         verify(this.userService).getPersonFromRequest(arg1.capture(), arg2.capture());
-        assertEquals(org.springframework.mock.web.MockHttpServletRequest.class,
-                arg1.getValue().getClass());
+        assertEquals(org.springframework.mock.web.MockHttpServletRequest.class, arg1.getValue()
+                                                                                    .getClass());
         assertEquals(this.userId, arg2.getValue());
     }
 
@@ -78,10 +80,12 @@ public class UserInfoControllerTest {
 
         when(this.userService.getPersonByUserId(this.userId)).thenReturn(this.person);
 
-        MvcResult result = this.mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
+        MvcResult result = this.mockMvc.perform(get(url))
+                                       .andExpect(status().isOk())
+                                       .andReturn();
 
-        assertEquals(this.mapper.writeValueAsString(this.person),
-                result.getResponse().getContentAsString());
+        assertEquals(this.mapper.writeValueAsString(this.person), result.getResponse()
+                                                                        .getContentAsString());
 
         ArgumentCaptor<String> arg1 = ArgumentCaptor.forClass(String.class);
 
