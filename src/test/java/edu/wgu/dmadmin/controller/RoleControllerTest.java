@@ -1,6 +1,7 @@
 package edu.wgu.dmadmin.controller;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import org.junit.Before;
@@ -24,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import edu.wgu.dm.admin.controller.RoleController;
 import edu.wgu.dm.admin.service.RoleService;
 import edu.wgu.dm.dto.security.Permission;
@@ -40,7 +43,7 @@ public class RoleControllerTest {
 
     @Mock
     private RoleService securityService;
-    
+
     @Mock
     private IdentityUtil iUtil;
 
@@ -56,21 +59,21 @@ public class RoleControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = standaloneSetup(this.roleController).build();
-        
+
         Permission perm1 = new Permission();
         perm1.setPermissionId(this.random.nextLong());
         perm1.setPermission("1");
-        
+
         Permission perm2 = new Permission();
         perm2.setPermissionId(this.random.nextLong());
         perm2.setPermission("2");
-        
+
         Permission perm3 = new Permission();
         perm3.setPermissionId(this.random.nextLong());
         perm3.setPermission("3");
-        
+
         this.permissions = Arrays.asList(perm1, perm2, perm3);
-        
+
         Role role = new Role();
         role.setDateCreated(DateUtil.getZonedNow());
         role.setRole("Admin");
@@ -78,7 +81,7 @@ public class RoleControllerTest {
         role.setDateUpdated(DateUtil.getZonedNow());
         role.setRoleId(this.roleId);
         role.setRoleDescription("Description");
-        
+
         this.roleArray = new Role[] {role};
         this.roles = Arrays.asList(role);
     }
@@ -87,22 +90,35 @@ public class RoleControllerTest {
     public void testAddRoles() throws Exception {
         String url = "/v1/admin/roles";
 
-        when(this.securityService.saveRoles("test", this.roleArray)).thenReturn(this.roles);
+        List<Role> localRoles = Collections.unmodifiableList(this.roles);
+        Role[] localArray = new Role[] {localRoles.get(0)};
+
+        when(this.securityService.saveRoles(any(), any())).thenReturn(localRoles);
         when(this.iUtil.getUserId()).thenReturn("test");
 
-        MvcResult result = this.mockMvc
-                .perform(post(url).contentType(MediaType.APPLICATION_JSON)
-                        .content(this.mapper.writeValueAsString(this.roles)))
-                .andExpect(status().isOk()).andReturn();
+        MvcResult result = this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON)
+                                                         .content(this.mapper.writeValueAsString(localRoles)))
+                                       .andExpect(status().isOk())
+                                       .andReturn();
 
-        assertEquals(this.mapper.writeValueAsString(this.roles),
-                result.getResponse().getContentAsString());
+        CollectionType javaType = this.mapper.getTypeFactory()
+                                             .constructCollectionType(List.class, Role.class);
+        List<Role> responseRoles = this.mapper.readValue(result.getResponse()
+                                                               .getContentAsString(),
+                javaType);
+
+        assertEquals(localRoles.get(0)
+                               .getPermissionIds()
+                               .size(),
+                responseRoles.get(0)
+                             .getPermissionIds()
+                             .size());
 
         ArgumentCaptor<String> arg1 = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Role[]> arg2 = ArgumentCaptor.forClass(Role[].class);
 
         verify(this.securityService).saveRoles(arg1.capture(), arg2.capture());
-        assertEquals(Arrays.toString(this.roleArray), Arrays.toString(arg2.getValue()));
+        assertEquals(localRoles.get(0).getRole(), arg2.getValue()[0].getRole());
     }
 
     @Test
@@ -111,10 +127,12 @@ public class RoleControllerTest {
 
         when(this.securityService.getRoles()).thenReturn(this.roles);
 
-        MvcResult result = this.mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
+        MvcResult result = this.mockMvc.perform(get(url))
+                                       .andExpect(status().isOk())
+                                       .andReturn();
 
-        assertEquals(this.mapper.writeValueAsString(this.roles),
-                result.getResponse().getContentAsString());
+        assertEquals(this.mapper.writeValueAsString(this.roles), result.getResponse()
+                                                                       .getContentAsString());
 
         verify(this.securityService).getRoles();
     }
@@ -125,10 +143,12 @@ public class RoleControllerTest {
 
         when(this.securityService.getRole(this.roleId)).thenReturn(this.roles.get(0));
 
-        MvcResult result = this.mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
+        MvcResult result = this.mockMvc.perform(get(url))
+                                       .andExpect(status().isOk())
+                                       .andReturn();
 
-        assertEquals(this.mapper.writeValueAsString(this.roles.get(0)),
-                result.getResponse().getContentAsString());
+        assertEquals(this.mapper.writeValueAsString(this.roles.get(0)), result.getResponse()
+                                                                              .getContentAsString());
 
         ArgumentCaptor<Long> arg1 = ArgumentCaptor.forClass(Long.class);
 
@@ -140,9 +160,12 @@ public class RoleControllerTest {
     public void testDeleteRole() throws Exception {
         String url = "/v1/admin/roles/" + this.roleId;
 
-        doNothing().when(this.securityService).deleteRole(this.roleId);
+        doNothing().when(this.securityService)
+                   .deleteRole(this.roleId);
 
-        this.mockMvc.perform(delete(url)).andExpect(status().isNoContent()).andReturn();
+        this.mockMvc.perform(delete(url))
+                    .andExpect(status().isNoContent())
+                    .andReturn();
 
         ArgumentCaptor<Long> arg1 = ArgumentCaptor.forClass(Long.class);
 
