@@ -8,9 +8,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +23,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wgu.dm.admin.controller.UserInfoController;
 import edu.wgu.dm.admin.service.UserInfoService;
 import edu.wgu.dm.dto.security.Person;
-import edu.wgu.dm.util.DateUtil;
 import edu.wgu.dm.util.IdentityUtil;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 
@@ -44,12 +40,8 @@ public class UserInfoControllerTest {
     MockMvc mockMvc;
     ObjectMapper mapper = new ObjectMapper();
 
-    private String userId = "123456";
-
-    private Person person;
-
-    Random random = new Random();
-    private List<Long> teams;
+    private Person person = TestObjectFactory.getPerson("Bruce", "Wayne");
+    String userId = person.getStudentId();
 
     @Before
     public void setUp() throws Exception {
@@ -57,53 +49,7 @@ public class UserInfoControllerTest {
         this.mockMvc = standaloneSetup(this.controller).build();
  
         when(this.iUtil.getUserId()).thenReturn(this.userId);
- 
-        teams = new ArrayList<>();
-        teams.add(random.nextLong());
-        teams.add(random.nextLong());
-        teams.add(random.nextLong());
-
-        List<Long> tasks = new ArrayList<>();
-        tasks.add(random.nextLong());
-        tasks.add(random.nextLong());
-        tasks.add(random.nextLong());
-
-
-        List<String> roles = new ArrayList<>();
-        roles.add("roles");
-
-        List<String> permissions = new ArrayList<>();
-        permissions.add("Student");
-
-        List<Long> emaRoles = new ArrayList<>();
-        emaRoles.add(random.nextLong());
-        emaRoles.add(random.nextLong());
-        emaRoles.add(random.nextLong());
-
-        List<String> landings = new ArrayList<>();
-        landings.add("hi");
-        landings.add("there");
-        landings.add("Jim!");
-
-        this.person = new Person();
-        this.person.setIsEmployee(Boolean.FALSE);
-        this.person.setStudentId(this.userId);
-        this.person.setFirstName("Bruce");
-        this.person.setLastName("Wayne");
-        this.person.setPidm(new Long(1234566));
-        this.person.setUserInfo(TestObjectFactory.getUserModel().toUser());
-        this.person.setUsername("UserName");
-        this.person.setEmaRoles(emaRoles);
-        this.person.setLandings(landings);
-        this.person.setLastLogin(DateUtil.getZonedNow());
-        this.person.setPermissions(permissions);
-        this.person.setPersonType("Student");
-        this.person.setPrimaryPhone("123-555-5555");
-        this.person.setRoles(roles);
-        this.person.setTasks(tasks);
-        this.person.setTeams(this.teams);
-        this.person.setWguEmailAddress("bwayne@wgu.edu");
-    }
+     }
 
     @Test
     public void testGetPerson() throws Exception {

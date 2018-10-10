@@ -19,7 +19,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<wgu.soa.starter.version>1.5.3</wgu.soa.starter.version>
 		<wgu.soa.autoconfigure.version>1.3.1</wgu.soa.autoconfigure.version>
-		<wgu.dm.common.version>1.0.0.17</wgu.dm.common.version>
+		<wgu.dm.common.version>1.0.0.25</wgu.dm.common.version>
 		<sonar.tests>src/test/java</sonar.tests>
 		<hibernate.version>5.2.17.Final</hibernate.version>
 		<versions-maven-plugin-version>2.7</versions-maven-plugin-version>
