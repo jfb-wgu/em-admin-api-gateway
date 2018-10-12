@@ -28,7 +28,6 @@ import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.dto.security.UserSummary;
-import edu.wgu.dm.dto.security.UserTask;
 import edu.wgu.dm.service.feign.PersonService;
 import edu.wgu.dm.util.Permissions;
 import edu.wgu.dmadmin.test.TestObjectFactory;
@@ -76,11 +75,11 @@ public class UserManagementServiceTest {
         this.user1.getRoles()
                   .add(new Role(this.role1.getRoleId()));
         this.user1.getTasks()
-                  .add(new UserTask(this.taskId1));
+                  .add(this.taskId1);
         this.user2.getRoles()
                   .add(new Role(this.role2.getRoleId()));
         this.user2.getTasks()
-                  .add(new UserTask(this.taskId2));
+                  .add(this.taskId2);
 
         this.person1.setPidm(this.random.nextLong());
         this.person1.setIsEmployee(Boolean.TRUE);

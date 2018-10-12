@@ -31,7 +31,6 @@ import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.dto.security.UserListResponse;
 import edu.wgu.dm.dto.security.UserResponse;
 import edu.wgu.dm.dto.security.UserSummary;
-import edu.wgu.dm.dto.security.UserTask;
 import edu.wgu.dm.util.IdentityUtil;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 
@@ -90,7 +89,7 @@ public class UserManagementControllerTest {
         User newUser = TestObjectFactory.getUser("Test", "User");
 
         newUser.getTasks()
-                 .add(new UserTask(this.random.nextLong()));
+                 .add(this.random.nextLong());
 
         User[] userArray = new User[] {newUser};
 
