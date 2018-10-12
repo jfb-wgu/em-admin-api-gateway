@@ -16,7 +16,6 @@ import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.dto.security.UserSummary;
-import edu.wgu.dm.dto.security.UserTask;
 import edu.wgu.dm.service.feign.PersonService;
 import edu.wgu.dm.util.Permissions;
 import lombok.NonNull;
@@ -96,7 +95,7 @@ public class UserManagementService {
                      user.getRoles()
                          .addAll(users.getRoles().stream().map(r -> new Role(r)).collect(Collectors.toList()));
                      user.getTasks()
-                         .addAll(users.getTasks().stream().map(t -> new UserTask(t)).collect(Collectors.toList()));
+                         .addAll(users.getTasks());
                      toCreate.add(user);
                  } catch (Exception e) {
                      log.error(Arrays.toString(e.getStackTrace()));
