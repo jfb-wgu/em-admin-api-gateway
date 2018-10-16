@@ -20,14 +20,14 @@ import edu.wgu.dm.entity.report.TaskRubricReportEntity;
 import edu.wgu.dm.entity.security.PermissionEntity;
 import edu.wgu.dm.entity.security.RoleEntity;
 import edu.wgu.dm.entity.security.UserEntity;
+import edu.wgu.dm.projection.security.RoleIdProjection;
+import edu.wgu.dm.projection.security.UserProjection;
 import edu.wgu.dm.repo.ema.CompetencyRepository;
 import edu.wgu.dm.repo.ema.EvaluationAspectReportRepository;
 import edu.wgu.dm.repo.ema.PermissionRepository;
 import edu.wgu.dm.repo.ema.RoleRepository;
 import edu.wgu.dm.repo.ema.TaskRubricReportRepository;
 import edu.wgu.dm.repo.ema.UserRepository;
-import egu.wgu.dm.projection.security.RoleIdProjection;
-import egu.wgu.dm.projection.security.UserProjection;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
