@@ -15,8 +15,6 @@ import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.dto.security.UserSummary;
 import edu.wgu.dm.entity.publish.CompetencyEntity;
-import edu.wgu.dm.entity.report.EvaluationAspectReportEntity;
-import edu.wgu.dm.entity.report.TaskRubricReportEntity;
 import edu.wgu.dm.entity.security.PermissionEntity;
 import edu.wgu.dm.entity.security.RoleEntity;
 import edu.wgu.dm.entity.security.UserEntity;
@@ -28,6 +26,8 @@ import edu.wgu.dm.repo.ema.PermissionRepository;
 import edu.wgu.dm.repo.ema.RoleRepository;
 import edu.wgu.dm.repo.ema.TaskRubricReportRepository;
 import edu.wgu.dm.repo.ema.UserRepository;
+import edu.wgu.dm.view.report.EvaluationAspectReportEntity;
+import edu.wgu.dm.view.report.TaskRubricReportEntity;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
