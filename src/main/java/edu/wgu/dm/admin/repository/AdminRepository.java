@@ -26,6 +26,7 @@ import edu.wgu.dm.repo.ema.PermissionRepository;
 import edu.wgu.dm.repo.ema.RoleRepository;
 import edu.wgu.dm.repo.ema.TaskRubricReportRepository;
 import edu.wgu.dm.repo.ema.UserRepository;
+import edu.wgu.dm.security.strategy.RequestBean;
 import edu.wgu.dm.view.report.EvaluationAspectReportEntity;
 import edu.wgu.dm.view.report.TaskRubricReportEntity;
 import lombok.AccessLevel;
@@ -52,6 +53,9 @@ public class AdminRepository {
 
     @Autowired
     EvaluationAspectReportRepository aspectReportRepo;
+
+    @Autowired
+    RequestBean requestBean;
 
     public List<Competency> getTaskCompetencies(Date datePublished) {
         return CompetencyEntity.toCompetencies(this.competencyRepo.getCompetencies(datePublished));
@@ -86,10 +90,12 @@ public class AdminRepository {
     public Optional<Role> getRoleById(Long roleId) {
         return RoleEntity.toRole(this.roleRepo.findOne(roleId));
     }
-    
+
     public List<Long> getRolesByPermission(String permission) {
         List<RoleIdProjection> ids = this.roleRepo.findByPermissionsPermission(permission);
-        return ids.stream().map(id -> id.getRoleId()).collect(Collectors.toList());
+        return ids.stream()
+                  .map(id -> id.getRoleId())
+                  .collect(Collectors.toList());
     }
 
     public List<Role> getAllRoles() {
@@ -114,6 +120,12 @@ public class AdminRepository {
     }
 
     public Optional<User> getUserById(String userId) {
+        if (this.requestBean != null && this.requestBean.getUser() != null && this.requestBean.getUser()
+                                                                                              .getUserId()
+                                                                                              .equals(userId)) {
+            return Optional.of(this.requestBean.getUser());
+        }
+
         return UserEntity.toUser(this.userRepo.findOne(userId));
     }
 
@@ -141,7 +153,7 @@ public class AdminRepository {
     /*
      * (non-Javadoc) Permission
      */
-    
+
     @Transactional
     public void savePermissions(List<Permission> permissions) {
         this.permissionRepo.save(permissions.stream()
@@ -152,7 +164,7 @@ public class AdminRepository {
     public Optional<Permission> getPermissionById(Long id) {
         return PermissionEntity.toPermission(this.permissionRepo.findOne(id));
     }
-    
+
     public Optional<Permission> getPermissionByName(String permission) {
         return PermissionEntity.toPermission(this.permissionRepo.findByPermission(permission));
     }
