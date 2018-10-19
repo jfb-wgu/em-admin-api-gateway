@@ -18,9 +18,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @WguSoaApplication
 @EnableSwagger2
-@ComponentScan(basePackages = {"edu.wgu.dm.admin", "edu.wgu.dm.config", "edu.wgu.dm.audit", "edu.wgu.security.service",
-        "edu.wgu.dm.util", "edu.wgu.dm.health"})
-@EntityScan("edu.wgu.dm.entity")
+@ComponentScan(basePackages = {"edu.wgu.dm.admin", "edu.wgu.dm.config", "edu.wgu.dm.audit", "edu.wgu.dm.util",
+        "edu.wgu.dm.health", "edu.wgu.dm.security.strategy"})
+@EntityScan({"edu.wgu.dm.entity", "edu.wgu.dm.view"})
 @EnableJpaRepositories(basePackages = {"edu.wgu.dm.repo.ema"})
 @EnableFeignClients(basePackages = {"edu.wgu.dm.service.feign"})
 @EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
