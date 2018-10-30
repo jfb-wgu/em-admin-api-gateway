@@ -50,19 +50,19 @@ public class RoleService {
     }
 
     /**
-     * Add or update system Roles.  Only allow users with the SYSTEM permission to
-     * create or update a role with the SYSTEM permission.
+     * Add or update system Roles. Only allow users with the SYSTEM permission to create or update a
+     * role with the SYSTEM permission.
      * 
      * Permissions need to exist before adding them to the role.
      * 
      * @param role array
      */
-    public List<Role> saveRoles(String userId, @NonNull Role[] roles) {
+    public List<Role> saveRoles(@NonNull String userId, @NonNull Role[] roles) {
         List<Role> roleList = Arrays.asList(roles);
 
         List<Long> permissions = roleList.stream()
-                                               .map(Role::getPermissionIds)
-                                               .collect(ArrayList::new, ArrayList::addAll, ArrayList::addAll);
+                                         .map(Role::getPermissionIds)
+                                         .collect(ArrayList::new, ArrayList::addAll, ArrayList::addAll);
 
         checkIfSystemUser(permissions, userId);
 
@@ -79,8 +79,8 @@ public class RoleService {
      */
     private void checkIfSystemUser(@NonNull List<Long> permissions, @NonNull String userId) {
         Permission system = this.adminRepo.getPermissionByName(Permissions.SYSTEM)
-                                                    .orElseThrow(() -> new IllegalStateException(
-                                                            "No SYSTEM permission is configured."));
+                                          .orElseThrow(() -> new IllegalStateException(
+                                                  "No SYSTEM permission is configured."));
         if (permissions.contains(system.getPermissionId())) {
             this.adminRepo.getUserWithPermission(userId, Permissions.SYSTEM)
                           .orElseThrow(

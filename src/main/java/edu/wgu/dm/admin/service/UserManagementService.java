@@ -59,7 +59,7 @@ public class UserManagementService {
 
     public User createUser(@NonNull String userId) {
         Person person = this.personService.getPersonByUsername(userId);
-        
+
         User newUser = this.adminRepo.getUserById(person.getUserId())
                                      .orElseGet(() -> {
                                          User user = new User();
@@ -84,16 +84,15 @@ public class UserManagementService {
                      Person person = this.personService.getPersonByUsername(name);
                      User user = this.adminRepo.getUserById(person.getUserId())
                                                .orElseGet(() -> {
-                                                   User userdto = new User();
-                                                   userdto.setUserId(person.getUserId());
-                                                   userdto.setFirstName(person.getFirstName());
-                                                   userdto.setLastName(person.getLastName());
-                                                   userdto.setEmployeeId(person.getUsername());
+                                                   User userdto = new User(person);
                                                    return userdto;
                                                });
 
                      user.getRoles()
-                         .addAll(users.getRoles().stream().map(r -> new Role(r)).collect(Collectors.toList()));
+                         .addAll(users.getRoles()
+                                      .stream()
+                                      .map(r -> new Role(r))
+                                      .collect(Collectors.toList()));
                      user.getTasks()
                          .addAll(users.getTasks());
                      toCreate.add(user);
@@ -108,19 +107,21 @@ public class UserManagementService {
     }
 
     /**
-     * Validate --> If role has any system permission, only a system user can assign those.
-     * Find the role IDs for all roles with the SYSTEM permission.  If any of the incoming
-     * role IDs match, then check to see if the current user has the SYSTEM permission.
-     * If not, throw an AuthorizationException.
+     * Validate --> If role has any system permission, only a system user can assign those. Find the
+     * role IDs for all roles with the SYSTEM permission. If any of the incoming role IDs match, then
+     * check to see if the current user has the SYSTEM permission. If not, throw an
+     * AuthorizationException.
      * 
      * @param roleIds
      * @param userId
      */
     private void checkIfSystemUser(@NonNull List<Long> roleIds, @NonNull String userId) {
         List<Long> rolesWithSystem = this.adminRepo.getRolesByPermission(Permissions.SYSTEM);
-        if (ListUtils.intersection(roleIds, rolesWithSystem).size() > 0) {
-            this.adminRepo.getUserWithPermission(userId, Permissions.SYSTEM).orElseThrow(() -> 
-                new AuthorizationException("Only SYSTEM users can assign SYSTEM permissions"));
+        if (ListUtils.intersection(roleIds, rolesWithSystem)
+                     .size() > 0) {
+            this.adminRepo.getUserWithPermission(userId, Permissions.SYSTEM)
+                          .orElseThrow(
+                                  () -> new AuthorizationException("Only SYSTEM users can assign SYSTEM permissions"));
         }
     }
 }

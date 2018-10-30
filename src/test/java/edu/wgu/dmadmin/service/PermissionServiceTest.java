@@ -3,6 +3,8 @@ package edu.wgu.dmadmin.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.Arrays;
@@ -100,10 +102,30 @@ public class PermissionServiceTest {
     @Test
     public void testGetNoPermissions() {
         this.permissiondtos = Arrays.asList(this.permDto1, this.permDto2);
-        when(this.repo.getAllPermissions()).thenReturn(this.permissiondtos);
         when(this.repo.getAllPermissions()).thenReturn(Collections.emptyList());
         List<Permission> result = this.service.getPermissions();
         assertEquals(0, result.size());
+    }
+
+    @Test
+    public void testGetPermissionById() {
+        when(this.repo.getPermissionById(anyLong())).thenReturn(Optional.of(this.permDto1));
+
+        this.service.getPermission(this.permissionId1);
+
+        verify(this.repo).getPermissionById(eq(this.permissionId1));
+    }
+
+    @Test(expected = PermissionNotFoundException.class)
+    public void testGetPermissionByIdNotFound() {
+        when(this.repo.getPermissionById(anyLong())).thenReturn(Optional.empty());
+
+        this.service.getPermission(this.permissionId1);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testGetPermissionNullPermissionId() {
+        this.service.getPermission(null);
     }
 
     @Test
@@ -120,8 +142,16 @@ public class PermissionServiceTest {
 
         // Assert
         verify(this.repo).savePermissions(this.permissionsCaptor.capture());
-        assertNotNull(this.permissionsCaptor.getValue().get(0).getPermission());
-        assertEquals(newPermission.getPermissionId(),
-                this.permissionsCaptor.getValue().get(0).getPermissionId());
+        assertNotNull(this.permissionsCaptor.getValue()
+                                            .get(0)
+                                            .getPermission());
+        assertEquals(newPermission.getPermissionId(), this.permissionsCaptor.getValue()
+                                                                            .get(0)
+                                                                            .getPermissionId());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testSavePermissionsNullPermissionArray() {
+        this.service.savePermissions(null);
     }
 }

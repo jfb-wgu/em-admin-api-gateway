@@ -18,12 +18,14 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import edu.wgu.common.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.AdminRepository;
 import edu.wgu.dm.admin.service.RoleService;
 import edu.wgu.dm.common.exception.RoleNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.User;
+import edu.wgu.dm.dto.security.UserSummary;
 import edu.wgu.dm.repo.ema.RoleRepository;
 import edu.wgu.dm.util.DateUtil;
 import edu.wgu.dm.util.Permissions;
@@ -114,6 +116,11 @@ public class RoleServiceTest {
                 this.role.getRoleId());
     }
 
+    @Test(expected = NullPointerException.class)
+    public void testGetRoleNullRoleId() {
+        this.service.getRole(null);
+    }
+
     @Test
     public void testDeleteRole() {
         // Act
@@ -121,6 +128,11 @@ public class RoleServiceTest {
 
         // Verify
         verify(this.repo).deleteRole(this.roleId1);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testDeleteRoleNullRoleId() {
+        this.service.deleteRole(null);
     }
 
     @Test
@@ -145,5 +157,63 @@ public class RoleServiceTest {
                             .getRoleId());
         assertNotNull(result.get(0)
                             .getDateCreated());
+    }
+
+    @Test
+    public void testSaveRoleSystemRole() {
+        // Arrange
+        Permission systemPerm = TestObjectFactory.getPermission("SYSTEM");
+        Role systemRole = TestObjectFactory.getRole("system");
+        systemRole.getPermissions()
+                  .add(systemPerm);
+
+        when(this.repo.getPermissionByName(Permissions.SYSTEM)).thenReturn(Optional.of(systemPerm));
+        when(this.repo.getUserWithPermission("test", Permissions.SYSTEM)).thenReturn(Optional.of(new UserSummary()));
+
+        // Act
+        this.service.saveRoles("test", new Role[] {systemRole});
+
+        // Assert
+        verify(this.repo).saveRoles(this.captorRoles.capture());
+        assertEquals(systemPerm.getPermissionId(), this.captorRoles.getValue()
+                                                                   .get(0)
+                                                                   .getPermissions()
+                                                                   .get(0)
+                                                                   .getPermissionId());
+        assertNotNull(this.captorRoles.getValue()
+                                      .get(0)
+                                      .getRoleId());
+        assertNotNull(this.captorRoles.getValue()
+                                      .get(0)
+                                      .getDateCreated());
+    }
+
+    @Test(expected = AuthorizationException.class)
+    public void testSaveRoleSystemRoleNotSystemUser() {
+        // Arrange
+        Permission systemPerm = TestObjectFactory.getPermission("SYSTEM");
+        Role systemRole = TestObjectFactory.getRole("system");
+        systemRole.getPermissions()
+                  .add(systemPerm);
+
+        when(this.repo.getPermissionByName(Permissions.SYSTEM)).thenReturn(Optional.of(systemPerm));
+        when(this.repo.getUserWithPermission("test", Permissions.SYSTEM)).thenReturn(Optional.empty());
+
+        // Act
+        this.service.saveRoles("test", new Role[] {systemRole});
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testSaveRoleSystemRoleNoSystemPermission() {
+        // Arrange
+        Permission systemPerm = TestObjectFactory.getPermission("SYSTEM");
+        Role systemRole = TestObjectFactory.getRole("system");
+        systemRole.getPermissions()
+                  .add(systemPerm);
+
+        when(this.repo.getPermissionByName(Permissions.SYSTEM)).thenReturn(Optional.empty());
+
+        // Act
+        this.service.saveRoles("test", new Role[] {systemRole});
     }
 }
