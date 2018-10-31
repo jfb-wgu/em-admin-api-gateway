@@ -1,7 +1,6 @@
 package edu.wgu.dm.admin.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.ListUtils;
@@ -97,7 +96,7 @@ public class UserManagementService {
                          .addAll(users.getTasks());
                      toCreate.add(user);
                  } catch (Exception e) {
-                     log.error(Arrays.toString(e.getStackTrace()));
+                     log.error("Error creating new user.", e);
                      failed.add(name);
                  }
              });
