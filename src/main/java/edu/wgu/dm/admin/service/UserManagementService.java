@@ -7,7 +7,8 @@ import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.wgu.common.exception.AuthorizationException;
-import edu.wgu.dm.admin.repository.AdminRepository;
+import edu.wgu.dm.admin.repository.RoleRepo;
+import edu.wgu.dm.admin.repository.UserRepo;
 import edu.wgu.dm.common.exception.UserIdNotFoundException;
 import edu.wgu.dm.dto.security.BulkCreateResponse;
 import edu.wgu.dm.dto.security.BulkUsers;
@@ -25,7 +26,10 @@ import lombok.extern.slf4j.Slf4j;
 public class UserManagementService {
 
     @Autowired
-    AdminRepository adminRepo;
+    UserRepo adminRepo;
+    
+    @Autowired
+    RoleRepo roleRepo;
 
     @Autowired
     PersonService personService;
@@ -115,7 +119,7 @@ public class UserManagementService {
      * @param userId
      */
     private void checkIfSystemUser(@NonNull List<Long> roleIds, @NonNull String userId) {
-        List<Long> rolesWithSystem = this.adminRepo.getRolesByPermission(Permissions.SYSTEM);
+        List<Long> rolesWithSystem = this.roleRepo.getRolesByPermission(Permissions.SYSTEM);
         if (ListUtils.intersection(roleIds, rolesWithSystem)
                      .size() > 0) {
             this.adminRepo.getUserWithPermission(userId, Permissions.SYSTEM)

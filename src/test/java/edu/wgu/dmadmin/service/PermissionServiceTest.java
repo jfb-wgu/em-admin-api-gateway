@@ -22,7 +22,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import edu.wgu.dm.admin.repository.AdminRepository;
+import edu.wgu.dm.admin.repository.PermissionRepo;
 import edu.wgu.dm.admin.service.PermissionService;
 import edu.wgu.dm.common.exception.PermissionNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
@@ -34,7 +34,7 @@ import edu.wgu.dm.entity.security.UserEntity;
 public class PermissionServiceTest {
 
     @Mock
-    AdminRepository repo;
+    PermissionRepo repo;
 
     @InjectMocks
     PermissionService service;

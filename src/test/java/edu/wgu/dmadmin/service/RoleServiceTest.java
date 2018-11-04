@@ -19,14 +19,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import edu.wgu.common.exception.AuthorizationException;
-import edu.wgu.dm.admin.repository.AdminRepository;
+import edu.wgu.dm.admin.repository.PermissionRepo;
+import edu.wgu.dm.admin.repository.RoleRepo;
+import edu.wgu.dm.admin.repository.UserRepo;
 import edu.wgu.dm.admin.service.RoleService;
 import edu.wgu.dm.common.exception.RoleNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.dto.security.UserSummary;
-import edu.wgu.dm.repo.ema.RoleRepository;
 import edu.wgu.dm.util.DateUtil;
 import edu.wgu.dm.util.Permissions;
 import edu.wgu.dmadmin.test.TestObjectFactory;
@@ -36,10 +37,13 @@ import edu.wgu.dmadmin.test.TestObjectFactory;
 public class RoleServiceTest {
 
     @Mock
-    AdminRepository repo;
+    UserRepo userRepo;
 
     @Mock
-    RoleRepository roleRepo;
+    RoleRepo roleRepo;
+    
+    @Mock
+    PermissionRepo permRepo;
 
     @InjectMocks
     RoleService service;
@@ -87,7 +91,7 @@ public class RoleServiceTest {
 
     @Test
     public void testGetRoles() {
-        when(this.repo.getAllRoles()).thenReturn(this.roles);
+        when(this.roleRepo.getAllRoles()).thenReturn(this.roles);
         assertEquals(this.service.getRoles()
                                  .size(),
                 this.roles.size());
@@ -95,21 +99,21 @@ public class RoleServiceTest {
 
     @Test
     public void testGetNoRoles() {
-        when(this.repo.getAllRoles()).thenReturn(Collections.emptyList());
+        when(this.roleRepo.getAllRoles()).thenReturn(Collections.emptyList());
         List<Role> result = this.service.getRoles();
         assertEquals(0, result.size());
     }
 
     @Test(expected = RoleNotFoundException.class)
     public void testNoRoleFound() {
-        when(this.repo.getRoleById(anyLong())).thenThrow(new RoleNotFoundException(anyLong()));
+        when(this.roleRepo.getRoleById(anyLong())).thenThrow(new RoleNotFoundException(anyLong()));
         this.service.getRole(this.random.nextLong());
     }
 
     @Test
     public void testGetRole() {
         // Arrange
-        when(this.repo.getRoleById(anyLong())).thenReturn(Optional.of(this.role));
+        when(this.roleRepo.getRoleById(anyLong())).thenReturn(Optional.of(this.role));
         // Act + Assert
         assertEquals(this.service.getRole(this.role.getRoleId())
                                  .getRoleId(),
@@ -127,7 +131,7 @@ public class RoleServiceTest {
         this.service.deleteRole(this.roleId1);
 
         // Verify
-        verify(this.repo).deleteRole(this.roleId1);
+        verify(this.roleRepo).deleteRole(this.roleId1);
     }
 
     @Test(expected = NullPointerException.class)
@@ -138,15 +142,15 @@ public class RoleServiceTest {
     @Test
     public void testSaveRole() {
         // Arrange
-        when(this.repo.saveRoles(this.roles)).thenReturn(this.roles);
-        when(this.repo.getPermissionByName(Permissions.SYSTEM)).thenReturn(
+        when(this.roleRepo.saveRoles(this.roles)).thenReturn(this.roles);
+        when(this.permRepo.getPermissionByName(Permissions.SYSTEM)).thenReturn(
                 Optional.of(TestObjectFactory.getPermission("test")));
 
         // Act
         List<Role> result = this.service.saveRoles("test", this.roleArray);
 
         // Assert
-        verify(this.repo).saveRoles(this.captorRoles.capture());
+        verify(this.roleRepo).saveRoles(this.captorRoles.capture());
         assertEquals(this.permissionId1, this.captorRoles.getValue()
                                                          .get(0)
                                                          .getPermissions()
@@ -167,14 +171,14 @@ public class RoleServiceTest {
         systemRole.getPermissions()
                   .add(systemPerm);
 
-        when(this.repo.getPermissionByName(Permissions.SYSTEM)).thenReturn(Optional.of(systemPerm));
-        when(this.repo.getUserWithPermission("test", Permissions.SYSTEM)).thenReturn(Optional.of(new UserSummary()));
+        when(this.permRepo.getPermissionByName(Permissions.SYSTEM)).thenReturn(Optional.of(systemPerm));
+        when(this.userRepo.getUserWithPermission("test", Permissions.SYSTEM)).thenReturn(Optional.of(new UserSummary()));
 
         // Act
         this.service.saveRoles("test", new Role[] {systemRole});
 
         // Assert
-        verify(this.repo).saveRoles(this.captorRoles.capture());
+        verify(this.roleRepo).saveRoles(this.captorRoles.capture());
         assertEquals(systemPerm.getPermissionId(), this.captorRoles.getValue()
                                                                    .get(0)
                                                                    .getPermissions()
@@ -196,8 +200,8 @@ public class RoleServiceTest {
         systemRole.getPermissions()
                   .add(systemPerm);
 
-        when(this.repo.getPermissionByName(Permissions.SYSTEM)).thenReturn(Optional.of(systemPerm));
-        when(this.repo.getUserWithPermission("test", Permissions.SYSTEM)).thenReturn(Optional.empty());
+        when(this.permRepo.getPermissionByName(Permissions.SYSTEM)).thenReturn(Optional.of(systemPerm));
+        when(this.userRepo.getUserWithPermission("test", Permissions.SYSTEM)).thenReturn(Optional.empty());
 
         // Act
         this.service.saveRoles("test", new Role[] {systemRole});
@@ -211,7 +215,7 @@ public class RoleServiceTest {
         systemRole.getPermissions()
                   .add(systemPerm);
 
-        when(this.repo.getPermissionByName(Permissions.SYSTEM)).thenReturn(Optional.empty());
+        when(this.permRepo.getPermissionByName(Permissions.SYSTEM)).thenReturn(Optional.empty());
 
         // Act
         this.service.saveRoles("test", new Role[] {systemRole});

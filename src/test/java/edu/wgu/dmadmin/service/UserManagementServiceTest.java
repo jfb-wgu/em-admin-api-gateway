@@ -23,7 +23,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import edu.wgu.common.exception.AuthorizationException;
-import edu.wgu.dm.admin.repository.AdminRepository;
+import edu.wgu.dm.admin.repository.RoleRepo;
+import edu.wgu.dm.admin.repository.UserRepo;
 import edu.wgu.dm.admin.service.UserManagementService;
 import edu.wgu.dm.common.exception.UserIdNotFoundException;
 import edu.wgu.dm.common.exception.UserNotFoundException;
@@ -45,7 +46,10 @@ public class UserManagementServiceTest {
     UserManagementService service;
 
     @Mock
-    AdminRepository repo;
+    UserRepo repo;
+    
+    @Mock
+    RoleRepo roleRepo;
 
     @Mock
     PersonService pService;
@@ -126,7 +130,7 @@ public class UserManagementServiceTest {
     @Test
     public void testAddUsers() {
         List<User> users = Arrays.asList(this.user1, this.user2);
-        when(this.repo.getRolesByPermission(Permissions.SYSTEM)).thenReturn(Collections.emptyList());
+        when(this.roleRepo.getRolesByPermission(Permissions.SYSTEM)).thenReturn(Collections.emptyList());
 
         this.service.addUsers("admin", users);
 
@@ -203,7 +207,7 @@ public class UserManagementServiceTest {
         when(this.pService.getPersonByUsername("fail")).thenThrow(new UserNotFoundException("fail"));
         when(this.repo.getUserById(this.person1.getUserId())).thenReturn(Optional.empty());
         when(this.repo.getUserById(this.person2.getUserId())).thenReturn(Optional.empty());
-        when(this.repo.getRolesByPermission(Permissions.SYSTEM)).thenReturn(Collections.emptyList());
+        when(this.roleRepo.getRolesByPermission(Permissions.SYSTEM)).thenReturn(Collections.emptyList());
 
         BulkCreateResponse result = this.service.createUsers("admin", users);
 
@@ -236,7 +240,7 @@ public class UserManagementServiceTest {
         when(this.pService.getPersonByUsername("fail")).thenThrow(new UserNotFoundException("fail"));
         when(this.repo.getUserById(this.person1.getUserId())).thenReturn(Optional.empty());
         when(this.repo.getUserById(this.person2.getUserId())).thenReturn(Optional.empty());
-        when(this.repo.getRolesByPermission(Permissions.SYSTEM)).thenReturn(Arrays.asList(1L));
+        when(this.roleRepo.getRolesByPermission(Permissions.SYSTEM)).thenReturn(Arrays.asList(1L));
         when(this.repo.getUserWithPermission("admin", Permissions.SYSTEM)).thenReturn(Optional.of(new UserSummary()));
 
         BulkCreateResponse result = this.service.createUsers("admin", users);
@@ -265,7 +269,7 @@ public class UserManagementServiceTest {
         users.setTasks(tasks);
         users.setUsernames(names);
 
-        when(this.repo.getRolesByPermission(Permissions.SYSTEM)).thenReturn(Arrays.asList(1L));
+        when(this.roleRepo.getRolesByPermission(Permissions.SYSTEM)).thenReturn(Arrays.asList(1L));
         when(this.repo.getUserWithPermission("admin", Permissions.SYSTEM)).thenReturn(Optional.empty());
 
         this.service.createUsers("admin", users);
