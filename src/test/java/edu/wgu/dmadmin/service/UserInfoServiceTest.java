@@ -15,7 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
-import edu.wgu.dm.admin.repository.AdminRepository;
+import edu.wgu.dm.admin.repository.UserRepo;
 import edu.wgu.dm.admin.service.UserInfoService;
 import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.dto.security.User;
@@ -29,7 +29,7 @@ public class UserInfoServiceTest {
     UserInfoService service;
 
     @Mock
-    AdminRepository repo;
+    UserRepo repo;
 
     @Mock
     PersonService pService;

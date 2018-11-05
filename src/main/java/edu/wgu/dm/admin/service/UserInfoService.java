@@ -4,7 +4,7 @@ import java.text.ParseException;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import edu.wgu.dm.admin.repository.AdminRepository;
+import edu.wgu.dm.admin.repository.UserRepo;
 import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.service.feign.PersonService;
 
@@ -15,7 +15,7 @@ public class UserInfoService {
     PersonService personService;
 
     @Autowired
-    AdminRepository repo;
+    UserRepo repo;
 
     public Person getPersonFromRequest(HttpServletRequest request, String userId) throws ParseException {
         String auth = request.getHeader("authorization");

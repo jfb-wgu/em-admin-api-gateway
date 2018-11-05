@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import edu.wgu.dm.admin.repository.AdminRepository;
+import edu.wgu.dm.admin.repository.PermissionRepo;
 import edu.wgu.dm.common.exception.PermissionNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
 import lombok.NonNull;
@@ -13,15 +13,15 @@ import lombok.NonNull;
 public class PermissionService {
 
     @Autowired
-    private AdminRepository dmRepo;
+    private PermissionRepo repo;
 
 
     public List<Permission> getPermissions() {
-        return this.dmRepo.getAllPermissions();
+        return this.repo.getAllPermissions();
     }
 
     public Permission getPermission(@NonNull Long permissionId) {
-        return this.dmRepo.getPermissionById(permissionId)
+        return this.repo.getPermissionById(permissionId)
                           .orElseThrow(() -> new PermissionNotFoundException(permissionId));
     }
 
@@ -31,6 +31,6 @@ public class PermissionService {
      * @param permission array
      */
     public void savePermissions(@NonNull Permission[] permissions) {
-        this.dmRepo.savePermissions(Arrays.asList(permissions));
+        this.repo.savePermissions(Arrays.asList(permissions));
     }
 }

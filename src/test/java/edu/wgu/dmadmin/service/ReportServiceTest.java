@@ -10,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import edu.wgu.dm.admin.repository.AdminRepository;
+import edu.wgu.dm.admin.repository.ReportRepo;
 import edu.wgu.dm.admin.service.ReportService;
 import edu.wgu.dm.util.DateUtil;
 
@@ -21,7 +21,7 @@ public class ReportServiceTest {
     ReportService service;
 
     @Mock
-    AdminRepository repo;
+    ReportRepo repo;
 
     @Before
     public void initialize() {

@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.wgu.common.exception.AuthorizationException;
-import edu.wgu.dm.admin.repository.AdminRepository;
+import edu.wgu.dm.admin.repository.UserRepo;
+import edu.wgu.dm.admin.repository.PermissionRepo;
+import edu.wgu.dm.admin.repository.RoleRepo;
 import edu.wgu.dm.common.exception.RoleNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.dto.security.Role;
@@ -17,7 +19,13 @@ import lombok.NonNull;
 public class RoleService {
 
     @Autowired
-    private AdminRepository adminRepo;
+    private RoleRepo roleRepo;
+    
+    @Autowired
+    private UserRepo userRepo;
+    
+    @Autowired
+    private PermissionRepo permRepo;
 
     /**
      * Get All Role DTO
@@ -25,7 +33,7 @@ public class RoleService {
      * @return List<Role>
      */
     public List<Role> getRoles() {
-        return this.adminRepo.getAllRoles();
+        return this.roleRepo.getAllRoles();
     }
 
     /**
@@ -35,7 +43,7 @@ public class RoleService {
      * @return Role DTO
      */
     public Role getRole(@NonNull Long roleId) {
-        return this.adminRepo.getRoleById(roleId)
+        return this.roleRepo.getRoleById(roleId)
                              .orElseThrow(() -> new RoleNotFoundException(roleId));
     }
 
@@ -46,7 +54,7 @@ public class RoleService {
      * @param roleId
      */
     public void deleteRole(@NonNull Long roleId) {
-        this.adminRepo.deleteRole(roleId);
+        this.roleRepo.deleteRole(roleId);
     }
 
     /**
@@ -66,7 +74,7 @@ public class RoleService {
 
         checkIfSystemUser(permissions, userId);
 
-        return this.adminRepo.saveRoles(roleList);
+        return this.roleRepo.saveRoles(roleList);
     }
 
     /**
@@ -78,11 +86,11 @@ public class RoleService {
      * @param userId
      */
     private void checkIfSystemUser(@NonNull List<Long> permissions, @NonNull String userId) {
-        Permission system = this.adminRepo.getPermissionByName(Permissions.SYSTEM)
+        Permission system = this.permRepo.getPermissionByName(Permissions.SYSTEM)
                                           .orElseThrow(() -> new IllegalStateException(
                                                   "No SYSTEM permission is configured."));
         if (permissions.contains(system.getPermissionId())) {
-            this.adminRepo.getUserWithPermission(userId, Permissions.SYSTEM)
+            this.userRepo.getUserWithPermission(userId, Permissions.SYSTEM)
                           .orElseThrow(
                                   () -> new AuthorizationException("Only SYSTEM users can assign SYSTEM permissions"));
         }
