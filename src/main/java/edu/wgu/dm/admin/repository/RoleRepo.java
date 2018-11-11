@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.entity.security.RoleEntity;
 import edu.wgu.dm.projection.security.RoleIdProjection;
+import edu.wgu.dm.projection.security.RoleProjection;
 import edu.wgu.dm.repo.security.RoleRepository;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -45,6 +46,6 @@ public class RoleRepo {
     }
 
     public List<Role> getAllRoles() {
-        return RoleEntity.toRoles(this.roleRepo.findAll());
+        return RoleProjection.toRoles(this.roleRepo.findAllProjectedBy());
     }
 }
