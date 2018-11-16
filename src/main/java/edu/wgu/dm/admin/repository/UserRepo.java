@@ -11,7 +11,7 @@ import edu.wgu.dm.dto.security.UserSummary;
 import edu.wgu.dm.entity.security.UserEntity;
 import edu.wgu.dm.projection.security.UserProjection;
 import edu.wgu.dm.repo.security.UserRepository;
-import edu.wgu.dm.security.strategy.RequestBean;
+import edu.wgu.dm.repository.SecurityRepo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
@@ -23,8 +23,8 @@ public class UserRepo {
     UserRepository userRepo;
 
     @Autowired
-    RequestBean requestBean;
-    
+    SecurityRepo secRepo;
+
     @Transactional
     public Optional<User> saveUser(User user) {
         return UserEntity.toUser(this.userRepo.saveAndFlush(new UserEntity(user)));
@@ -39,13 +39,7 @@ public class UserRepo {
     }
 
     public Optional<User> getUserById(String userId) {
-        if (this.requestBean != null && this.requestBean.getUser() != null && this.requestBean.getUser()
-                                                                                              .getUserId()
-                                                                                              .equals(userId)) {
-            return Optional.of(this.requestBean.getUser());
-        }
-
-        return UserEntity.toUser(this.userRepo.findOne(userId));
+        return this.secRepo.getUserById(userId);
     }
 
     public Optional<UserSummary> getUserWithPermission(String userId, String permission) {
