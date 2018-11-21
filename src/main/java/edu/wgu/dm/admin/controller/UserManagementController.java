@@ -1,6 +1,5 @@
 package edu.wgu.dm.admin.controller;
 
-import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -58,11 +57,11 @@ public class UserManagementController {
     @HasAnyRole(Permissions.USER_CREATE)
     @PostMapping(value = "/users")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @ApiOperation("Add one or more users to the system.  Existing user information will be over-written.")
+    @ApiOperation("Save or update an EMA user.")
     @ApiImplicitParam(name = "Authorization", value = "User-Create permission", dataType = "string",
             paramType = "header", required = true)
-    public void addUsers(@RequestBody User[] users) {
-        this.service.addUsers(this.iUtil.getUserId(), Arrays.asList(users));
+    public void saveUser(@RequestBody User user) {
+        this.service.saveUser(this.iUtil.getUserId(), user);
     }
 
     @Audit

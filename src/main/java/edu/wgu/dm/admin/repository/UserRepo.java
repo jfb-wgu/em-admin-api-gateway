@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import edu.wgu.dm.dto.security.User;
@@ -26,11 +28,13 @@ public class UserRepo {
     SecurityRepo secRepo;
 
     @Transactional
+    @CachePut(cacheNames = "wgu-ema-user", key = "#user.userId")
     public Optional<User> saveUser(User user) {
         return UserEntity.toUser(this.userRepo.saveAndFlush(new UserEntity(user)));
     }
 
     @Transactional
+    @CacheEvict(value = "wgu-ema-user", allEntries = true)
     public List<User> saveUsers(List<User> users) {
         List<UserEntity> entities = this.userRepo.save(users.stream()
                                                             .map(u -> new UserEntity(u))
@@ -55,6 +59,7 @@ public class UserRepo {
     }
 
     @Transactional
+    @CacheEvict(value = "wgu-ema-user", key = "#userId")
     public void deleteUser(String userId) {
         this.userRepo.delete(userId);
     }
