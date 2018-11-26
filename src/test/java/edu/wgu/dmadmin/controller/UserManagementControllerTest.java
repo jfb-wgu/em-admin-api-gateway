@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,29 +81,26 @@ public class UserManagementControllerTest {
         assertEquals(this.user.getUserId(), arg1.getValue());
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @Test
     public void testAddUsers() throws Exception {
         String url = "/v1/users";
         User newUser = TestObjectFactory.getUser("Test", "User");
 
         newUser.getTasks()
-                 .add(this.random.nextLong());
-
-        User[] userArray = new User[] {newUser};
+               .add(this.random.nextLong());
 
         doNothing().when(this.userService)
-                   .addUsers("test", Arrays.asList(userArray));
+                   .saveUser("test", newUser);
 
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON)
-                                      .content(this.mapper.writeValueAsString(userArray)))
+                                      .content(this.mapper.writeValueAsString(newUser)))
                     .andExpect(status().isNoContent())
                     .andReturn();
 
-        ArgumentCaptor<List> arg1 = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<User> arg1 = ArgumentCaptor.forClass(User.class);
 
-        verify(this.userService).addUsers(eq(this.user.getUserId()), arg1.capture());
-        assertEquals(Arrays.asList(userArray), arg1.getValue());
+        verify(this.userService).saveUser(eq(this.user.getUserId()), arg1.capture());
+        assertEquals(newUser, arg1.getValue());
     }
 
     @Test

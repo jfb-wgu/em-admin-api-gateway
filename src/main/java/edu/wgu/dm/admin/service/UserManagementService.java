@@ -1,9 +1,11 @@
 package edu.wgu.dm.admin.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
-import org.apache.commons.collections.ListUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.wgu.common.exception.AuthorizationException;
@@ -27,7 +29,7 @@ public class UserManagementService {
 
     @Autowired
     UserRepo adminRepo;
-    
+
     @Autowired
     RoleRepo roleRepo;
 
@@ -39,13 +41,11 @@ public class UserManagementService {
                              .orElseThrow(() -> new UserIdNotFoundException(userId));
     }
 
-    public void addUsers(@NonNull String userId, @NonNull List<User> users) {
-        List<Long> roles = users.stream()
-                                .map(User::getRoleIds)
-                                .collect(ArrayList::new, ArrayList::addAll, ArrayList::addAll);
+    public void saveUser(@NonNull String userId, @NonNull User user) {
+        Set<Long> roles = user.getRoleIds();
 
         checkIfSystemUser(roles, userId);
-        this.adminRepo.saveUsers(users);
+        this.adminRepo.saveUser(user);
     }
 
     public void deleteUser(@NonNull String userId) {
@@ -118,10 +118,10 @@ public class UserManagementService {
      * @param roleIds
      * @param userId
      */
-    private void checkIfSystemUser(@NonNull List<Long> roleIds, @NonNull String userId) {
+    private void checkIfSystemUser(@NonNull Collection<Long> roleIds, @NonNull String userId) {
         List<Long> rolesWithSystem = this.roleRepo.getRolesByPermission(Permissions.SYSTEM);
-        if (ListUtils.intersection(roleIds, rolesWithSystem)
-                     .size() > 0) {
+        if (CollectionUtils.intersection(roleIds, rolesWithSystem)
+                           .size() > 0) {
             this.adminRepo.getUserWithPermission(userId, Permissions.SYSTEM)
                           .orElseThrow(
                                   () -> new AuthorizationException("Only SYSTEM users can assign SYSTEM permissions"));

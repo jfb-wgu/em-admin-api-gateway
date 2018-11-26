@@ -47,7 +47,7 @@ public class UserManagementServiceTest {
 
     @Mock
     UserRepo repo;
-    
+
     @Mock
     RoleRepo roleRepo;
 
@@ -122,26 +122,9 @@ public class UserManagementServiceTest {
 
     @Test
     public void testAddUser() {
-        List<User> users = Arrays.asList(this.user1, this.user2);
-        this.service.addUsers("admin", users);
-        verify(this.repo).saveUsers(users);
-    }
-
-    @Test
-    public void testAddUsers() {
-        List<User> users = Arrays.asList(this.user1, this.user2);
-        when(this.roleRepo.getRolesByPermission(Permissions.SYSTEM)).thenReturn(Collections.emptyList());
-
-        this.service.addUsers("admin", users);
-
-        verify(this.repo).saveUsers(this.captor.capture());
-
-        assertEquals(this.user1.getUserId(), this.captor.getValue()
-                                                        .get(0)
-                                                        .getUserId());
-        assertEquals(this.user2.getUserId(), this.captor.getValue()
-                                                        .get(1)
-                                                        .getUserId());
+        User user = this.user1;
+        this.service.saveUser("admin", user);
+        verify(this.repo).saveUser(user);
     }
 
     @Test
