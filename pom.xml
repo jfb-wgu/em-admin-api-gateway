@@ -240,5 +240,5 @@
 			<url>https://nexus.wgu.edu/content/repositories/WGU</url>
 		</repository>
 	</repositories>
-	<version>1.6.0</version>
+	<version>1.6.1</version>
 </project>
