@@ -33,6 +33,18 @@
 		<guava.version>26.0-jre</guava.version>
 	</properties>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>edu.wgu</groupId>
+				<artifactId>dm-common</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+				<version>${wgu.dm.common.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>edu.wgu</groupId>
@@ -158,7 +170,6 @@
 		<dependency>
 			<groupId>edu.wgu</groupId>
 			<artifactId>dm-worker</artifactId>
-			<version>${wgu.dm.common.version}</version>
 		</dependency>
 
 		<dependency>
