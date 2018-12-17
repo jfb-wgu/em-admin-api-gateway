@@ -68,7 +68,7 @@ public class UserManagementController {
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_CREATE)
     @PostMapping(value = "/users/{username}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation("Create a user skeleton from WGU username.  Existing user information will be over-written.")
+    @ApiOperation("Create or retrieve a user skeleton from WGU username.")
     @ApiImplicitParam(name = "Authorization", value = "User-Create permission", dataType = "string",
             paramType = "header", required = true)
     public ResponseEntity<User> createUser(@PathVariable String username) {
