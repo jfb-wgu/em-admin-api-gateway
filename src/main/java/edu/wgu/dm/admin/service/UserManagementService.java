@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import edu.wgu.common.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.RoleRepo;
 import edu.wgu.dm.admin.repository.UserRepo;
-import edu.wgu.dm.common.exception.UserIdNotFoundException;
+import edu.wgu.dm.common.exception.UserNotFoundException;
 import edu.wgu.dm.dto.security.BulkCreateResponse;
 import edu.wgu.dm.dto.security.BulkUsers;
 import edu.wgu.dm.dto.security.Person;
@@ -38,7 +38,7 @@ public class UserManagementService {
 
     public User getUser(@NonNull String userId) {
         return this.adminRepo.getUserById(userId)
-                             .orElseThrow(() -> new UserIdNotFoundException(userId));
+                             .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     public void saveUser(@NonNull String userId, @NonNull User user) {
@@ -48,6 +48,7 @@ public class UserManagementService {
         this.adminRepo.saveUser(user);
     }
 
+    // TODO make this a soft delete
     public void deleteUser(@NonNull String userId) {
         this.adminRepo.deleteUser(userId);
     }
@@ -65,11 +66,7 @@ public class UserManagementService {
 
         User newUser = this.adminRepo.getUserById(person.getUserId())
                                      .orElseGet(() -> {
-                                         User user = new User();
-                                         user.setUserId(person.getUserId());
-                                         user.setFirstName(person.getFirstName());
-                                         user.setLastName(person.getLastName());
-                                         user.setEmployeeId(person.getUsername());
+                                         User user = new User(person);
                                          return this.adminRepo.saveUser(user)
                                                               .get();
                                      });
