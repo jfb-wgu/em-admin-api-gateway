@@ -48,6 +48,7 @@ public class UserManagementController {
     @ApiImplicitParam(name = "Authorization", value = "User-Search permission", dataType = "string",
             paramType = "header", required = true)
     public ResponseEntity<UserResponse> getUser(@PathVariable final String userId) {
+        // TODO return simple User.
         UserResponse result = new UserResponse(this.service.getUser(userId));
         return ResponseEntity.ok(result);
     }
@@ -108,6 +109,7 @@ public class UserManagementController {
     @ApiImplicitParam(name = "Authorization", value = "User-Search permission", dataType = "string",
             paramType = "header", required = true)
     public ResponseEntity<UserListResponse> getAllUsers() {
+        // TODO return simple List of Users
         UserListResponse result = new UserListResponse(this.service.getUsers());
         return ResponseEntity.ok(result);
     }
