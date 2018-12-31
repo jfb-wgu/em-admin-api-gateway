@@ -35,7 +35,7 @@ public class RoleController {
 
     @Autowired
     private RoleService service;
-    
+
     @Autowired
     private IdentityUtil iUtil;
 
@@ -46,6 +46,7 @@ public class RoleController {
     @ApiOperation("Add one or more roles.")
     @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
             paramType = "header", required = true)
+    // TODO Change this to take a single Role rather than an array.
     public ResponseEntity<List<Role>> saveRoles(@RequestBody Role[] roles) {
         return ResponseEntity.ok(this.service.saveRoles(this.iUtil.getUserId(), roles));
     }

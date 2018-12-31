@@ -26,7 +26,6 @@ import edu.wgu.common.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.RoleRepo;
 import edu.wgu.dm.admin.repository.UserRepo;
 import edu.wgu.dm.admin.service.UserManagementService;
-import edu.wgu.dm.common.exception.UserIdNotFoundException;
 import edu.wgu.dm.common.exception.UserNotFoundException;
 import edu.wgu.dm.dto.security.BulkCreateResponse;
 import edu.wgu.dm.dto.security.BulkUsers;
@@ -115,7 +114,7 @@ public class UserManagementServiceTest {
     @Test
     public void testGetUserFail() {
         when(this.repo.getUserById("none")).thenReturn(Optional.empty());
-        this.thrown.expect(UserIdNotFoundException.class);
+        this.thrown.expect(UserNotFoundException.class);
         this.service.getUser("none");
     }
 

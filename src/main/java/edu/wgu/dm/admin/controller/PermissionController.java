@@ -64,6 +64,7 @@ public class PermissionController {
     @ApiOperation("Add one or more permissions.")
     @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
             paramType = "header", required = true)
+    // TODO: Make this a single Permission rather than an array.
     public void addPermissions(@RequestBody Permission[] permissions) {
         this.service.savePermissions(permissions);
     }
