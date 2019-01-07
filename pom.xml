@@ -17,7 +17,7 @@
 		<start-class>edu.wgu.dm.admin.Application</start-class>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<wgu.dm.common.version>1.0.0.79</wgu.dm.common.version>
+		<wgu.dm.common.version>1.0.0.80</wgu.dm.common.version>
 		<sonar.tests>src/test/java</sonar.tests>
 		<hibernate.version>5.3.7.Final</hibernate.version>
 		<hibernate.annotation.version>5.0.5.Final</hibernate.annotation.version>
