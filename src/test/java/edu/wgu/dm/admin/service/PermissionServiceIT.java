@@ -18,7 +18,7 @@ import edu.wgu.dm.dto.security.Permission;
 @SpringBootTest
 @ActiveProfiles("local")
 @Transactional
-public class PermissionServiceIntegTest {
+public class PermissionServiceIT {
 
     private static Random random = new Random();
 

@@ -22,7 +22,7 @@ import edu.wgu.dm.util.Permissions;
 @SpringBootTest
 @ActiveProfiles("local")
 @Transactional
-public class RoleServiceIntegTest {
+public class RoleServiceIT {
 
     @Autowired
     RoleService roleService;
