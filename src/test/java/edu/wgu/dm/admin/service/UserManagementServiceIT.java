@@ -2,7 +2,6 @@ package edu.wgu.dm.admin.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,53 +10,54 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import edu.wgu.common.exception.AuthorizationException;
-import edu.wgu.dm.admin.repository.PermissionRepo;
-import edu.wgu.dm.dto.security.Permission;
+import edu.wgu.dm.admin.repository.RoleRepo;
+import edu.wgu.dm.admin.repository.UserRepo;
 import edu.wgu.dm.dto.security.Role;
+import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.entity.security.UserEntity;
 import edu.wgu.dm.util.Permissions;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
+@RunWith(SpringRunner.class)
 @ActiveProfiles("local")
 @Transactional
-public class RoleServiceIT {
+public class UserManagementServiceIT {
 
     @Autowired
-    RoleService roleService;
+    RoleRepo roleRepo;
 
     @Autowired
-    private PermissionRepo permRepo;
+    UserRepo adminRepo;
 
     @Autowired
     EntityManager entityManager;
 
-    /*
-     * If user passed in does not have SYSTEM permission, dm-admin should give error upon saving a new role with sys permission. 
-     */
+    @Autowired
+    UserManagementService userMgmntSvc;
+
+    // Only an admin user can save a user with System Permission role
     @Test(expected = AuthorizationException.class)
-    public void testOnlySystemUserCanAddSystemRole() {
-
+    public void testSaveByNonSystemUser() {
         // arrange
-        UserEntity userEntity = createUser("test_id");
+        List<Long> rolesWithSystem = this.roleRepo.getRolesByPermission(Permissions.SYSTEM);
+        if (CollectionUtils.isEmpty(rolesWithSystem)) {
+            throw new RuntimeException("Role with System permission do not exist");
+        }
+        // create a user to be saved with Sys Role
+        User user = new User();
+        List<Role> roles = new ArrayList<>();
+        Role r = new Role();
+        r.setRoleId(rolesWithSystem.get(0));
+        roles.add(r);
+        user.setRoles(roles);
 
-        // create a dummy role with system permission
-        Role role = new Role();
-        role.setRole("test_role");
-        role.setRoleDescription("test_role_desc");
-        Optional<Permission> sysPerm = permRepo.getPermissionByName(Permissions.SYSTEM);
+        // create a temp user to get user_id
+        UserEntity userPerformingSaveCall = createUser("test_user");
 
-        List<Permission> permissions = new ArrayList<>();
-        Permission perm = new Permission();
-        perm.setPermissionId(sysPerm.get()
-                                    .getPermissionId());
-        permissions.add(perm);
-        role.setPermissions(permissions);
-
-        // act
-        // save should fail
-        roleService.saveRoles(userEntity.getUserId(), new Role[] {role});
+        //act
+        userMgmntSvc.saveUser(userPerformingSaveCall.getUserId(), user);
     }
 
     /**
