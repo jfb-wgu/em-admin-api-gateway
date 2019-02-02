@@ -109,7 +109,6 @@ public class UserManagementController {
     @ApiImplicitParam(name = "Authorization", value = "User-Search permission", dataType = "string",
             paramType = "header", required = true)
     public ResponseEntity<UserListResponse> getAllUsers() {
-        // TODO return simple List of Users
         UserListResponse result = new UserListResponse(this.service.getUsers());
         return ResponseEntity.ok(result);
     }
