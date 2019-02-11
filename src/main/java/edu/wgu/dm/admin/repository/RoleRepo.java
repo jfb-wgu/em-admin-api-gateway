@@ -23,19 +23,20 @@ public class RoleRepo {
 
     @Transactional
     public List<Role> saveRoles(List<Role> roles) {
-        List<RoleEntity> entities = this.roleRepo.save(roles.stream()
-                                                            .map(r -> new RoleEntity(r))
-                                                            .collect(Collectors.toList()));
+        List<RoleEntity> entities = this.roleRepo.saveAll(roles.stream()
+                                                               .map(r -> new RoleEntity(r))
+                                                               .collect(Collectors.toList()));
         return RoleEntity.toRoles(entities);
     }
 
     @Transactional
     public void deleteRole(Long roleId) {
-        this.roleRepo.delete(roleId);
+        this.roleRepo.deleteById(roleId);
     }
 
     public Optional<Role> getRoleById(Long roleId) {
-        return RoleEntity.toRole(this.roleRepo.findOne(roleId));
+        Optional<RoleEntity> role = this.roleRepo.findById(roleId);
+        return RoleEntity.toRole(role);
     }
 
     public List<Long> getRolesByPermission(String permission) {

@@ -19,7 +19,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -39,7 +39,7 @@ public class PermissionControllerTest {
 
     private MockMvc mockMvc;
     private ObjectMapper mapper = new ObjectMapper();
-    
+
     Random random = new Random();
 
     @Before
@@ -67,10 +67,11 @@ public class PermissionControllerTest {
         when(this.securityService.getPermissions()).thenReturn(permissions);
 
         MvcResult result = this.mockMvc.perform(get(url))
-                .andExpect(status().isOk())
-                .andReturn();
+                                       .andExpect(status().isOk())
+                                       .andReturn();
 
-        assertEquals(this.mapper.writeValueAsString(permissions), result.getResponse().getContentAsString());
+        assertEquals(this.mapper.writeValueAsString(permissions), result.getResponse()
+                                                                        .getContentAsString());
 
         verify(this.securityService).getPermissions();
 
@@ -92,13 +93,13 @@ public class PermissionControllerTest {
         permission.setPermissionType("amdin");
         permissions[0] = permission;
 
-        doNothing().when(this.securityService).savePermissions(permissions);
+        doNothing().when(this.securityService)
+                   .savePermissions(permissions);
 
-        this.mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(permissions)))
-                .andExpect(status().isNoContent())
-                .andReturn();
+        this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON)
+                                      .content(this.mapper.writeValueAsString(permissions)))
+                    .andExpect(status().isNoContent())
+                    .andReturn();
 
         ArgumentCaptor<Permission[]> arg1 = ArgumentCaptor.forClass(Permission[].class);
 

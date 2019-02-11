@@ -1,7 +1,7 @@
 package edu.wgu.dmadmin.controller;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -19,7 +19,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -88,9 +88,6 @@ public class UserManagementControllerTest {
 
         newUser.getTasks()
                .add(this.random.nextLong());
-
-        doNothing().when(this.userService)
-                   .saveUser("test", newUser);
 
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON)
                                       .content(this.mapper.writeValueAsString(newUser)))

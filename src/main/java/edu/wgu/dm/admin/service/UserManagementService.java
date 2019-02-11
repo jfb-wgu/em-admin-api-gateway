@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import edu.wgu.common.exception.AuthorizationException;
+import edu.wgu.boot.core.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.RoleRepo;
 import edu.wgu.dm.admin.repository.UserRepo;
 import edu.wgu.dm.common.exception.UserNotFoundException;

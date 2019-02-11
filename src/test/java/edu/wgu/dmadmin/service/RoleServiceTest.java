@@ -2,7 +2,7 @@ package edu.wgu.dmadmin.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.Arrays;
@@ -17,8 +17,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import edu.wgu.common.exception.AuthorizationException;
+import org.mockito.junit.MockitoJUnitRunner;
+import edu.wgu.boot.core.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.PermissionRepo;
 import edu.wgu.dm.admin.repository.RoleRepo;
 import edu.wgu.dm.admin.repository.UserRepo;
@@ -41,7 +41,7 @@ public class RoleServiceTest {
 
     @Mock
     RoleRepo roleRepo;
-    
+
     @Mock
     PermissionRepo permRepo;
 
@@ -172,7 +172,8 @@ public class RoleServiceTest {
                   .add(systemPerm);
 
         when(this.permRepo.getPermissionByName(Permissions.SYSTEM)).thenReturn(Optional.of(systemPerm));
-        when(this.userRepo.getUserWithPermission("test", Permissions.SYSTEM)).thenReturn(Optional.of(new UserSummary()));
+        when(this.userRepo.getUserWithPermission("test", Permissions.SYSTEM)).thenReturn(
+                Optional.of(new UserSummary()));
 
         // Act
         this.service.saveRoles("test", new Role[] {systemRole});
