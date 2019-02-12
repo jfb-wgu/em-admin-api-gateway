@@ -2,10 +2,8 @@ package edu.wgu.dm.admin;
 
 import org.springframework.boot.Banner.Mode;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
@@ -24,7 +22,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EntityScan({"edu.wgu.dm.entity", "edu.wgu.dm.view"})
 @EnableJpaRepositories(basePackages = {"edu.wgu.dm.repo"})
 @EnableFeignClients(basePackages = {"edu.wgu.dm.service.feign"})
-@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
 @EnableTransactionManagement
 @EnableAspectJAutoProxy
 @EnableJpaAuditing

@@ -10,13 +10,12 @@
 
 	<parent>
 		<groupId>edu.wgu</groupId>
-		<artifactId>wgu-boot</artifactId>
-		<version>1.0.3.RELEASE</version>
+		<artifactId>dm-common</artifactId>
+		<version>0-SNAPSHOT</version>
 	</parent>
 
 	<properties>
 		<start-class>edu.wgu.dm.admin.Application</start-class>
-		<java.version>1.11</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<wgu.dm.common.version>0-SNAPSHOT</wgu.dm.common.version>
 		<sonar.tests>src/test/java</sonar.tests>
@@ -137,6 +136,24 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>edu.wgu</groupId>
+			<artifactId>wgu-boot-starter-api</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.cloud</groupId>
+					<artifactId>
+						spring-cloud-aws-parameter-store-config
+					</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework.cloud</groupId>
+					<artifactId>
+						spring-cloud-starter-aws-parameter-store-config
+					</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 
 	<profiles>
@@ -185,6 +202,18 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.1</version>
+				<configuration>
+					<excludes>
+						<exclude>application-local.properties</exclude>
+						<exclude>application-dev.properties</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
