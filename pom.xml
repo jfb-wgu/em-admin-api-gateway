@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ema-admin</artifactId>
 	<packaging>jar</packaging>
-	<name>dm-admin</name>
+	<name>ema-admin</name>
 	<version>2.0.0</version>
 
 	<parent>
@@ -40,6 +40,11 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-eureka</artifactId>
 			<version>${spring.cloud.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 		<dependency>
@@ -94,7 +99,6 @@
 			<artifactId>wgu-boot-starter-api</artifactId>
 			<exclusions>
 				<exclusion>
-					
 					<groupId>edu.wgu</groupId>
 					<artifactId>
 						wgu-boot-aws
@@ -147,6 +151,7 @@
 					<execution>
 						<goals>
 							<goal>repackage</goal>
+							<goal>build-info</goal>
 						</goals>
 					</execution>
 				</executions>
