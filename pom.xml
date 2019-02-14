@@ -19,7 +19,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<wgu.dm.common.version>0-SNAPSHOT</wgu.dm.common.version>
 		<sonar.tests>src/test/java</sonar.tests>
-		<spring.cloud.version>1.4.6.RELEASE</spring.cloud.version>
 	</properties>
 
 	<dependencyManagement>
@@ -38,8 +37,7 @@
 
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka</artifactId>
-			<version>${spring.cloud.version}</version>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
 
 		<dependency>
