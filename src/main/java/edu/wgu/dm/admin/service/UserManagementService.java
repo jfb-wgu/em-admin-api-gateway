@@ -12,7 +12,7 @@ import edu.wgu.boot.core.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.RoleRepo;
 import edu.wgu.dm.admin.repository.UserRepo;
 import edu.wgu.dm.common.exception.UserNotFoundException;
-import edu.wgu.dm.dto.resopnse.BulkCreateResponse;
+import edu.wgu.dm.dto.response.BulkCreateResponse;
 import edu.wgu.dm.dto.security.BulkUsers;
 import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.dto.security.Role;
