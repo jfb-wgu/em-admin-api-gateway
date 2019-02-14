@@ -81,7 +81,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- RDB Related dependencies -->
 		<dependency>
 			<groupId>edu.wgu</groupId>
 			<artifactId>dm-worker</artifactId>
