@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import edu.wgu.boot.core.config.WGUBootApplication;
 
 @WGUBootApplication
@@ -21,6 +22,7 @@ import edu.wgu.boot.core.config.WGUBootApplication;
 @EnableCaching
 @EntityScan({"edu.wgu.dm.entity", "edu.wgu.dm.view"})
 @EnableJpaRepositories(basePackages = {"edu.wgu.dm.repo", "edu.wgu.dm.view"})
+@EnableTransactionManagement
 public class Application {
 
     /**
