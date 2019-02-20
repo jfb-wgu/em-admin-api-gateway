@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import edu.wgu.boot.auth.authz.annotation.HasAnyRole;
+import edu.wgu.boot.auth.authz.annotation.Secured;
 import edu.wgu.dm.admin.service.UserManagementService;
 import edu.wgu.dm.audit.Audit;
-import edu.wgu.dm.dto.security.BulkCreateResponse;
+import edu.wgu.dm.dto.response.BulkCreateResponse;
+import edu.wgu.dm.dto.response.UserListResponse;
+import edu.wgu.dm.dto.response.UserResponse;
 import edu.wgu.dm.dto.security.BulkUsers;
 import edu.wgu.dm.dto.security.User;
-import edu.wgu.dm.dto.security.UserListResponse;
-import edu.wgu.dm.dto.security.UserResponse;
 import edu.wgu.dm.security.strategy.SecureByPermissionStrategy;
 import edu.wgu.dm.util.IdentityUtil;
 import edu.wgu.dm.util.Permissions;
-import edu.wgu.security.authz.annotation.HasAnyRole;
-import edu.wgu.security.authz.annotation.Secured;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
@@ -109,7 +109,6 @@ public class UserManagementController {
     @ApiImplicitParam(name = "Authorization", value = "User-Search permission", dataType = "string",
             paramType = "header", required = true)
     public ResponseEntity<UserListResponse> getAllUsers() {
-        // TODO return simple List of Users
         UserListResponse result = new UserListResponse(this.service.getUsers());
         return ResponseEntity.ok(result);
     }

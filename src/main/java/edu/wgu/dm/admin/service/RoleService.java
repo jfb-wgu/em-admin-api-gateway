@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import edu.wgu.common.exception.AuthorizationException;
-import edu.wgu.dm.admin.repository.UserRepo;
+import edu.wgu.boot.core.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.PermissionRepo;
 import edu.wgu.dm.admin.repository.RoleRepo;
+import edu.wgu.dm.admin.repository.UserRepo;
 import edu.wgu.dm.common.exception.RoleNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.dto.security.Role;
@@ -20,10 +20,10 @@ public class RoleService {
 
     @Autowired
     private RoleRepo roleRepo;
-    
+
     @Autowired
     private UserRepo userRepo;
-    
+
     @Autowired
     private PermissionRepo permRepo;
 
@@ -44,7 +44,7 @@ public class RoleService {
      */
     public Role getRole(@NonNull Long roleId) {
         return this.roleRepo.getRoleById(roleId)
-                             .orElseThrow(() -> new RoleNotFoundException(roleId));
+                            .orElseThrow(() -> new RoleNotFoundException(roleId));
     }
 
     /**
@@ -87,12 +87,12 @@ public class RoleService {
      */
     private void checkIfSystemUser(@NonNull List<Long> permissions, @NonNull String userId) {
         Permission system = this.permRepo.getPermissionByName(Permissions.SYSTEM)
-                                          .orElseThrow(() -> new IllegalStateException(
-                                                  "No SYSTEM permission is configured."));
+                                         .orElseThrow(() -> new IllegalStateException(
+                                                 "No SYSTEM permission is configured."));
         if (permissions.contains(system.getPermissionId())) {
             this.userRepo.getUserWithPermission(userId, Permissions.SYSTEM)
-                          .orElseThrow(
-                                  () -> new AuthorizationException("Only SYSTEM users can assign SYSTEM permissions"));
+                         .orElseThrow(
+                                 () -> new AuthorizationException("Only SYSTEM users can assign SYSTEM permissions"));
         }
     }
 }

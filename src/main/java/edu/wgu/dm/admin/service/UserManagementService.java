@@ -8,11 +8,11 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import edu.wgu.common.exception.AuthorizationException;
+import edu.wgu.boot.core.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.RoleRepo;
 import edu.wgu.dm.admin.repository.UserRepo;
 import edu.wgu.dm.common.exception.UserNotFoundException;
-import edu.wgu.dm.dto.security.BulkCreateResponse;
+import edu.wgu.dm.dto.response.BulkCreateResponse;
 import edu.wgu.dm.dto.security.BulkUsers;
 import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.dto.security.Role;
@@ -63,6 +63,8 @@ public class UserManagementService {
 
     public User createUser(@NonNull String userId) {
         Person person = this.personService.getPersonByUsername(userId);
+        if (!person.getIsEmployee())
+            throw new IllegalArgumentException("User is not an employee.");
 
         User newUser = this.adminRepo.getUserById(person.getUserId())
                                      .orElseGet(() -> {

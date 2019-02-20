@@ -18,16 +18,17 @@ public class PermissionRepo {
 
     @Autowired
     PermissionRepository permissionRepo;
-    
+
     @Transactional
     public void savePermissions(List<Permission> permissions) {
-        this.permissionRepo.save(permissions.stream()
-                                            .map(p -> new PermissionEntity(p))
-                                            .collect(Collectors.toList()));
+        this.permissionRepo.saveAll(permissions.stream()
+                                               .map(p -> new PermissionEntity(p))
+                                               .collect(Collectors.toList()));
     }
 
     public Optional<Permission> getPermissionById(Long id) {
-        return PermissionEntity.toPermission(this.permissionRepo.findOne(id));
+        Optional<PermissionEntity> perm = this.permissionRepo.findById(id);
+        return PermissionEntity.toPermission(perm);
     }
 
     public Optional<Permission> getPermissionByName(String permission) {

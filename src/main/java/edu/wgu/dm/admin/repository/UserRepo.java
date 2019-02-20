@@ -36,9 +36,9 @@ public class UserRepo {
     @Transactional
     @CacheEvict(value = "wgu-ema-user", allEntries = true)
     public List<User> saveUsers(List<User> users) {
-        List<UserEntity> entities = this.userRepo.save(users.stream()
-                                                            .map(u -> new UserEntity(u))
-                                                            .collect(Collectors.toList()));
+        List<UserEntity> entities = this.userRepo.saveAll(users.stream()
+                                                               .map(u -> new UserEntity(u))
+                                                               .collect(Collectors.toList()));
         return UserEntity.toUsers(entities);
     }
 
@@ -61,6 +61,6 @@ public class UserRepo {
     @Transactional
     @CacheEvict(value = "wgu-ema-user", key = "#userId")
     public void deleteUser(String userId) {
-        this.userRepo.delete(userId);
+        this.userRepo.deleteById(userId);
     }
 }

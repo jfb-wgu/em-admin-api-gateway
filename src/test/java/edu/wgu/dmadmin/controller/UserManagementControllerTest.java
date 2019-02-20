@@ -1,7 +1,7 @@
 package edu.wgu.dmadmin.controller;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -19,16 +19,16 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wgu.dm.admin.controller.UserManagementController;
 import edu.wgu.dm.admin.service.UserManagementService;
+import edu.wgu.dm.dto.response.UserListResponse;
+import edu.wgu.dm.dto.response.UserResponse;
 import edu.wgu.dm.dto.security.User;
-import edu.wgu.dm.dto.security.UserListResponse;
-import edu.wgu.dm.dto.security.UserResponse;
 import edu.wgu.dm.dto.security.UserSummary;
 import edu.wgu.dm.util.IdentityUtil;
 import edu.wgu.dmadmin.test.TestObjectFactory;
@@ -88,9 +88,6 @@ public class UserManagementControllerTest {
 
         newUser.getTasks()
                .add(this.random.nextLong());
-
-        doNothing().when(this.userService)
-                   .saveUser("test", newUser);
 
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON)
                                       .content(this.mapper.writeValueAsString(newUser)))

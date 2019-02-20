@@ -2,8 +2,8 @@ package edu.wgu.dmadmin.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.Arrays;
@@ -21,13 +21,13 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
-import edu.wgu.common.exception.AuthorizationException;
+import org.mockito.junit.MockitoJUnitRunner;
+import edu.wgu.boot.core.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.RoleRepo;
 import edu.wgu.dm.admin.repository.UserRepo;
 import edu.wgu.dm.admin.service.UserManagementService;
 import edu.wgu.dm.common.exception.UserNotFoundException;
-import edu.wgu.dm.dto.security.BulkCreateResponse;
+import edu.wgu.dm.dto.response.BulkCreateResponse;
 import edu.wgu.dm.dto.security.BulkUsers;
 import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.dto.security.Role;
@@ -96,8 +96,6 @@ public class UserManagementServiceTest {
         this.person2.setPidm(this.random.nextLong());
         this.person2.setIsEmployee(Boolean.TRUE);
         this.person2.setStudentId(this.user2.getUserId());
-
-        when(this.pService.getPersonByBannerId(this.user1.getUserId())).thenReturn(this.person1);
     }
 
     @Test

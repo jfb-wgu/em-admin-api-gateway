@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import edu.wgu.common.exception.AuthorizationException;
+import edu.wgu.boot.core.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.RoleRepo;
 import edu.wgu.dm.admin.repository.UserRepo;
 import edu.wgu.dm.dto.security.Role;
@@ -56,7 +56,7 @@ public class UserManagementServiceIT {
         // create a temp user to get user_id
         UserEntity userPerformingSaveCall = createUser("test_user");
 
-        //act
+        // act
         userMgmntSvc.saveUser(userPerformingSaveCall.getUserId(), user);
     }
 

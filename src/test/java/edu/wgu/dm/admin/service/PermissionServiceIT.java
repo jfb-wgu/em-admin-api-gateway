@@ -21,7 +21,7 @@ public class PermissionServiceIT {
 
     private static Random random = new Random();
 
-    
+
     @Autowired
     PermissionService permissionService;
 
@@ -30,7 +30,7 @@ public class PermissionServiceIT {
         // arrange
         Permission permissionDto = new Permission();
         permissionDto.setLanding("test landing");
-        permissionDto.setPermission("test permission:"+random.nextInt());
+        permissionDto.setPermission("test permission:" + random.nextInt());
         permissionDto.setPermissionType("ADMIN");
         permissionDto.setPermissionDescription("test description");
         Permission[] permissions = new Permission[1];
@@ -41,10 +41,10 @@ public class PermissionServiceIT {
 
         // assert
         List<Permission> lst = permissionService.getPermissions()
-                         .stream()
-                         .filter(p -> permissionDto.getPermission()
-                                                   .equalsIgnoreCase(p.getPermission()))
-                         .collect(Collectors.toList());
+                                                .stream()
+                                                .filter(p -> permissionDto.getPermission()
+                                                                          .equalsIgnoreCase(p.getPermission()))
+                                                .collect(Collectors.toList());
         assertEquals(1, lst.size());
     }
 }

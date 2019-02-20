@@ -2,9 +2,8 @@ package edu.wgu.dmadmin.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.Arrays;
@@ -21,7 +20,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import edu.wgu.dm.admin.repository.PermissionRepo;
 import edu.wgu.dm.admin.service.PermissionService;
 import edu.wgu.dm.common.exception.PermissionNotFoundException;
@@ -135,7 +134,6 @@ public class PermissionServiceTest {
         newPermission.setPermission("newPermission");
         newPermission.setPermissionId(1234L);
         Permission[] newPermissions = {newPermission};
-        when(this.repo.getPermissionById(any(Long.class))).thenReturn(Optional.empty());
 
         // Act
         this.service.savePermissions(newPermissions);

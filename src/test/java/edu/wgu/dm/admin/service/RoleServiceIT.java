@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import edu.wgu.common.exception.AuthorizationException;
+import edu.wgu.boot.core.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.PermissionRepo;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.dto.security.Role;
@@ -34,7 +34,8 @@ public class RoleServiceIT {
     EntityManager entityManager;
 
     /*
-     * If user passed in does not have SYSTEM permission, dm-admin should give error upon saving a new role with sys permission. 
+     * If user passed in does not have SYSTEM permission, dm-admin should give error upon saving a new
+     * role with sys permission.
      */
     @Test(expected = AuthorizationException.class)
     public void testOnlySystemUserCanAddSystemRole() {

@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import edu.wgu.boot.auth.authz.annotation.HasAnyRole;
+import edu.wgu.boot.auth.authz.annotation.IgnoreAuthorization;
+import edu.wgu.boot.auth.authz.annotation.Secured;
 import edu.wgu.dm.audit.Audit;
 import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.security.service.UserInfoService;
 import edu.wgu.dm.security.strategy.SecureByPermissionStrategy;
 import edu.wgu.dm.util.IdentityUtil;
 import edu.wgu.dm.util.Permissions;
-import edu.wgu.security.authz.annotation.HasAnyRole;
-import edu.wgu.security.authz.annotation.IgnoreAuthorization;
-import edu.wgu.security.authz.annotation.Secured;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
