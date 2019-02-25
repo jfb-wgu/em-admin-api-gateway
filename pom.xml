@@ -11,13 +11,13 @@
 	<parent>
 		<groupId>edu.wgu</groupId>
 		<artifactId>dm-common</artifactId>
-		<version>1.0.0.89</version>
+		<version>2.0.0.1</version>
 	</parent>
 
 	<properties>
 		<start-class>edu.wgu.dm.admin.Application</start-class>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<wgu.dm.common.version>1.0.0.89</wgu.dm.common.version>
+		<wgu.dm.common.version>2.0.0.1</wgu.dm.common.version>
 		<sonar.tests>src/test/java</sonar.tests>
 	</properties>
 
