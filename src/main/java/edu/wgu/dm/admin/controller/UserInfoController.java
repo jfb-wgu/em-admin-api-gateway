@@ -19,6 +19,7 @@ import edu.wgu.dm.util.IdentityUtil;
 import edu.wgu.dm.util.Permissions;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
@@ -28,7 +29,7 @@ import lombok.experimental.FieldDefaults;
 @RestController
 @RequestMapping("v1")
 @RequiredArgsConstructor
-@FieldDefaults(makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserInfoController {
 
     private UserInfoService service;

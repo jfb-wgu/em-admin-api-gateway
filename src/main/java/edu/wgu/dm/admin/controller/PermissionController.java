@@ -21,6 +21,7 @@ import edu.wgu.dm.util.Permissions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
@@ -31,7 +32,7 @@ import lombok.experimental.FieldDefaults;
 @Api("Permission management services.  Modifying an existing permission may affect all users for the permission.")
 @RequestMapping("v1/admin")
 @RequiredArgsConstructor
-@FieldDefaults(makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PermissionController {
 
     private PermissionService service;

@@ -23,6 +23,7 @@ import edu.wgu.dm.util.Permissions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
@@ -33,7 +34,7 @@ import lombok.experimental.FieldDefaults;
 @Api("Role management services.  Modifying an existing role will affect any users with the role.")
 @RequestMapping("v1/admin")
 @RequiredArgsConstructor
-@FieldDefaults(makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RoleController {
 
     private RoleService service;
