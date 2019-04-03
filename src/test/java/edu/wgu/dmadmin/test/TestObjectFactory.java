@@ -13,16 +13,16 @@ import edu.wgu.dm.util.DateUtil;
 @SuppressWarnings("boxing")
 public class TestObjectFactory {
     static Random random = new Random();
-    
+
     public static UserSummary getUserSummary(String firstName, String lastName) {
         UserSummary user = new UserSummary();
-        
+
         user.setUserId(firstName + lastName);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmployeeId(firstName + "." + lastName);
         user.setLastLogin(DateUtil.getZonedNow());
-        
+
         return user;
     }
 
@@ -55,17 +55,17 @@ public class TestObjectFactory {
 
     public static Permission getPermission(String permissionName) {
         Permission perm = new Permission();
-        
+
         perm.setPermission(permissionName);
         perm.setLanding("landing");
         perm.setPermissionDescription("permission description");
         perm.setPermissionId(random.nextLong());
         perm.setPermissionType("type");
         perm.setDateCreated(DateUtil.getZonedNow());
-        
+
         return perm;
     }
-    
+
     public static Person getPerson(String firstName, String lastName) {
         Person person = new Person();
 
@@ -73,13 +73,13 @@ public class TestObjectFactory {
         person.setStudentId(firstName + lastName);
         person.setFirstName(firstName);
         person.setLastName(lastName);
-        person.setPidm(new Long(1234566));
+        person.setPidm(Long.valueOf(1234566));
         person.setUsername(firstName + "." + lastName);
         person.setPersonType("Student");
         person.setPrimaryPhone("123-555-5555");
-        person.setWguEmailAddress(firstName + "." + lastName + "@wgu.edu");
+        person.setPreferredEmail(firstName + "." + lastName + "@wgu.edu");
         person.setUserInfo(Optional.of(TestObjectFactory.getUser(firstName, lastName)));
-        
+
         return person;
     }
 }
