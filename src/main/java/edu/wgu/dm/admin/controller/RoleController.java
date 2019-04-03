@@ -1,7 +1,6 @@
 package edu.wgu.dm.admin.controller;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +23,8 @@ import edu.wgu.dm.util.Permissions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 /**
  * @author Jessica Pamdeth
@@ -31,12 +32,12 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @Api("Role management services.  Modifying an existing role will affect any users with the role.")
 @RequestMapping("v1/admin")
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true)
 public class RoleController {
 
-    @Autowired
     private RoleService service;
 
-    @Autowired
     private IdentityUtil iUtil;
 
     @Audit
