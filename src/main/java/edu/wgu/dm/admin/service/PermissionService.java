@@ -2,17 +2,20 @@ package edu.wgu.dm.admin.service;
 
 import java.util.Arrays;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.wgu.dm.admin.repository.PermissionRepo;
 import edu.wgu.dm.common.exception.PermissionNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
+import lombok.AccessLevel;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PermissionService {
 
-    @Autowired
     private PermissionRepo repo;
 
 
@@ -22,7 +25,7 @@ public class PermissionService {
 
     public Permission getPermission(@NonNull Long permissionId) {
         return this.repo.getPermissionById(permissionId)
-                          .orElseThrow(() -> new PermissionNotFoundException(permissionId));
+                        .orElseThrow(() -> new PermissionNotFoundException(permissionId));
     }
 
     /**

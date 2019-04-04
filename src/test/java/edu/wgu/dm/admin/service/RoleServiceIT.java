@@ -20,7 +20,7 @@ import edu.wgu.dm.util.Permissions;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("local")
+@ActiveProfiles("dev")
 @Transactional
 public class RoleServiceIT {
 

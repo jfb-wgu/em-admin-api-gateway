@@ -1,6 +1,5 @@
 package edu.wgu.dm.admin.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,18 +25,21 @@ import edu.wgu.dm.util.IdentityUtil;
 import edu.wgu.dm.util.Permissions;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 /**
  * @author Jessica Pamdeth
  */
 @RestController
 @RequestMapping("v1")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserManagementController {
 
-    @Autowired
     private UserManagementService service;
 
-    @Autowired
     private IdentityUtil iUtil;
 
     @Audit
@@ -48,7 +50,6 @@ public class UserManagementController {
     @ApiImplicitParam(name = "Authorization", value = "User-Search permission", dataType = "string",
             paramType = "header", required = true)
     public ResponseEntity<UserResponse> getUser(@PathVariable final String userId) {
-        // TODO return simple User.
         UserResponse result = new UserResponse(this.service.getUser(userId));
         return ResponseEntity.ok(result);
     }
@@ -113,7 +114,7 @@ public class UserManagementController {
         return ResponseEntity.ok(result);
     }
 
-    @Audit
+    @Audit(taskIdParam = 0)
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_SEARCH)
     @GetMapping(value = "/users/task/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

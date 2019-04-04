@@ -20,7 +20,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import edu.wgu.boot.core.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.RoleRepo;
@@ -37,7 +36,6 @@ import edu.wgu.dm.service.feign.PersonService;
 import edu.wgu.dm.util.Permissions;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 
-@SuppressWarnings("boxing")
 @RunWith(MockitoJUnitRunner.class)
 public class UserManagementServiceTest {
 
@@ -78,7 +76,7 @@ public class UserManagementServiceTest {
 
     @Before
     public void initialize() {
-        MockitoAnnotations.initMocks(this);
+
 
         this.user1.getRoles()
                   .add(new Role(this.role1.getRoleId()));

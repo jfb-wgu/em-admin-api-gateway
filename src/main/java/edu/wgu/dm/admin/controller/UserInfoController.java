@@ -2,7 +2,6 @@ package edu.wgu.dm.admin.controller;
 
 import java.text.ParseException;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,18 +19,21 @@ import edu.wgu.dm.util.IdentityUtil;
 import edu.wgu.dm.util.Permissions;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 /**
  * @author Jessica Pamdeth
  */
 @RestController
 @RequestMapping("v1")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserInfoController {
 
-    @Autowired
     private UserInfoService service;
 
-    @Autowired
     private IdentityUtil iUtil;
 
     @Audit
