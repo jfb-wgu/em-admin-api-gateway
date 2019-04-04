@@ -16,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PermissionService {
 
-    private PermissionRepo repo;
+    PermissionRepo repo;
 
 
     public List<Permission> getPermissions() {

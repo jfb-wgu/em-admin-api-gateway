@@ -38,9 +38,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserManagementController {
 
-    private UserManagementService service;
+    UserManagementService service;
 
-    private IdentityUtil iUtil;
+    IdentityUtil iUtil;
 
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
