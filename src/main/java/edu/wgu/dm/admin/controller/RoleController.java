@@ -37,9 +37,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RoleController {
 
-    private RoleService service;
+    RoleService service;
 
-    private IdentityUtil iUtil;
+    IdentityUtil iUtil;
 
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})

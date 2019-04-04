@@ -22,11 +22,11 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RoleService {
 
-    private RoleRepo roleRepo;
+    RoleRepo roleRepo;
 
-    private UserRepo userRepo;
+    UserRepo userRepo;
 
-    private PermissionRepo permRepo;
+    PermissionRepo permRepo;
 
     /**
      * Get All Role DTO

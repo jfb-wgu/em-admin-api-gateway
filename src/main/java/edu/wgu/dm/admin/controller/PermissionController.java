@@ -35,7 +35,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PermissionController {
 
-    private PermissionService service;
+    PermissionService service;
 
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})

@@ -32,9 +32,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserInfoController {
 
-    private UserInfoService service;
+    UserInfoService service;
 
-    private IdentityUtil iUtil;
+    IdentityUtil iUtil;
 
     @Audit
     @IgnoreAuthorization
