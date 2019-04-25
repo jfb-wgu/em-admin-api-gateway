@@ -21,7 +21,7 @@ import edu.wgu.dm.util.Permissions;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@ActiveProfiles("local")
+@ActiveProfiles("dev")
 @Transactional
 public class UserManagementServiceIT {
 

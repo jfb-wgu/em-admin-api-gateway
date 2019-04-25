@@ -1,7 +1,6 @@
 package edu.wgu.dm.admin.controller;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +21,9 @@ import edu.wgu.dm.util.Permissions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 /**
  * @author Jessica Pamdeth
@@ -29,10 +31,11 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @Api("Permission management services.  Modifying an existing permission may affect all users for the permission.")
 @RequestMapping("v1/admin")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PermissionController {
 
-    @Autowired
-    private PermissionService service;
+    PermissionService service;
 
     @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})

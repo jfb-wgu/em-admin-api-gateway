@@ -15,7 +15,7 @@ import edu.wgu.dm.dto.security.Permission;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("local")
+@ActiveProfiles("dev")
 @Transactional
 public class PermissionServiceIT {
 

@@ -12,14 +12,15 @@
 	<parent>
 		<groupId>edu.wgu</groupId>
 		<artifactId>wgu-boot</artifactId>
-		<version>1.0.11.RELEASE</version>
+		<version>1.1.5.RELEASE</version>
 	</parent>
 
 	<properties>
 		<start-class>edu.wgu.dm.admin.Application</start-class>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<wgu.dm.common.version>2.0.0.3</wgu.dm.common.version>
+		<wgu.dm.common.version>2.0.0.160</wgu.dm.common.version>
 		<sonar.tests>src/test/java</sonar.tests>
+		<netty.handler.version>5.0.0.Alpha2</netty.handler.version>
 	</properties>
 
 	<dependencyManagement>
@@ -45,7 +46,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-handler</artifactId>
+			<version>${netty.handler.version}</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>

@@ -20,8 +20,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -35,7 +34,6 @@ import edu.wgu.dm.util.DateUtil;
 import edu.wgu.dm.util.IdentityUtil;
 
 @RunWith(MockitoJUnitRunner.class)
-@SuppressWarnings("boxing")
 public class RoleControllerTest {
 
     @InjectMocks
@@ -57,7 +55,7 @@ public class RoleControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+    
         this.mockMvc = standaloneSetup(this.roleController).build();
 
         Permission perm1 = new Permission();
@@ -91,7 +89,6 @@ public class RoleControllerTest {
         String url = "/v1/admin/roles";
 
         List<Role> localRoles = Collections.unmodifiableList(this.roles);
-        Role[] localArray = new Role[] {localRoles.get(0)};
 
         when(this.securityService.saveRoles(any(), any())).thenReturn(localRoles);
         when(this.iUtil.getUserId()).thenReturn("test");

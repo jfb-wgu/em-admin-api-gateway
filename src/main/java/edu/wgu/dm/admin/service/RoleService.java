@@ -3,7 +3,6 @@ package edu.wgu.dm.admin.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.wgu.boot.core.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.PermissionRepo;
@@ -13,19 +12,21 @@ import edu.wgu.dm.common.exception.RoleNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.util.Permissions;
+import lombok.AccessLevel;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RoleService {
 
-    @Autowired
-    private RoleRepo roleRepo;
+    RoleRepo roleRepo;
 
-    @Autowired
-    private UserRepo userRepo;
+    UserRepo userRepo;
 
-    @Autowired
-    private PermissionRepo permRepo;
+    PermissionRepo permRepo;
 
     /**
      * Get All Role DTO

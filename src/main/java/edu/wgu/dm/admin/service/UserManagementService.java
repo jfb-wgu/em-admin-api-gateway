@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.wgu.boot.core.exception.AuthorizationException;
 import edu.wgu.dm.admin.repository.RoleRepo;
@@ -20,20 +19,22 @@ import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.dto.security.UserSummary;
 import edu.wgu.dm.service.feign.PersonService;
 import edu.wgu.dm.util.Permissions;
+import lombok.AccessLevel;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserManagementService {
 
-    @Autowired
     UserRepo adminRepo;
 
-    @Autowired
     RoleRepo roleRepo;
 
-    @Autowired
     PersonService personService;
 
     public User getUser(@NonNull String userId) {
@@ -79,22 +80,20 @@ public class UserManagementService {
         List<User> toCreate = new ArrayList<>();
         List<String> failed = new ArrayList<>();
 
+        List<Role> roles = users.getRoles()
+                                .stream()
+                                .map(Role::new)
+                                .collect(Collectors.toList());
+
         checkIfSystemUser(users.getRoles(), userId);
         users.getUsernames()
              .forEach(name -> {
                  try {
                      Person person = this.personService.getPersonByUsername(name);
                      User user = this.adminRepo.getUserById(person.getUserId())
-                                               .orElseGet(() -> {
-                                                   User userdto = new User(person);
-                                                   return userdto;
-                                               });
-
+                                               .orElseGet(() -> new User(person));
                      user.getRoles()
-                         .addAll(users.getRoles()
-                                      .stream()
-                                      .map(r -> new Role(r))
-                                      .collect(Collectors.toList()));
+                         .addAll(roles);
                      user.getTasks()
                          .addAll(users.getTasks());
                      toCreate.add(user);
@@ -109,18 +108,16 @@ public class UserManagementService {
     }
 
     /**
-     * Validate --> If role has any system permission, only a system user can assign those. Find the
-     * role IDs for all roles with the SYSTEM permission. If any of the incoming role IDs match, then
-     * check to see if the current user has the SYSTEM permission. If not, throw an
-     * AuthorizationException.
+     * Validate that only a system user can assign system role to other user. If any of the incoming
+     * role IDs match with any role that has system permission, then check to see if the current user
+     * has the SYSTEM permission. If not, throw an AuthorizationException.
      * 
      * @param roleIds
      * @param userId
      */
     private void checkIfSystemUser(@NonNull Collection<Long> roleIds, @NonNull String userId) {
         List<Long> rolesWithSystem = this.roleRepo.getRolesByPermission(Permissions.SYSTEM);
-        if (CollectionUtils.intersection(roleIds, rolesWithSystem)
-                           .size() > 0) {
+        if (CollectionUtils.containsAny(roleIds, rolesWithSystem)) {
             this.adminRepo.getUserWithPermission(userId, Permissions.SYSTEM)
                           .orElseThrow(
                                   () -> new AuthorizationException("Only SYSTEM users can assign SYSTEM permissions"));
