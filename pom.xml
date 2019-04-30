@@ -18,7 +18,7 @@
 	<properties>
 		<start-class>edu.wgu.dm.admin.Application</start-class>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<wgu.dm.common.version>2.0.0.168</wgu.dm.common.version>
+		<wgu.dm.common.version>2.0.0.169</wgu.dm.common.version>
 		<sonar.tests>src/test/java</sonar.tests>
 		<netty.handler.version>5.0.0.Alpha2</netty.handler.version>
 	</properties>
