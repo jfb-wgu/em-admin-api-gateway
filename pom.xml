@@ -19,8 +19,15 @@
 		<start-class>edu.wgu.dm.admin.Application</start-class>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<wgu.dm.common.version>2.0.0.160</wgu.dm.common.version>
-		<sonar.tests>src/test/java</sonar.tests>
 		<netty.handler.version>5.0.0.Alpha2</netty.handler.version>
+		
+		<sonar.tests>src/test/java</sonar.tests>
+	    <sonar.exclusions>**/properties/**</sonar.exclusions>
+		<sonar.login>466580078e959bf82a636f56d63cec51b2bee212</sonar.login>
+	    <sonar.host.url>http://sonar.wgu.edu</sonar.host.url>
+	    <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+	    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+	    <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
 	</properties>
 
 	<dependencyManagement>
@@ -164,6 +171,21 @@
 						<exclude>application-dev.properties</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+			    <groupId>org.jacoco</groupId>
+			    <artifactId>jacoco-maven-plugin</artifactId>
+			    <version>0.8.3</version>
+			    <executions>
+			        <execution>
+			            <goals>
+			                <goal>prepare-agent</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			    <configuration>
+			        <destFile>${sonar.jacoco.reportPath}</destFile>
+			    </configuration>
 			</plugin>
 		</plugins>
 	</build>
