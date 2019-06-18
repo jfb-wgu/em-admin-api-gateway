@@ -55,7 +55,7 @@ public class RoleControllerTest {
 
     @Before
     public void setUp() throws Exception {
-    
+
         this.mockMvc = standaloneSetup(this.roleController).build();
 
         Permission perm1 = new Permission();
@@ -115,7 +115,9 @@ public class RoleControllerTest {
         ArgumentCaptor<Role[]> arg2 = ArgumentCaptor.forClass(Role[].class);
 
         verify(this.securityService).saveRoles(arg1.capture(), arg2.capture());
-        assertEquals(localRoles.get(0).getRole(), arg2.getValue()[0].getRole());
+        assertEquals(localRoles.get(0)
+                               .getRole(),
+                arg2.getValue()[0].getRole());
     }
 
     @Test
