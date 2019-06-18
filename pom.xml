@@ -17,7 +17,7 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<wgu.dm.common.version>2.0.0.181</wgu.dm.common.version>
+		<wgu.dm.common.version>2.0.0.182</wgu.dm.common.version>
 		<netty.handler.version>5.0.0.Alpha2</netty.handler.version>
 		<sonar.tests>src/test/java</sonar.tests>
 		<sonar.exclusions>**/properties/**</sonar.exclusions>
@@ -41,12 +41,6 @@
 	</dependencyManagement>
 
 	<dependencies>
-
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
