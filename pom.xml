@@ -7,10 +7,11 @@
 	<packaging>jar</packaging>
 	<name>ema-admin</name>
 	<description>WGU User Management Service</description>
-	<version>2.0.0</version>
+	<version>${revision}</version>
 	<groupId>edu.wgu</groupId>
 
 	<properties>
+		<revision>local-SNAPSHOT</revision>
 		<start-class>edu.wgu.dm.admin.Application</start-class>
 		<java.version>11</java.version>
 		<maven.compiler.source>11</maven.compiler.source>

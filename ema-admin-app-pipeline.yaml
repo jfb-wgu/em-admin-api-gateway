@@ -1,0 +1,186 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'This is the application build pipeline for dm-common.'
+Parameters:
+  S3ObjectKey:
+    Type: String
+    Default: artifact.zip
+  PipelineBucket:
+    Description: The name of the bucket in the shared services account that CodePipeline will use
+    Type: String
+    Default: 'wgu-aws-bitbuckettocodepipeline-artifacts'
+    AllowedValues: ['wgu-aws-bitbuckettocodepipeline-artifacts']
+  GitProjectName:
+    Type: String
+    Default: dm
+  GitRepoName:
+    Type: String
+    Default: ema-admin
+  Branch:
+    Type: String
+    AllowedValues: ['master','development']
+    Default: 'master'
+  ApplicationName:
+    Description: >-
+      The application name to be identified in the security validation. This parameter is required for a successful security validation. Ex. AssessmentGrader
+    Type: String
+    Default: 'EMA'
+
+Resources:
+
+
+
+  AppPipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      ArtifactStore:
+        Type: S3
+        Location: !Ref PipelineBucket
+      Name: !Join ['',[!Ref "AWS::StackName", "AppPipeline"]]
+      RestartExecutionOnUpdate: false
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/CodePipelineServiceRole"
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: AppSource
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Provider: S3
+                Version: 1
+              Configuration:
+                S3Bucket: !Ref PipelineBucket
+                S3ObjectKey: !Join ['/', [!Ref GitProjectName, !Ref GitRepoName, !Ref Branch, !Ref S3ObjectKey]]
+              OutputArtifacts:
+                - Name: AppCode
+              RunOrder: 1
+        - Name: BuildArtifact
+          Actions:
+            - Name: BuildArtifact
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: 1
+              Configuration:
+                ProjectName: !Ref BuildArtifact
+              InputArtifacts:
+                - Name: AppCode
+              OutputArtifacts:
+                - Name: BuiltArtifact
+              RunOrder: 2
+        - Name: SecurityValidation
+          Actions:
+            - Name: SecurityValidation
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: 1
+              Configuration:
+                ProjectName: !Ref SecurityValidation
+              InputArtifacts:
+                - Name: BuiltArtifact
+              RunOrder: 3
+
+  BuildArtifact:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Description: Build Jar and run unit tests via maven
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: 'aws/codebuild/java:openjdk-11'
+        PrivilegedMode: true
+        EnvironmentVariables:
+          - Name: AWS_DEFAULT_REGION
+            Value: !Ref 'AWS::Region'
+          - Name: AWS_ACCOUNT_ID
+            Value: !Ref 'AWS::AccountId'
+          - Name: BUILD_BRANCH
+            Value: !Ref Branch
+      Name: !Join ['', [!Ref "AWS::StackName", "-build-artifact"]]
+      ServiceRole: !Sub "arn:aws:iam::${AWS::AccountId}:role/CodeBuildServiceRole"
+      Source:
+        BuildSpec: 'buildspec_build_artifact.yaml'
+        Type: CODEPIPELINE
+      VpcConfig:
+        SecurityGroupIds:
+          - !ImportValue CodeBuildSecurityGroup
+        Subnets: !Split [',', !ImportValue Private-Subnets]
+        VpcId: !ImportValue VPC
+      Cache:
+        Type: S3
+        Location: !Join ['/', [ !Ref PipelineBucket, 'cache/soa']]
+
+  SecurityValidation:
+    Type: 'AWS::CodeBuild::Project'
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Description: Create python image for security validation script and Security validation of the application code
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: 'aws/codebuild/python:3.5.2'
+        PrivilegedMode: true
+        EnvironmentVariables:
+          - Name: AWS_DEFAULT_REGION
+            Value: !Ref 'AWS::Region'
+          - Name: AWS_ACCOUNT_ID
+            Value: !Ref 'AWS::AccountId'
+          - Name: ApplicationName
+            Value: !Ref ApplicationName
+      Name: !Join
+        - ''
+        - - !Ref 'AWS::StackName'
+          - '-veracode'
+      ServiceRole: !Sub 'arn:aws:iam::${AWS::AccountId}:role/CodeBuildServiceRole'
+      Source:
+        BuildSpec: |
+
+          version: 0.2
+
+          phases:
+
+            install:
+
+              commands:
+
+                - pip install requests_toolbelt
+                - pip install clint
+                - sudo apt-get update
+                - sudo apt-get install jq
+                - wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+                - chmod +x jq-linux64
+                - sudo mv jq-linux64 $(which jq)
+
+            pre_build:
+
+              commands:
+
+                - aws s3api get-object --bucket wgu-shared-secops-tools --key secops-codepipeline-veracode-upload/VeracodeAPIUpload.py VeracodeAPIUpload.py
+
+            build:
+
+              commands:
+
+                - echo Running Security Script ...
+
+                - |
+                  if [ -z "$ApplicationName" ]; then echo "Empty value in the ApplicationName parameter" && $(exit 1);
+                  else
+                  python VeracodeAPIUpload.py --appname "$ApplicationName" --username $(aws secretsmanager get-secret-value --secret-id 'secops/codebuild/veracode' | jq .SecretString | jq fromjson | jq -r .username)  --password $(aws secretsmanager get-secret-value --secret-id 'secops/codebuild/veracode' | jq .SecretString | jq fromjson | jq -r .password);
+                  fi
+
+        Type: CODEPIPELINE
+      VpcConfig:
+        SecurityGroupIds:
+          - !ImportValue CodeBuildSecurityGroup
+        Subnets: !Split
+          - ','
+          - !ImportValue Private-Subnets
+        VpcId: !ImportValue VPC
+
+
