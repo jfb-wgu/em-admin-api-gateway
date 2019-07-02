@@ -23,7 +23,7 @@
 		<sonar.tests>src/test/java</sonar.tests>
 		<sonar.exclusions>**/properties/**</sonar.exclusions>
 		<sonar.login>466580078e959bf82a636f56d63cec51b2bee212</sonar.login>
-		<sonar.host.url>http://sonar.wgu.edu</sonar.host.url>
+		<sonar.host.url>https://sonar.wgu.edu</sonar.host.url>
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
