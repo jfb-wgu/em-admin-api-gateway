@@ -25,7 +25,7 @@ phases:
    commands:
      # Conditionally deploy to nexus when built from the master branch
      - |
-       if [ "$BUILD_BRANCH" = "master" ] || [ "$BUILD_BRANCH" = "development" ]; then
+       if [ "$BUILD_BRANCH" = "master" ] || [ "$BUILD_BRANCH" = "develop" ]; then
        echo "Starting Deploy to Nexus of $BUILD_BRANCH";
        mvn flatten:flatten deploy -B -DrepositoryId="WGU" -Durl="https://nexus.wgu.edu/content/repositories/wgu" "-Drevision=$build_version";
        echo "Finished Deploy to Nexus of $BUILD_BRANCH"; 
