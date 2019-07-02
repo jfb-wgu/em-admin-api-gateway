@@ -17,7 +17,7 @@ Parameters:
     Default: ema-admin
   Branch:
     Type: String
-    AllowedValues: ['master','development']
+    AllowedValues: ['master','develop']
     Default: 'master'
   ApplicationName:
     Description: >-
