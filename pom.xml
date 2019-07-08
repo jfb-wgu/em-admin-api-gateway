@@ -7,20 +7,30 @@
 	<packaging>jar</packaging>
 	<name>ema-admin</name>
 	<description>WGU User Management Service</description>
-	<version>2.0.0</version>
-
+	<version>${revision}</version>
+	<groupId>edu.wgu</groupId>
 	<parent>
 		<groupId>edu.wgu</groupId>
-		<artifactId>wgu-boot</artifactId>
-		<version>1.1.5.RELEASE</version>
+		<artifactId>wgu-boot-starter-parent</artifactId>
+		<version>1.2.6.RELEASE</version>
 	</parent>
-
 	<properties>
+		<revision>local-SNAPSHOT</revision>
 		<start-class>edu.wgu.dm.admin.Application</start-class>
+		<java.version>11</java.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<wgu.dm.common.version>2.0.0.169</wgu.dm.common.version>
-		<sonar.tests>src/test/java</sonar.tests>
+		<wgu.dm.common.version>2.0.0.185</wgu.dm.common.version>
 		<netty.handler.version>5.0.0.Alpha2</netty.handler.version>
+		<sonar.tests>src/test/java</sonar.tests>
+		<sonar.exclusions>**/properties/**</sonar.exclusions>
+		<sonar.login>466580078e959bf82a636f56d63cec51b2bee212</sonar.login>
+		<sonar.host.url>https://sonar.wgu.edu</sonar.host.url>
+		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
 	</properties>
 
 	<dependencyManagement>
@@ -36,23 +46,17 @@
 	</dependencyManagement>
 
 	<dependencies>
-
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-handler</artifactId>
 			<version>${netty.handler.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -165,6 +169,21 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.3</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<destFile>${sonar.jacoco.reportPath}</destFile>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -174,5 +193,13 @@
 			<url>https://nexus.wgu.edu/content/repositories/WGU</url>
 		</repository>
 	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>WGU</id>
+			<url>https://nexus.wgu.edu/content/repositories/WGU</url>
+		</repository>
+	</distributionManagement>
+
 
 </project>

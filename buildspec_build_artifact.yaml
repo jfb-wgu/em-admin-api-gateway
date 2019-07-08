@@ -1,0 +1,42 @@
+version: 0.2
+
+env:
+ parameter-store:
+   Nexus_Login: "Nexus"
+phases:
+ install:
+   commands:
+     - sudo apt-get install jq
+     - echo $CODEBUILD_SRC_DIR
+     - cd $CODEBUILD_SRC_DIR && ls -lha
+     - echo 172.27.1.86 nexus.wgu.edu >> /etc/hosts
+     - cp ./settings.xml ~/.m2/settings.xml
+     - sed -i.bak 's/<password>/<password>'"$Nexus_Login"'/' ~/.m2/settings.xml
+ pre_build:
+   commands:
+     # Loads the build version to be used from the target_version.json
+     - build_version=`cat target_version.json | jq -r ".$BUILD_BRANCH"`
+     - echo "branch:" $BUILD_BRANCH "version:" $build_version
+ build:
+   commands:
+     - echo Build started on `date`
+     - mvn -B flatten:flatten install "-Drevision=$build_version"
+ post_build:
+   commands:
+     # Conditionally deploy to nexus when built from the master branch
+     - |
+       if [ "$BUILD_BRANCH" = "master" ] || [ "$BUILD_BRANCH" = "develop" ]; then
+       echo "Starting Deploy to Nexus of $BUILD_BRANCH";
+       mvn flatten:flatten deploy -B -DrepositoryId="WGU" -Durl="https://nexus.wgu.edu/content/repositories/wgu" "-Drevision=$build_version";
+       echo "Finished Deploy to Nexus of $BUILD_BRANCH"; 
+       else
+       echo "No Deploy to Nexus of $BUILD_BRANCH";
+       fi
+     - mvn sonar:sonar "-Drevision=$build_version";
+cache:
+ paths:
+   - '/root/.m2/**/*'
+artifacts:
+ files:
+   # export artifacts needed for staging and prod deployments to an S3 bucket
+   - ./**/*
