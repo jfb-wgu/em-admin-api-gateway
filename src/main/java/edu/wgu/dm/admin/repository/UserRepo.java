@@ -3,9 +3,6 @@ package edu.wgu.dm.admin.repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import edu.wgu.dm.dto.security.User;
@@ -14,31 +11,26 @@ import edu.wgu.dm.entity.security.UserEntity;
 import edu.wgu.dm.projection.security.UserProjection;
 import edu.wgu.dm.repo.security.UserRepository;
 import edu.wgu.dm.repository.SecurityRepo;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
+import lombok.RequiredArgsConstructor;
 
 @Repository
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public class UserRepo {
 
-    @Autowired
-    UserRepository userRepo;
+    private final UserRepository userRepository;
 
-    @Autowired
-    SecurityRepo secRepo;
+    private final SecurityRepo secRepo;
 
     @Transactional
-    @CachePut(cacheNames = "wgu-ema-user", key = "#user.userId")
     public Optional<User> saveUser(User user) {
-        return UserEntity.toUser(this.userRepo.saveAndFlush(new UserEntity(user)));
+        return UserEntity.toUser(this.userRepository.saveAndFlush(new UserEntity(user)));
     }
 
     @Transactional
-    @CacheEvict(value = "wgu-ema-user", allEntries = true)
     public List<User> saveUsers(List<User> users) {
-        List<UserEntity> entities = this.userRepo.saveAll(users.stream()
-                                                               .map(u -> new UserEntity(u))
-                                                               .collect(Collectors.toList()));
+        List<UserEntity> entities = this.userRepository.saveAll(users.stream()
+                                                                     .map(u -> new UserEntity(u))
+                                                                     .collect(Collectors.toList()));
         return UserEntity.toUsers(entities);
     }
 
@@ -47,20 +39,19 @@ public class UserRepo {
     }
 
     public Optional<UserSummary> getUserWithPermission(String userId, String permission) {
-        return UserProjection.toUser(this.userRepo.findByUserIdAndRolesPermissionsPermission(userId, permission));
+        return UserProjection.toUser(this.userRepository.findByUserIdAndRolesPermissionsPermission(userId, permission));
     }
 
     public List<UserSummary> getAllUsers() {
-        return UserProjection.toUsers(this.userRepo.findAllProjectedBy());
+        return UserProjection.toUsers(this.userRepository.findAllProjectedBy());
     }
 
     public List<UserSummary> getUsersByTask(Long taskId) {
-        return UserProjection.toUsers(this.userRepo.findByTasksTaskId(taskId));
+        return UserProjection.toUsers(this.userRepository.findByTasksTaskId(taskId));
     }
 
     @Transactional
-    @CacheEvict(value = "wgu-ema-user", key = "#userId")
     public void deleteUser(String userId) {
-        this.userRepo.deleteById(userId);
+        this.userRepository.deleteById(userId);
     }
 }

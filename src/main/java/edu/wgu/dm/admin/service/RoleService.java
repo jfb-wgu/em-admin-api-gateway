@@ -12,21 +12,18 @@ import edu.wgu.dm.common.exception.RoleNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.util.Permissions;
-import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RoleService {
 
-    RoleRepo roleRepo;
+    private final RoleRepo roleRepo;
 
-    UserRepo userRepo;
+    private final UserRepo userRepo;
 
-    PermissionRepo permRepo;
+    private final PermissionRepo permRepo;
 
     /**
      * Get All Role DTO

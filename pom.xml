@@ -8,13 +8,13 @@
 	<name>ema-admin</name>
 	<description>WGU User Management Service</description>
 	<version>${revision}</version>
-	<groupId>edu.wgu</groupId>
 	<parent>
 		<groupId>edu.wgu</groupId>
 		<artifactId>wgu-boot-starter-parent</artifactId>
 		<version>1.2.7.RELEASE</version>
 	</parent>
 	<properties>
+		<wgu.dm.common.version>3.1.0.1.dev</wgu.dm.common.version>
 		<revision>local-SNAPSHOT</revision>
 		<start-class>edu.wgu.dm.admin.Application</start-class>
 		<java.version>11</java.version>
@@ -22,7 +22,6 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<wgu.dm.common.version>2.1.2</wgu.dm.common.version>
 		<netty.handler.version>5.0.0.Alpha2</netty.handler.version>
 		<sonar.tests>src/test/java</sonar.tests>
 		<sonar.exclusions>**/properties/**</sonar.exclusions>
@@ -37,15 +36,22 @@
 		<dependencies>
 			<dependency>
 				<groupId>edu.wgu</groupId>
-				<artifactId>dm-common</artifactId>
+				<artifactId>wgu-boot-parent</artifactId>
+				<version>1.2.7.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
-				<version>${wgu.dm.common.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>edu.wgu</groupId>
+			<artifactId>dm-worker</artifactId>
+			<version>${wgu.dm.common.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
@@ -94,11 +100,6 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>edu.wgu</groupId>
-			<artifactId>dm-worker</artifactId>
 		</dependency>
 
 		<dependency>
