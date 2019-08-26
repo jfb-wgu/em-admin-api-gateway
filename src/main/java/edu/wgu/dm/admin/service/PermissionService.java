@@ -6,17 +6,14 @@ import org.springframework.stereotype.Service;
 import edu.wgu.dm.admin.repository.PermissionRepo;
 import edu.wgu.dm.common.exception.PermissionNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
-import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PermissionService {
 
-    PermissionRepo repo;
+    private final PermissionRepo repo;
 
 
     public List<Permission> getPermissions() {

@@ -3,39 +3,36 @@ package edu.wgu.dm.admin.repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.entity.security.PermissionEntity;
 import edu.wgu.dm.repo.security.PermissionRepository;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
+import lombok.RequiredArgsConstructor;
 
 @Repository
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public class PermissionRepo {
 
-    @Autowired
-    PermissionRepository permissionRepo;
+    private final PermissionRepository permissionRepository;
 
     @Transactional
     public void savePermissions(List<Permission> permissions) {
-        this.permissionRepo.saveAll(permissions.stream()
-                                               .map(p -> new PermissionEntity(p))
-                                               .collect(Collectors.toList()));
+        this.permissionRepository.saveAll(permissions.stream()
+                                                     .map(PermissionEntity::new)
+                                                     .collect(Collectors.toList()));
     }
 
     public Optional<Permission> getPermissionById(Long id) {
-        Optional<PermissionEntity> perm = this.permissionRepo.findById(id);
+        Optional<PermissionEntity> perm = this.permissionRepository.findById(id);
         return PermissionEntity.toPermission(perm);
     }
 
     public Optional<Permission> getPermissionByName(String permission) {
-        return PermissionEntity.toPermission(this.permissionRepo.findByPermission(permission));
+        return PermissionEntity.toPermission(this.permissionRepository.findByPermission(permission));
     }
 
     public List<Permission> getAllPermissions() {
-        return PermissionEntity.toPermissions(this.permissionRepo.findAll());
+        return PermissionEntity.toPermissions(this.permissionRepository.findAll());
     }
 }
