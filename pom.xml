@@ -14,7 +14,7 @@
 		<version>1.2.7.RELEASE</version>
 	</parent>
 	<properties>
-		<wgu.dm.common.version>3.1.0.1.dev</wgu.dm.common.version>
+		<wgu.dm.common.version>0-SNAPSHOT</wgu.dm.common.version>
 		<revision>local-SNAPSHOT</revision>
 		<start-class>edu.wgu.dm.admin.Application</start-class>
 		<java.version>11</java.version>
