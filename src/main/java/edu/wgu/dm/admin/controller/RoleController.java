@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 /**
- * @author Jessica Pamdeth
+ * 
  */
 @RestController
 @Api("Role management services.  Modifying an existing role will affect any users with the role.")
