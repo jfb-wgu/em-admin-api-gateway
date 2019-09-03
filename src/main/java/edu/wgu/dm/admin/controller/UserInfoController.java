@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 /**
- * @author Jessica Pamdeth
+ * 
  */
 @RestController
 @RequestMapping("v1")

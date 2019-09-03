@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 /**
- * @author Jessica Pamdeth
+ * 
  */
 @RestController
 @Api("Permission management services.  Modifying an existing permission may affect all users for the permission.")
