@@ -31,9 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserManagementService {
 
-    UserRepo adminRepo;
+    private final UserRepo adminRepo;
 
-    RoleRepo roleRepo;
+    private final RoleRepo roleRepo;
 
     PersonService personService;
 
@@ -68,12 +68,14 @@ public class UserManagementService {
             throw new IllegalArgumentException("User is not an employee.");
 
         User newUser = this.adminRepo.getUserById(person.getUserId())
-                                     .orElseGet(() -> {
-                                         User user = new User(person);
-                                         return this.adminRepo.saveUser(user)
-                                                              .get();
-                                     });
+                                     .orElseGet(() -> saveUser(person));
         return newUser;
+    }
+
+    private User saveUser(Person person) {
+        User user = new User(person);
+        return this.adminRepo.saveUser(user)
+                             .get();
     }
 
     public BulkCreateResponse createUsers(@NonNull String userId, @NonNull BulkUsers users) {

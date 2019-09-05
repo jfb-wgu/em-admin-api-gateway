@@ -1,7 +1,7 @@
 ﻿
 ### Synopsis
 
-DM-Admin is a supporting application for EMA.  It provides APIs for user administration.
+EMA-Admin is a supporting application for EMA.  It provides APIs for user administration.
 
 ### Motivation
 
@@ -17,7 +17,7 @@ A set of junit/mockito tests are executed with each build.
 
 ### Contributors
 
-Please contact jessica.pamdeth@wgu.edu, amit.shrigondekar@wgu.edu or garth.fielding@wgu.edu with any questions.
+Please contact   amit.shrigondekar@wgu.edu or karan.singh@wgu.edu with any questions.
 
 ### Swagger Documentation
 
