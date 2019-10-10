@@ -11,10 +11,10 @@
 	<parent>
 		<groupId>edu.wgu</groupId>
 		<artifactId>wgu-boot-starter-parent</artifactId>
-		<version>1.2.7.RELEASE</version>
+		<version>1.2.13.RELEASE</version>
 	</parent>
 	<properties>
-		<wgu.dm.common.version>3.2.0</wgu.dm.common.version>
+		<wgu.dm.common.version>4.2.1</wgu.dm.common.version>
 		<revision>local-SNAPSHOT</revision>
 		<start-class>edu.wgu.dm.admin.Application</start-class>
 		<java.version>11</java.version>
@@ -37,7 +37,7 @@
 			<dependency>
 				<groupId>edu.wgu</groupId>
 				<artifactId>wgu-boot-parent</artifactId>
-				<version>1.2.7.RELEASE</version>
+				<version>1.2.13.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
