@@ -1,0 +1,32 @@
+{
+  "Common": {
+    "ALBHealthcheckEndpoint": "/actuator/health",
+    "ALBListenerRulePriority": "10",
+    "ApplicationHostname": "ema-admin",
+    "ApplicationName": "AdminSvc",
+    "ApplicationPort": "8080",
+    "AutoscalingMetricTargetCPU": "0",
+    "AutoscalingMetricTargetRAM": "90",
+    "AutoscalingMetricTargetRequests": "500",
+    "AutoscalingScaleInCooldown": "120",
+    "AutoscalingScaleOutCooldown": "120",
+    "FargateBaseNumTasks": "2",
+    "FargateCPU": "256",
+    "FargateCluster": "EMACluster",
+    "FargateHealthcheckGracePeriod": "300",
+    "FargateMaxNumTasks": "10",
+    "FargateRAM": "2048",
+    "ProductTeam": "EMA",
+    "EgressCidrIp1": "172.27.0.0/16",
+    "EgressPort1": "3306"
+  },
+  "Development": {
+    "FargateBaseNumTasks": "1"
+  },
+  "Stage": {
+    "FargateBaseNumTasks": "2"
+  },
+  "Production": {
+    "FargateBaseNumTasks": "2"
+  }
+}

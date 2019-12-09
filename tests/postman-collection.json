@@ -1,0 +1,108 @@
+{
+  "info": {
+    "_postman_id": "2ebbca23-96a9-4e9d-b553-0e8e890fd512",
+    "name": "EMA_Admin",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Home Page EMA Admin",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "9a288047-43b0-4940-9eb3-571cac817335",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "de841870-d063-4e69-8eab-f8a035fbdd9e",
+            "exec": [
+              "tests[\"Get Home Page Communities\"] = responseCode.code === 200;"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{Ping}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{LoadBalancerEndpoint}}/v1/communities/{{pidm}}",
+          "host": [
+            "{{LoadBalancerEndpoint}}"
+          ],
+          "path": [
+            "v1",
+            "communities",
+            "{{pidm}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "ba976572-596b-49d0-bc6e-8f7a98ca84e2",
+        "type": "text/javascript",
+        "exec": [
+          "var user = pm.environment.get(\"Username\"); ",
+          "var pass = pm.environment.get(\"Password\"); ",
+          "var ENV =  pm.environment.get(\"AWSEnvironment\");",
+          "var lane = pm.environment.get(\"Lane\");",
+          "var basic =  pm.environment.get(\"Basic\");",
+          "",
+          "function getEnv(ENV){",
+          "    if (ENV === 'Development'){",
+          "        return 'https://access.dev.wgu.edu';",
+          "    }",
+          "    if (ENV === 'Stage'){",
+          "        return 'https://access.qa.wgu.edu';",
+          "    }",
+          "    if (ENV === 'Prod'){",
+          "        return 'https://access.wgu.edu';",
+          "    }",
+          "}",
+          " ",
+          "pm.sendRequest({",
+          "url:getEnv(ENV)+'/pingfed/as/token.oauth2?grant_type=client_credentials',",
+          " ",
+          "method: 'POST',",
+          " ",
+          "header: 'Authorization: Basic '+basic+\"'\"}, ",
+          "",
+          "function (err, response) {",
+          "    var bearer = response.json();",
+          "    console.log(response.json());",
+          "   ",
+          "postman.setEnvironmentVariable(\"Ping\",  bearer.access_token); });"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "ac8fb44e-0a5d-44eb-905d-2f13846f0a91",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "protocolProfileBehavior": {}
+}
