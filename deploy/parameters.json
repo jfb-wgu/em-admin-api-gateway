@@ -3,7 +3,7 @@
     "ALBHealthcheckEndpoint": "/actuator/health",
     "ALBListenerRulePriority": "10",
     "ApplicationHostname": "ema-admin",
-    "ApplicationName": "AdminSvc",
+    "ApplicationName": "ema-admin",
     "ApplicationPort": "8080",
     "AutoscalingMetricTargetCPU": "0",
     "AutoscalingMetricTargetRAM": "90",

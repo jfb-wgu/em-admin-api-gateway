@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>edu.wgu</groupId>
 		<artifactId>wgu-boot-starter-parent</artifactId>
-		<version>1.2.13.RELEASE</version>
+		<version>1.2.16.RELEASE</version>
 	</parent>
 	<properties>
 		<wgu.dm.common.version>4.2.1</wgu.dm.common.version>
@@ -37,9 +37,25 @@
 			<dependency>
 				<groupId>edu.wgu</groupId>
 				<artifactId>wgu-boot-parent</artifactId>
-				<version>1.2.13.RELEASE</version>
+				<version>1.2.16.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<!-- Jackson to fix Veracode -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
