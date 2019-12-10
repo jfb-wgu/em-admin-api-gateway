@@ -1,0 +1,3 @@
+file:
+    {{.Env.APPLICATION_JAR}}:
+      exists: true

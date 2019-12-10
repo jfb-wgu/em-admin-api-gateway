@@ -1,0 +1,10 @@
+{
+  "Application" : "ema-admin",
+  "ProductOwner" : "EMA",
+  "TechnicalContact" : "",
+  "BusinessUnit" : "EMA",
+  "ProductTeam" : "EMA",
+  "DataClassification" : "Internal",
+  "RTO" : "ND",
+  "RPO" : "ND"
+}
