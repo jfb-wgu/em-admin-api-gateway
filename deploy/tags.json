@@ -1,7 +1,7 @@
 {
   "Application" : "ema-admin",
   "ProductOwner" : "EMA",
-  "TechnicalContact" : "",
+  "TechnicalContact" : "EMA",
   "BusinessUnit" : "EMA",
   "ProductTeam" : "EMA",
   "DataClassification" : "Internal",
