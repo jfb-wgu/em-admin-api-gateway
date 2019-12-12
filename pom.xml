@@ -14,7 +14,7 @@
 		<version>1.2.16.RELEASE</version>
 	</parent>
 	<properties>
-		<wgu.dm.common.version>5.0.2.1.dev</wgu.dm.common.version>
+		<wgu.dm.common.version>5.0.2.2.dev</wgu.dm.common.version>
 		<revision>local-SNAPSHOT</revision>
 		<start-class>edu.wgu.dm.admin.Application</start-class>
 		<java.version>11</java.version>
@@ -67,17 +67,17 @@
 			<groupId>edu.wgu</groupId>
 			<artifactId>dm-worker</artifactId>
 			<version>${wgu.dm.common.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>edu.wgu</groupId>
-			<artifactId>wgu-boot-starter-api</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>org.codehaus.jackson</groupId>
 					<artifactId>jackson-mapper-asl</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>edu.wgu</groupId>
+			<artifactId>wgu-boot-starter-api</artifactId>
 		</dependency>
 
 		<!-- Domain -->
