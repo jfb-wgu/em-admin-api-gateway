@@ -12,7 +12,7 @@
     "AutoscalingScaleOutCooldown": "120",
     "FargateBaseNumTasks": "2",
     "FargateCPU": "256",
-    "FargateCluster": "EMACluster",
+    "FargateCluster": "EMASharedCluster",
     "FargateHealthcheckGracePeriod": "300",
     "FargateMaxNumTasks": "10",
     "FargateRAM": "2048",
