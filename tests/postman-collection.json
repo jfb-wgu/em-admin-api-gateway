@@ -6,7 +6,7 @@
   },
   "item": [
     {
-      "name": "Home Page EMA Admin",
+      "name": "EMA Admin",
       "event": [
         {
           "listen": "prerequest",
@@ -23,7 +23,7 @@
           "script": {
             "id": "de841870-d063-4e69-8eab-f8a035fbdd9e",
             "exec": [
-              "tests[\"Get Home Page Communities\"] = responseCode.code === 200;"
+              "tests[\"Ema Admin\"] = responseCode.code === 200;"
             ],
             "type": "text/javascript"
           }
@@ -39,14 +39,13 @@
           }
         ],
         "url": {
-          "raw": "{{LoadBalancerEndpoint}}/v1/communities/{{pidm}}",
+          "raw": "{{LoadBalancerEndpoint}}/actuator/health",
           "host": [
             "{{LoadBalancerEndpoint}}"
           ],
           "path": [
-            "v1",
-            "communities",
-            "{{pidm}}"
+            "actuator",
+            "health"
           ]
         }
       },
