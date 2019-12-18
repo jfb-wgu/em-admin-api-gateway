@@ -13,7 +13,7 @@
     "FargateBaseNumTasks": "2",
     "FargateCPU": "256",
     "FargateCluster": "EMASharedCluster",
-    "FargateHealthcheckGracePeriod": "300",
+    "FargateHealthcheckGracePeriod": "480",
     "FargateMaxNumTasks": "10",
     "FargateRAM": "2048",
     "ProductTeam": "EMA",
