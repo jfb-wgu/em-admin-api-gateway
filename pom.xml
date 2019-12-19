@@ -15,7 +15,7 @@
 	</parent>
 	<properties>
 		<wgu.dm.common.version>5.0.3</wgu.dm.common.version>
-		<revision>local-SNAPSHOT</revision>
+		<revision>3.0.0.0.dev</revision>
 		<start-class>edu.wgu.dm.admin.Application</start-class>
 		<java.version>11</java.version>
 		<maven.compiler.source>11</maven.compiler.source>
