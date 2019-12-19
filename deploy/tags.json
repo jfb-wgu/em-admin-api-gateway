@@ -1,8 +1,8 @@
 {
   "Application" : "ema-admin",
-  "ProductOwner" : "EMA",
+  "ProductOwner" : "jared.hatch@wgu.edu",
   "TechnicalContact" : "EMA",
-  "BusinessUnit" : "EMA",
+  "BusinessUnit" : "AssessmentEvaluationDevelopment",
   "ProductTeam" : "EMA",
   "DataClassification" : "Internal",
   "RTO" : "ND",
