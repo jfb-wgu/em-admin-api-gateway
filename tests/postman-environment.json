@@ -1,0 +1,49 @@
+{
+  "id": "9533890b-9ed7-487c-a91d-d85035a9bf85",
+  "name": "EMA_Admin",
+  "values": [
+    {
+      "key": "pidm",
+      "value": "106679",
+      "enabled": true
+    },
+    {
+      "key": "username",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "password",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "Basic",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "auth",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "LoadBalancerEndpoint",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "AWSEnvironment",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "Ping",
+      "value": "",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2019-11-12T18:07:13.774Z",
+  "_postman_exported_using": "Postman/7.11.0"
+}

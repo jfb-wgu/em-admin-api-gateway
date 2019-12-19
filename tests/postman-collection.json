@@ -1,0 +1,1560 @@
+{
+	"info": {
+		"_postman_id": "b6bb9dc8-162e-46f7-b10a-cb30b270b73d",
+		"name": "EMA Admin",
+		"description": "# Introduction\nWhat does your API do?\n\n# Overview\nThings that the developers should know about\n\n# Authentication\nWhat is the preferred way of using the API?\n\n# Error Codes\nWhat errors and status codes can a user expect?\n\n# Rate limit\nIs there a limit to the number of requests an user can send?",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Permissions",
+			"item": [
+				{
+					"name": "List permissions",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "969031aa-9fcb-4d63-a6db-2ac466df15c1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "066198d9-2168-4fe1-a258-9be0e4c5506c",
+								"exec": [
+									"pm.test(\"List permissions Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"var schema = {",
+									"  \"definitions\": {},",
+									"  \"$schema\": \"http://json-schema.org/draft-07/schema#\",",
+									"  \"$id\": \"http://example.com/root.json\",",
+									"  \"type\": \"array\",",
+									"  \"title\": \"The Root Schema\",",
+									"  \"items\": {",
+									"    \"$id\": \"#/items\",",
+									"    \"type\": \"object\",",
+									"    \"title\": \"The Items Schema\",",
+									"    \"required\": [",
+									"      \"permissionId\",",
+									"      \"permission\",",
+									"      \"permissionType\",",
+									"      \"permissionDescription\",",
+									"      \"landing\",",
+									"      \"dateCreated\",",
+									"      \"dateUpdated\"",
+									"    ],",
+									"    \"properties\": {",
+									"      \"permissionId\": {",
+									"        \"$id\": \"#/items/properties/permissionId\",",
+									"        \"type\": \"integer\",",
+									"        \"title\": \"The Permissionid Schema\",",
+									"        \"default\": 0,",
+									"        \"examples\": [",
+									"          1",
+									"        ]",
+									"      },",
+									"      \"permission\": {",
+									"        \"$id\": \"#/items/properties/permission\",",
+									"        \"type\": \"string\",",
+									"        \"title\": \"The Permission Schema\",",
+									"        \"default\": \"\",",
+									"        \"examples\": [",
+									"          \"articulation-queue\"",
+									"        ],",
+									"        \"pattern\": \"^(.*)$\"",
+									"      },",
+									"      \"permissionType\": {",
+									"        \"$id\": \"#/items/properties/permissionType\",",
+									"        \"type\": \"string\",",
+									"        \"title\": \"The Permissiontype Schema\",",
+									"        \"default\": \"\",",
+									"        \"examples\": [",
+									"          \"ARTICULATION\"",
+									"        ],",
+									"        \"pattern\": \"^(.*)$\"",
+									"      },",
+									"      \"permissionDescription\": {",
+									"        \"$id\": \"#/items/properties/permissionDescription\",",
+									"        \"type\": \"string\",",
+									"        \"title\": \"The Permissiondescription Schema\",",
+									"        \"default\": \"\",",
+									"        \"examples\": [",
+									"          \"Access a queue of submissions with an articulation hold\"",
+									"        ],",
+									"        \"pattern\": \"^(.*)$\"",
+									"      },",
+									"      \"landing\": {",
+									"        \"$id\": \"#/items/properties/landing\",",
+									"        \"type\": \"string\",",
+									"        \"title\": \"The Landing Schema\",",
+									"        \"default\": \"\",",
+									"        \"examples\": [",
+									"          \"EVALUATION\"",
+									"        ],",
+									"        \"pattern\": \"^(.*)$\"",
+									"      },",
+									"      \"dateCreated\": {",
+									"        \"$id\": \"#/items/properties/dateCreated\",",
+									"        \"type\": \"string\",",
+									"        \"title\": \"The Datecreated Schema\",",
+									"        \"default\": \"\",",
+									"        \"examples\": [",
+									"          \"2017-08-14T21:32:56.213Z\"",
+									"        ],",
+									"        \"pattern\": \"^(.*)$\"",
+									"      },",
+									"      \"dateUpdated\": {",
+									"        \"$id\": \"#/items/properties/dateUpdated\",",
+									"        \"type\": \"string\",",
+									"        \"title\": \"The Dateupdated Schema\",",
+									"        \"default\": \"\",",
+									"        \"examples\": [",
+									"          \"2017-08-14T21:32:56.258Z\"",
+									"        ],",
+									"        \"pattern\": \"^(.*)$\"",
+									"      }",
+									"    }",
+									"  }",
+									"};",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test('List permissions Schema is valid', function() {",
+									"  pm.expect(tv4.validate(data, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Ping}}"
+							}
+						],
+						"url": {
+							"raw": "{{LoadBalancerEndpoint}}/v1/admin/permissions/",
+							"host": [
+								"{{LoadBalancerEndpoint}}"
+							],
+							"path": [
+								"v1",
+								"admin",
+								"permissions",
+								""
+							]
+						},
+						"description": "https://wgu.qtestnet.com/p/36960/portal/project#tab=testdesign&object=1&id=37988057"
+					},
+					"response": []
+				},
+				{
+					"name": "Get permission",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "12c665ab-5e32-4de2-bc76-36675df06c90",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "69455aca-0570-440a-882a-e527fbcbe364",
+								"exec": [
+									"pm.test(\"Get permission Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"var schema = {",
+									"  \"definitions\": {},",
+									"  \"$schema\": \"http://json-schema.org/draft-07/schema#\",",
+									"  \"$id\": \"http://example.com/root.json\",",
+									"  \"type\": \"object\",",
+									"  \"title\": \"The Root Schema\",",
+									"  \"required\": [",
+									"    \"permissionId\",",
+									"    \"permission\",",
+									"    \"permissionType\",",
+									"    \"permissionDescription\",",
+									"    \"landing\",",
+									"    \"dateCreated\",",
+									"    \"dateUpdated\"",
+									"  ],",
+									"  \"properties\": {",
+									"    \"permissionId\": {",
+									"      \"$id\": \"#/properties/permissionId\",",
+									"      \"type\": \"integer\",",
+									"      \"title\": \"The Permissionid Schema\",",
+									"      \"default\": 0,",
+									"      \"examples\": [",
+									"        1",
+									"      ]",
+									"    },",
+									"    \"permission\": {",
+									"      \"$id\": \"#/properties/permission\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Permission Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"articulation-queue\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    },",
+									"    \"permissionType\": {",
+									"      \"$id\": \"#/properties/permissionType\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Permissiontype Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"ARTICULATION\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    },",
+									"    \"permissionDescription\": {",
+									"      \"$id\": \"#/properties/permissionDescription\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Permissiondescription Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"Access a queue of submissions with an articulation hold\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    },",
+									"    \"landing\": {",
+									"      \"$id\": \"#/properties/landing\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Landing Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"EVALUATION\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    },",
+									"    \"dateCreated\": {",
+									"      \"$id\": \"#/properties/dateCreated\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Datecreated Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"2017-08-14T21:32:56.213Z\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    },",
+									"    \"dateUpdated\": {",
+									"      \"$id\": \"#/properties/dateUpdated\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Dateupdated Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"2017-08-14T21:32:56.258Z\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    }",
+									"  }",
+									"};",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test('Get permission Schema is valid', function() {",
+									"  pm.expect(tv4.validate(data, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Ping}}"
+							}
+						],
+						"url": {
+							"raw": "{{LoadBalancerEndpoint}}/v1/admin/permissions/1",
+							"host": [
+								"{{LoadBalancerEndpoint}}"
+							],
+							"path": [
+								"v1",
+								"admin",
+								"permissions",
+								"1"
+							]
+						},
+						"description": "https://wgu.qtestnet.com/p/36960/portal/project#tab=testdesign&object=1&id=37988125"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3da0e0db-1466-4a17-b431-5526a2e6a0f4",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "27b0d2f7-c0f4-4918-ae5d-bd26db0394ce",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "List roles",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3196a3ed-aaf6-4786-867c-50060b3727eb",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "cc8eef2a-fae5-48ce-8380-be324b536ca3",
+								"exec": [
+									"pm.test(\"List roles Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var schema = {",
+									"  \"definitions\": {},",
+									"  \"$schema\": \"http://json-schema.org/draft-07/schema#\",",
+									"  \"$id\": \"http://example.com/root.json\",",
+									"  \"type\": \"array\",",
+									"  \"title\": \"The Root Schema\",",
+									"  \"items\": {",
+									"    \"$id\": \"#/items\",",
+									"    \"type\": \"object\",",
+									"    \"title\": \"The Items Schema\",",
+									"    \"required\": [",
+									"      \"roleId\",",
+									"      \"role\",",
+									"      \"roleDescription\",",
+									"      \"dateCreated\",",
+									"      \"dateUpdated\",",
+									"      \"permissions\",",
+									"      \"permissionNames\"",
+									"    ],",
+									"    \"properties\": {",
+									"      \"roleId\": {",
+									"        \"$id\": \"#/items/properties/roleId\",",
+									"        \"type\": \"integer\",",
+									"        \"title\": \"The Roleid Schema\",",
+									"        \"default\": 0,",
+									"        \"examples\": [",
+									"          1",
+									"        ]",
+									"      },",
+									"      \"role\": {",
+									"        \"$id\": \"#/items/properties/role\",",
+									"        \"type\": \"string\",",
+									"        \"title\": \"The Role Schema\",",
+									"        \"default\": \"\",",
+									"        \"examples\": [",
+									"          \"Publish - Publisher\"",
+									"        ],",
+									"        \"pattern\": \"^(.*)$\"",
+									"      },",
+									"      \"roleDescription\": {",
+									"        \"$id\": \"#/items/properties/roleDescription\",",
+									"        \"type\": \"string\",",
+									"        \"title\": \"The Roledescription Schema\",",
+									"        \"default\": \"\",",
+									"        \"examples\": [",
+									"          \"User has full publisher permissions.\"",
+									"        ],",
+									"        \"pattern\": \"^(.*)$\"",
+									"      },",
+									"      \"dateCreated\": {",
+									"        \"$id\": \"#/items/properties/dateCreated\",",
+									"        \"type\": \"string\",",
+									"        \"title\": \"The Datecreated Schema\",",
+									"        \"default\": \"\",",
+									"        \"examples\": [",
+									"          \"2019-01-10T09:04:56.000Z\"",
+									"        ],",
+									"        \"pattern\": \"^(.*)$\"",
+									"      },",
+									"      \"dateUpdated\": {",
+									"        \"$id\": \"#/items/properties/dateUpdated\",",
+									"        \"type\": \"string\",",
+									"        \"title\": \"The Dateupdated Schema\",",
+									"        \"default\": \"\",",
+									"        \"examples\": [",
+									"          \"2019-01-10T09:04:56.000Z\"",
+									"        ],",
+									"        \"pattern\": \"^(.*)$\"",
+									"      },",
+									"      \"permissions\": {",
+									"        \"$id\": \"#/items/properties/permissions\",",
+									"        \"type\": \"array\",",
+									"        \"title\": \"The Permissions Schema\"",
+									"      },",
+									"      \"permissionNames\": {",
+									"        \"$id\": \"#/items/properties/permissionNames\",",
+									"        \"type\": \"array\",",
+									"        \"title\": \"The Permissionnames Schema\"",
+									"      }",
+									"    }",
+									"  }",
+									"};",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test('List roles Schema is valid', function() {",
+									"  pm.expect(tv4.validate(data, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Ping}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{LoadBalancerEndpoint}}/v1/admin/roles",
+							"host": [
+								"{{LoadBalancerEndpoint}}"
+							],
+							"path": [
+								"v1",
+								"admin",
+								"roles"
+							]
+						},
+						"description": "https://wgu.qtestnet.com/p/36960/portal/project#tab=testdesign&object=1&id=37988245"
+					},
+					"response": []
+				},
+				{
+					"name": "Get role",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "41b05cd5-54dd-49eb-bfc9-e8a16d44a50f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "6da3f64b-7086-4c01-b545-4ed3f007f695",
+								"exec": [
+									"pm.test(\"Get role Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var schema = {",
+									"  \"definitions\": {},",
+									"  \"$schema\": \"http://json-schema.org/draft-07/schema#\",",
+									"  \"$id\": \"http://example.com/root.json\",",
+									"  \"type\": \"object\",",
+									"  \"title\": \"The Root Schema\",",
+									"  \"required\": [",
+									"    \"roleId\",",
+									"    \"role\",",
+									"    \"roleDescription\",",
+									"    \"dateCreated\",",
+									"    \"dateUpdated\",",
+									"    \"permissions\",",
+									"    \"permissionNames\"",
+									"  ],",
+									"  \"properties\": {",
+									"    \"roleId\": {",
+									"      \"$id\": \"#/properties/roleId\",",
+									"      \"type\": \"integer\",",
+									"      \"title\": \"The Roleid Schema\",",
+									"      \"default\": 0,",
+									"      \"examples\": [",
+									"        1",
+									"      ]",
+									"    },",
+									"    \"role\": {",
+									"      \"$id\": \"#/properties/role\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Role Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"Publish - Publisher\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    },",
+									"    \"roleDescription\": {",
+									"      \"$id\": \"#/properties/roleDescription\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Roledescription Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"User has full publisher permissions.\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    },",
+									"    \"dateCreated\": {",
+									"      \"$id\": \"#/properties/dateCreated\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Datecreated Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"2019-01-10T09:04:56.000Z\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    },",
+									"    \"dateUpdated\": {",
+									"      \"$id\": \"#/properties/dateUpdated\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Dateupdated Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"2019-01-10T09:04:56.000Z\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    },",
+									"    \"permissions\": {",
+									"      \"$id\": \"#/properties/permissions\",",
+									"      \"type\": \"array\",",
+									"      \"title\": \"The Permissions Schema\",",
+									"      \"items\": {",
+									"        \"$id\": \"#/properties/permissions/items\",",
+									"        \"type\": \"integer\",",
+									"        \"title\": \"The Items Schema\",",
+									"        \"default\": 0,",
+									"        \"examples\": [",
+									"          18,",
+									"          3,",
+									"          36,",
+									"          25,",
+									"          10,",
+									"          11,",
+									"          31",
+									"        ]",
+									"      }",
+									"    },",
+									"    \"permissionNames\": {",
+									"      \"$id\": \"#/properties/permissionNames\",",
+									"      \"type\": \"array\",",
+									"      \"title\": \"The Permissionnames Schema\",",
+									"      \"items\": {",
+									"        \"$id\": \"#/properties/permissionNames/items\",",
+									"        \"type\": \"string\",",
+									"        \"title\": \"The Items Schema\",",
+									"        \"default\": \"\",",
+									"        \"examples\": [",
+									"          \"edit-published-task\",",
+									"          \"create-task\",",
+									"          \"retire-task\",",
+									"          \"create-assessment\",",
+									"          \"edit-draft-task\",",
+									"          \"publish-task\",",
+									"          \"view-all-task\"",
+									"        ],",
+									"        \"pattern\": \"^(.*)$\"",
+									"      }",
+									"    }",
+									"  }",
+									"};",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"",
+									"pm.test('Get role Schema is valid', function() {",
+									"  pm.expect(tv4.validate(data, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Ping}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{LoadBalancerEndpoint}}/v1/admin/roles/1",
+							"host": [
+								"{{LoadBalancerEndpoint}}"
+							],
+							"path": [
+								"v1",
+								"admin",
+								"roles",
+								"1"
+							]
+						},
+						"description": "https://wgu.qtestnet.com/p/36960/portal/project#tab=testdesign&object=1&id=37988271"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "List all users",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "dc56dbf2-c48d-4583-b838-ebba537e7628",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "623fd666-5287-4b0f-98b5-1bd9551cdca6",
+								"exec": [
+									"pm.test(\"List all users Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"var schema = {",
+									"  \"definitions\": {},",
+									"  \"$schema\": \"http://json-schema.org/draft-07/schema#\",",
+									"  \"$id\": \"http://example.com/root.json\",",
+									"  \"type\": \"object\",",
+									"  \"title\": \"The Root Schema\",",
+									"  \"required\": [",
+									"    \"evaluators\"",
+									"  ],",
+									"  \"properties\": {",
+									"    \"evaluators\": {",
+									"      \"$id\": \"#/properties/evaluators\",",
+									"      \"type\": \"array\",",
+									"      \"title\": \"The Evaluators Schema\",",
+									"      \"items\": {",
+									"        \"$id\": \"#/properties/evaluators/items\",",
+									"        \"type\": \"object\",",
+									"        \"title\": \"The Items Schema\",",
+									"        \"required\": [",
+									"          \"userId\",",
+									"          \"firstName\",",
+									"          \"lastName\",",
+									"          \"lastLogin\",",
+									"          \"employeeId\"",
+									"        ],",
+									"        \"properties\": {",
+									"          \"userId\": {",
+									"            \"$id\": \"#/properties/evaluators/items/properties/userId\",",
+									"            \"type\": \"string\",",
+									"            \"title\": \"The Userid Schema\",",
+									"            \"default\": \"\",",
+									"            \"examples\": [",
+									"              \"ABLIVEN\"",
+									"            ],",
+									"            \"pattern\": \"^(.*)$\"",
+									"          },",
+									"          \"firstName\": {",
+									"            \"$id\": \"#/properties/evaluators/items/properties/firstName\",",
+									"            \"type\": \"string\",",
+									"            \"title\": \"The Firstname Schema\",",
+									"            \"default\": \"\",",
+									"            \"examples\": [",
+									"              \"Annamaria\"",
+									"            ],",
+									"            \"pattern\": \"^(.*)$\"",
+									"          },",
+									"          \"lastName\": {",
+									"            \"$id\": \"#/properties/evaluators/items/properties/lastName\",",
+									"            \"type\": \"string\",",
+									"            \"title\": \"The Lastname Schema\",",
+									"            \"default\": \"\",",
+									"            \"examples\": [",
+									"              \"Bliven\"",
+									"            ],",
+									"            \"pattern\": \"^(.*)$\"",
+									"          },",
+									"          \"lastLogin\": {",
+									"            \"$id\": \"#/properties/evaluators/items/properties/lastLogin\",",
+									"            \"type\": \"string\",",
+									"            \"title\": \"The Lastlogin Schema\",",
+									"            \"default\": \"\",",
+									"            \"examples\": [",
+									"              \"2018-08-01T13:40:49.404Z\"",
+									"            ],",
+									"            \"pattern\": \"^(.*)$\"",
+									"          },",
+									"          \"employeeId\": {",
+									"            \"$id\": \"#/properties/evaluators/items/properties/employeeId\",",
+									"            \"type\": \"string\",",
+									"            \"title\": \"The Employeeid Schema\",",
+									"            \"default\": \"\",",
+									"            \"examples\": [",
+									"              \"annamaria.bliven\"",
+									"            ],",
+									"            \"pattern\": \"^(.*)$\"",
+									"          }",
+									"        }",
+									"      }",
+									"    }",
+									"  }",
+									"};",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test('List all users Schema is valid', function() {",
+									"  //pm.expect(tv4.validate(data, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Ping}}"
+							}
+						],
+						"url": {
+							"raw": "{{LoadBalancerEndpoint}}/v1/users",
+							"host": [
+								"{{LoadBalancerEndpoint}}"
+							],
+							"path": [
+								"v1",
+								"users"
+							]
+						},
+						"description": "https://wgu.qtestnet.com/p/36960/portal/project#tab=testdesign&object=1&id=37988242"
+					},
+					"response": []
+				},
+				{
+					"name": "Get user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ea9f2eb1-f39d-4fae-896e-d27bcc15e32f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "09f6f147-cd22-4aa5-bb50-f3cb82981cb3",
+								"exec": [
+									"pm.test(\"Get user-Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"var schema = {",
+									"  \"definitions\": {},",
+									"  \"$schema\": \"http://json-schema.org/draft-07/schema#\",",
+									"  \"$id\": \"http://example.com/root.json\",",
+									"  \"type\": \"object\",",
+									"  \"title\": \"The Root Schema\",",
+									"  \"required\": [",
+									"    \"evaluator\"",
+									"  ],",
+									"  \"properties\": {",
+									"    \"evaluator\": {",
+									"      \"$id\": \"#/properties/evaluator\",",
+									"      \"type\": \"object\",",
+									"      \"title\": \"The Evaluator Schema\",",
+									"      \"required\": [",
+									"        \"userId\",",
+									"        \"firstName\",",
+									"        \"lastName\",",
+									"        \"employeeId\",",
+									"        \"lastLogin\",",
+									"        \"tasks\",",
+									"        \"roles\",",
+									"        \"teams\",",
+									"        \"permissions\",",
+									"        \"landings\",",
+									"        \"queues\"",
+									"      ],",
+									"      \"properties\": {",
+									"        \"userId\": {",
+									"          \"$id\": \"#/properties/evaluator/properties/userId\",",
+									"          \"type\": \"string\",",
+									"          \"title\": \"The Userid Schema\",",
+									"          \"default\": \"\",",
+									"          \"examples\": [",
+									"            \"E00109640\"",
+									"          ],",
+									"          \"pattern\": \"^(.*)$\"",
+									"        },",
+									"        \"firstName\": {",
+									"          \"$id\": \"#/properties/evaluator/properties/firstName\",",
+									"          \"type\": \"string\",",
+									"          \"title\": \"The Firstname Schema\",",
+									"          \"default\": \"\",",
+									"          \"examples\": [",
+									"            \"Amit\"",
+									"          ],",
+									"          \"pattern\": \"^(.*)$\"",
+									"        },",
+									"        \"lastName\": {",
+									"          \"$id\": \"#/properties/evaluator/properties/lastName\",",
+									"          \"type\": \"string\",",
+									"          \"title\": \"The Lastname Schema\",",
+									"          \"default\": \"\",",
+									"          \"examples\": [",
+									"            \"Shrigondekar\"",
+									"          ],",
+									"          \"pattern\": \"^(.*)$\"",
+									"        },",
+									"        \"employeeId\": {",
+									"          \"$id\": \"#/properties/evaluator/properties/employeeId\",",
+									"          \"type\": \"string\",",
+									"          \"title\": \"The Employeeid Schema\",",
+									"          \"default\": \"\",",
+									"          \"examples\": [",
+									"            \"amit.shrigondekar\"",
+									"          ],",
+									"          \"pattern\": \"^(.*)$\"",
+									"        },",
+									"        \"lastLogin\": {",
+									"          \"$id\": \"#/properties/evaluator/properties/lastLogin\",",
+									"          \"type\": \"string\",",
+									"          \"title\": \"The Lastlogin Schema\",",
+									"          \"default\": \"\",",
+									"          \"examples\": [",
+									"            \"2019-12-18T06:25:36.000Z\"",
+									"          ],",
+									"          \"pattern\": \"^(.*)$\"",
+									"        },",
+									"        \"tasks\": {",
+									"          \"$id\": \"#/properties/evaluator/properties/tasks\",",
+									"          \"type\": \"array\",",
+									"          \"title\": \"The Tasks Schema\",",
+									"          \"items\": {",
+									"            \"$id\": \"#/properties/evaluator/properties/tasks/items\",",
+									"            \"type\": \"integer\",",
+									"            \"title\": \"The Items Schema\",",
+									"            \"default\": 0,",
+									"            \"examples\": [",
+									"              2002,",
+									"              4013",
+									"            ]",
+									"          }",
+									"        },",
+									"        \"roles\": {",
+									"          \"$id\": \"#/properties/evaluator/properties/roles\",",
+									"          \"type\": \"array\",",
+									"          \"title\": \"The Roles Schema\",",
+									"          \"items\": {",
+									"            \"$id\": \"#/properties/evaluator/properties/roles/items\",",
+									"            \"type\": \"integer\",",
+									"            \"title\": \"The Items Schema\",",
+									"            \"default\": 0,",
+									"            \"examples\": [",
+									"              10",
+									"            ]",
+									"          }",
+									"        },",
+									"        \"teams\": {",
+									"          \"$id\": \"#/properties/evaluator/properties/teams\",",
+									"          \"type\": \"null\",",
+									"          \"title\": \"The Teams Schema\",",
+									"          \"default\": null,",
+									"          \"examples\": [",
+									"            null",
+									"          ]",
+									"        },",
+									"        \"permissions\": {",
+									"          \"$id\": \"#/properties/evaluator/properties/permissions\",",
+									"          \"type\": \"array\",",
+									"          \"title\": \"The Permissions Schema\",",
+									"          \"items\": {",
+									"            \"$id\": \"#/properties/evaluator/properties/permissions/items\",",
+									"            \"type\": \"string\",",
+									"            \"title\": \"The Items Schema\",",
+									"            \"default\": \"\",",
+									"            \"examples\": [",
+									"              \"SYSTEM\",",
+									"              \"evaluation-assign\"",
+									"            ],",
+									"            \"pattern\": \"^(.*)$\"",
+									"          }",
+									"        },",
+									"        \"landings\": {",
+									"          \"$id\": \"#/properties/evaluator/properties/landings\",",
+									"          \"type\": \"array\",",
+									"          \"title\": \"The Landings Schema\",",
+									"          \"items\": {",
+									"            \"$id\": \"#/properties/evaluator/properties/landings/items\",",
+									"            \"type\": \"string\",",
+									"            \"title\": \"The Items Schema\",",
+									"            \"default\": \"\",",
+									"            \"examples\": [",
+									"              \"FACULTY\",",
+									"              \"edit-published-task\",",
+									"              \"create-new-assessment\",",
+									"              \"EVALUATION\",",
+									"              \"edit-draft-task\",",
+									"              \"USER-MANAGEMENT\",",
+									"              \"ADMIN\",",
+									"              \"PUBLISH\",",
+									"              \"SUBMISSION-SEARCH\",",
+									"              \"SUBMISSION\",",
+									"              \"view-all-task\"",
+									"            ],",
+									"            \"pattern\": \"^(.*)$\"",
+									"          }",
+									"        },",
+									"        \"queues\": {",
+									"          \"$id\": \"#/properties/evaluator/properties/queues\",",
+									"          \"type\": \"array\",",
+									"          \"title\": \"The Queues Schema\",",
+									"          \"items\": {",
+									"            \"$id\": \"#/properties/evaluator/properties/queues/items\",",
+									"            \"type\": \"string\",",
+									"            \"title\": \"The Items Schema\",",
+									"            \"default\": \"\",",
+									"            \"examples\": [",
+									"              \"512\",",
+									"              \"33\"",
+									"            ],",
+									"            \"pattern\": \"^(.*)$\"",
+									"          }",
+									"        }",
+									"      }",
+									"    }",
+									"  }",
+									"};",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test('Get user-Schema is valid', function() {",
+									"  pm.expect(tv4.validate(data, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Ping}}"
+							}
+						],
+						"url": {
+							"raw": "{{LoadBalancerEndpoint}}/v1/users/E00109640",
+							"host": [
+								"{{LoadBalancerEndpoint}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"E00109640"
+							]
+						},
+						"description": "https://wgu.qtestnet.com/p/36960/portal/project#tab=testdesign&object=1&id=37988272"
+					},
+					"response": []
+				},
+				{
+					"name": "Get person info",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a902157b-6774-4fcd-9387-7bcbd38f6aa0",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "61899ae6-d5bd-4da3-8890-51a040388fe0",
+								"exec": [
+									"pm.test(\"Get person info Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var schema = {",
+									"  \"definitions\": {},",
+									"  \"$schema\": \"http://json-schema.org/draft-07/schema#\",",
+									"  \"$id\": \"http://example.com/root.json\",",
+									"  \"type\": \"object\",",
+									"  \"title\": \"The Root Schema\",",
+									"  \"required\": [",
+									"    \"pidm\",",
+									"    \"username\",",
+									"    \"studentId\",",
+									"    \"firstName\",",
+									"    \"lastName\",",
+									"    \"isEmployee\",",
+									"    \"preferredEmail\"",
+									"  ],",
+									"  \"properties\": {",
+									"    \"pidm\": {",
+									"      \"$id\": \"#/properties/pidm\",",
+									"      \"type\": \"null\",",
+									"      \"title\": \"The Pidm Schema\",",
+									"      \"default\": null,",
+									"      \"examples\": [",
+									"        null",
+									"      ]",
+									"    },",
+									"    \"username\": {",
+									"      \"$id\": \"#/properties/username\",",
+									"      \"type\": \"null\",",
+									"      \"title\": \"The Username Schema\",",
+									"      \"default\": null,",
+									"      \"examples\": [",
+									"        null",
+									"      ]",
+									"    },",
+									"    \"studentId\": {",
+									"      \"$id\": \"#/properties/studentId\",",
+									"      \"type\": \"null\",",
+									"      \"title\": \"The Studentid Schema\",",
+									"      \"default\": null,",
+									"      \"examples\": [",
+									"        null",
+									"      ]",
+									"    },",
+									"    \"firstName\": {",
+									"      \"$id\": \"#/properties/firstName\",",
+									"      \"type\": \"null\",",
+									"      \"title\": \"The Firstname Schema\",",
+									"      \"default\": null,",
+									"      \"examples\": [",
+									"        null",
+									"      ]",
+									"    },",
+									"    \"lastName\": {",
+									"      \"$id\": \"#/properties/lastName\",",
+									"      \"type\": \"null\",",
+									"      \"title\": \"The Lastname Schema\",",
+									"      \"default\": null,",
+									"      \"examples\": [",
+									"        null",
+									"      ]",
+									"    },",
+									"    \"isEmployee\": {",
+									"      \"$id\": \"#/properties/isEmployee\",",
+									"      \"type\": \"boolean\",",
+									"      \"title\": \"The Isemployee Schema\",",
+									"      \"default\": false,",
+									"      \"examples\": [",
+									"        false",
+									"      ]",
+									"    },",
+									"    \"preferredEmail\": {",
+									"      \"$id\": \"#/properties/preferredEmail\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Preferredemail Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"null@my.wgu.edu\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    }",
+									"  }",
+									"};",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"",
+									"pm.test('Get person info Schema is valid', function() {",
+									"  //pm.expect(tv4.validate($randomDatabaseCollation, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Ping}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{LoadBalancerEndpoint}}/v1/person",
+							"host": [
+								"{{LoadBalancerEndpoint}}"
+							],
+							"path": [
+								"v1",
+								"person"
+							]
+						},
+						"description": "https://wgu.qtestnet.com/p/36960/portal/project#tab=testdesign&object=1&id=37988302"
+					},
+					"response": []
+				},
+				{
+					"name": "Get any person info",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "603b0ccf-e46c-4efc-b296-a815b351a9fc",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "56fbc3a2-69eb-49b9-afc7-4755a08c0f4e",
+								"exec": [
+									"pm.test(\"Get any person info Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"var schema = {",
+									"  \"definitions\": {},",
+									"  \"$schema\": \"http://json-schema.org/draft-07/schema#\",",
+									"  \"$id\": \"http://example.com/root.json\",",
+									"  \"type\": \"object\",",
+									"  \"title\": \"The Root Schema\",",
+									"  \"required\": [",
+									"    \"pidm\",",
+									"    \"username\",",
+									"    \"studentId\",",
+									"    \"firstName\",",
+									"    \"lastName\",",
+									"    \"isEmployee\",",
+									"    \"preferredEmail\",",
+									"    \"userId\"",
+									"  ],",
+									"  \"properties\": {",
+									"    \"pidm\": {",
+									"      \"$id\": \"#/properties/pidm\",",
+									"      \"type\": \"integer\",",
+									"      \"title\": \"The Pidm Schema\",",
+									"      \"default\": 0,",
+									"      \"examples\": [",
+									"        682078",
+									"      ]",
+									"    },",
+									"    \"username\": {",
+									"      \"$id\": \"#/properties/username\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Username Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"latia.hickerson\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    },",
+									"    \"studentId\": {",
+									"      \"$id\": \"#/properties/studentId\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Studentid Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"E00108654\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    },",
+									"    \"firstName\": {",
+									"      \"$id\": \"#/properties/firstName\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Firstname Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"Latia\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    },",
+									"    \"lastName\": {",
+									"      \"$id\": \"#/properties/lastName\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Lastname Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"Hickerson\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    },",
+									"    \"isEmployee\": {",
+									"      \"$id\": \"#/properties/isEmployee\",",
+									"      \"type\": \"boolean\",",
+									"      \"title\": \"The Isemployee Schema\",",
+									"      \"default\": false,",
+									"      \"examples\": [",
+									"        true",
+									"      ]",
+									"    },",
+									"    \"preferredEmail\": {",
+									"      \"$id\": \"#/properties/preferredEmail\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Preferredemail Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"latia.hickerson@wgu.edu\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    },",
+									"    \"userId\": {",
+									"      \"$id\": \"#/properties/userId\",",
+									"      \"type\": \"string\",",
+									"      \"title\": \"The Userid Schema\",",
+									"      \"default\": \"\",",
+									"      \"examples\": [",
+									"        \"E00108654\"",
+									"      ],",
+									"      \"pattern\": \"^(.*)$\"",
+									"    }",
+									"  }",
+									"};",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test('Get any person info Schema is valid', function() {",
+									"  pm.expect(tv4.validate(data, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Ping}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{LoadBalancerEndpoint}}/v1/person/E00108654",
+							"host": [
+								"{{LoadBalancerEndpoint}}"
+							],
+							"path": [
+								"v1",
+								"person",
+								"E00108654"
+							]
+						},
+						"description": "https://wgu.qtestnet.com/p/36960/portal/project#tab=testdesign&object=1&id=37988334"
+					},
+					"response": []
+				},
+				{
+					"name": "Get users for task",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "62b6711c-cd58-4f7e-a10d-e612c433e4df",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "edc92b57-5fae-4d8f-9afc-3af50768ffd2",
+								"exec": [
+									"pm.test(\"Get users for task Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"var schema = {",
+									"  \"definitions\": {},",
+									"  \"$schema\": \"http://json-schema.org/draft-07/schema#\",",
+									"  \"$id\": \"http://example.com/root.json\",",
+									"  \"type\": \"object\",",
+									"  \"title\": \"The Root Schema\",",
+									"  \"required\": [",
+									"    \"evaluators\"",
+									"  ],",
+									"  \"properties\": {",
+									"    \"evaluators\": {",
+									"      \"$id\": \"#/properties/evaluators\",",
+									"      \"type\": \"array\",",
+									"      \"title\": \"The Evaluators Schema\",",
+									"      \"items\": {",
+									"        \"$id\": \"#/properties/evaluators/items\",",
+									"        \"type\": \"object\",",
+									"        \"title\": \"The Items Schema\",",
+									"        \"required\": [",
+									"          \"userId\",",
+									"          \"firstName\",",
+									"          \"lastName\",",
+									"          \"lastLogin\",",
+									"          \"employeeId\"",
+									"        ],",
+									"        \"properties\": {",
+									"          \"userId\": {",
+									"            \"$id\": \"#/properties/evaluators/items/properties/userId\",",
+									"            \"type\": \"string\",",
+									"            \"title\": \"The Userid Schema\",",
+									"            \"default\": \"\",",
+									"            \"examples\": [",
+									"              \"AFAVERO\"",
+									"            ],",
+									"            \"pattern\": \"^(.*)$\"",
+									"          },",
+									"          \"firstName\": {",
+									"            \"$id\": \"#/properties/evaluators/items/properties/firstName\",",
+									"            \"type\": \"string\",",
+									"            \"title\": \"The Firstname Schema\",",
+									"            \"default\": \"\",",
+									"            \"examples\": [",
+									"              \"Alys\"",
+									"            ],",
+									"            \"pattern\": \"^(.*)$\"",
+									"          },",
+									"          \"lastName\": {",
+									"            \"$id\": \"#/properties/evaluators/items/properties/lastName\",",
+									"            \"type\": \"string\",",
+									"            \"title\": \"The Lastname Schema\",",
+									"            \"default\": \"\",",
+									"            \"examples\": [",
+									"              \"Favero\"",
+									"            ],",
+									"            \"pattern\": \"^(.*)$\"",
+									"          },",
+									"          \"lastLogin\": {",
+									"            \"$id\": \"#/properties/evaluators/items/properties/lastLogin\",",
+									"            \"type\": \"string\",",
+									"            \"title\": \"The Lastlogin Schema\",",
+									"            \"default\": \"\",",
+									"            \"examples\": [",
+									"              \"2018-11-05T21:55:14.908Z\"",
+									"            ],",
+									"            \"pattern\": \"^(.*)$\"",
+									"          },",
+									"          \"employeeId\": {",
+									"            \"$id\": \"#/properties/evaluators/items/properties/employeeId\",",
+									"            \"type\": \"string\",",
+									"            \"title\": \"The Employeeid Schema\",",
+									"            \"default\": \"\",",
+									"            \"examples\": [",
+									"              \"afavero\"",
+									"            ],",
+									"            \"pattern\": \"^(.*)$\"",
+									"          }",
+									"        }",
+									"      }",
+									"    }",
+									"  }",
+									"};",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"",
+									"pm.test('Get users for task Schema is valid', function() {",
+									"  //pm.expect(tv4.validate(data, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Ping}}"
+							}
+						],
+						"url": {
+							"raw": "{{LoadBalancerEndpoint}}/v1/users/task/1",
+							"host": [
+								"{{LoadBalancerEndpoint}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"task",
+								"1"
+							]
+						},
+						"description": "https://wgu.qtestnet.com/p/36960/portal/project#tab=testdesign&object=1&id=37988367"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "Get app version",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9a288047-43b0-4940-9eb3-571cac817335",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "de841870-d063-4e69-8eab-f8a035fbdd9e",
+								"exec": [
+									"tests[\"Ema Admin\"] = responseCode.code === 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Ping}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{LoadBalancerEndpoint}}/actuator/health",
+							"host": [
+								"{{LoadBalancerEndpoint}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						},
+						"description": "https://wgu.qtestnet.com/p/36960/portal/project#tab=testdesign&object=1&id=37988292"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "ff6218d1-d9f4-4d33-adbb-b9fdee65aa6f",
+				"type": "text/javascript",
+				"exec": [
+					"var user = pm.environment.get(\"Username\"); ",
+					"var pass = pm.environment.get(\"Password\"); ",
+					"var ENV =  pm.environment.get(\"AWSEnvironment\");",
+					"var lane = pm.environment.get(\"Lane\");",
+					"var basic =  pm.environment.get(\"Basic\");",
+					"function getEnv(ENV){",
+					"    if (ENV === 'Development'){",
+					"        return 'https://access.dev.wgu.edu';",
+					"    }",
+					"    if (ENV === 'Stage'){",
+					"        return 'https://access.qa.wgu.edu';",
+					"    }",
+					"    if (ENV === 'Prod'){",
+					"        return 'https://access.wgu.edu';",
+					"    }",
+					"}",
+					" ",
+					"pm.sendRequest({",
+					"url:getEnv(ENV)+'/pingfed/as/token.oauth2?grant_type=client_credentials',",
+					" ",
+					"method: 'POST',",
+					" ",
+					"header: 'Authorization: Basic '+basic+\"'\"}, ",
+					"",
+					"function (err, response) {",
+					"    var bearer = response.json();",
+					"    console.log(response.json());",
+					"   ",
+					"postman.setEnvironmentVariable(\"Ping\",  bearer.access_token); });"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "1f9bcbb1-84c5-4f4d-b67b-ce5c13bd12c6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

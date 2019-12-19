@@ -19,7 +19,6 @@ bin
 
 ### NetBeans ###
 nbproject/private/
-build/
 nbbuild/
 dist/
 nbdist/
@@ -27,3 +26,4 @@ nbdist/
 
 ### Local Properties ###
 application-local.properties
+.sts4-cache
