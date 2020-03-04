@@ -7,15 +7,14 @@
 	<packaging>jar</packaging>
 	<name>ema-admin</name>
 	<description>WGU User Management Service</description>
-	<version>3.0.1</version>
+	<version>3.0.2</version>
 	<parent>
 		<groupId>edu.wgu</groupId>
 		<artifactId>wgu-boot-starter-parent</artifactId>
-		<version>1.2.16.RELEASE</version>
+		<version>1.2.22.RELEASE</version>
 	</parent>
 	<properties>
-		<wgu.dm.common.version>5.0.3</wgu.dm.common.version>
-		<revision>3.0.0.0.dev</revision>
+		<wgu.dm.common.version>5.1.1</wgu.dm.common.version>
 		<start-class>edu.wgu.dm.admin.Application</start-class>
 		<java.version>11</java.version>
 		<maven.compiler.source>11</maven.compiler.source>
@@ -38,7 +37,7 @@
 			<dependency>
 				<groupId>edu.wgu</groupId>
 				<artifactId>wgu-boot-parent</artifactId>
-				<version>1.2.16.RELEASE</version>
+				<version>1.2.22.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -78,6 +77,15 @@
 		<dependency>
 			<groupId>edu.wgu</groupId>
 			<artifactId>wgu-boot-starter-api</artifactId>
+			<!-- wgu-boot-aws EXCLUSION is required when running locally to not look for aws secrets manager-->
+			<!--
+			<exclusions>
+				<exclusion>
+					<groupId>edu.wgu</groupId>
+					<artifactId>wgu-boot-aws</artifactId>
+				</exclusion>
+			</exclusions>
+			-->
 		</dependency>
 
 		<!-- Domain -->
