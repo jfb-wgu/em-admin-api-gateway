@@ -56,13 +56,14 @@
 			<groupId>edu.wgu</groupId>
 			<artifactId>wgu-boot-starter-api</artifactId>
 			<!-- wgu-boot-aws EXCLUSION is required when running locally to not look for aws secrets manager-->
+			<!--
 			<exclusions>
 				<exclusion>
 					<groupId>edu.wgu</groupId>
 					<artifactId>wgu-boot-aws</artifactId>
 				</exclusion>
 			</exclusions>
-
+			-->
 		</dependency>
 
 
