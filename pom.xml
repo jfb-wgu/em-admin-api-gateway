@@ -7,7 +7,7 @@
 	<packaging>jar</packaging>
 	<name>ema-admin</name>
 	<description>WGU User Management Service</description>
-	<version>3.0.2</version>
+	<version>3.0.3</version>
 	<parent>
 		<groupId>edu.wgu</groupId>
 		<artifactId>wgu-boot-starter-parent</artifactId>
