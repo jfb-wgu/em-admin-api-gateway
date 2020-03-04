@@ -7,15 +7,14 @@
 	<packaging>jar</packaging>
 	<name>ema-admin</name>
 	<description>WGU User Management Service</description>
-	<version>3.0.1</version>
+	<version>3.0.2</version>
 	<parent>
 		<groupId>edu.wgu</groupId>
 		<artifactId>wgu-boot-starter-parent</artifactId>
-		<version>1.2.16.RELEASE</version>
+		<version>1.2.22.RELEASE</version>
 	</parent>
 	<properties>
-		<wgu.dm.common.version>5.0.3</wgu.dm.common.version>
-		<revision>3.0.0.0.dev</revision>
+		<wgu.dm.common.version>5.1.1</wgu.dm.common.version>
 		<start-class>edu.wgu.dm.admin.Application</start-class>
 		<java.version>11</java.version>
 		<maven.compiler.source>11</maven.compiler.source>
@@ -38,25 +37,9 @@
 			<dependency>
 				<groupId>edu.wgu</groupId>
 				<artifactId>wgu-boot-parent</artifactId>
-				<version>1.2.16.RELEASE</version>
+				<version>1.2.22.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>
-			<!-- Jackson to fix Veracode -->
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-core</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-databind</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-annotations</artifactId>
-				<version>${jackson.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -67,35 +50,23 @@
 			<groupId>edu.wgu</groupId>
 			<artifactId>dm-worker</artifactId>
 			<version>${wgu.dm.common.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.codehaus.jackson</groupId>
-					<artifactId>jackson-mapper-asl</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>edu.wgu</groupId>
 			<artifactId>wgu-boot-starter-api</artifactId>
+			<!-- wgu-boot-aws EXCLUSION is required when running locally to not look for aws secrets manager-->
+			<!--
+			<exclusions>
+				<exclusion>
+					<groupId>edu.wgu</groupId>
+					<artifactId>wgu-boot-aws</artifactId>
+				</exclusion>
+			</exclusions>
+			-->
 		</dependency>
 
-		<!-- Domain -->
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.1-api</artifactId>
-			<version>1.0.0.Final</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.10</version>
-		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -122,12 +93,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<!-- Testing -->
@@ -163,45 +128,11 @@
 
 	</dependencies>
 
-	<profiles>
-		<profile>
-			<id>local</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<version>2.19</version>
-						<configuration>
-							<argLine>-Dspring.profiles.active=local</argLine>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>dev</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<version>2.19</version>
-						<configuration>
-							<argLine>-Dspring.profiles.active=dev</argLine>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.1.2.RELEASE</version>
 				<executions>
 					<execution>
 						<goals>
@@ -215,7 +146,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.1.1</version>
 				<configuration>
 					<excludes>
 						<exclude>application-local.properties</exclude>
@@ -223,20 +153,9 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<release>${java.version}</release>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.ow2.asm</groupId>
-						<artifactId>asm</artifactId>
-						<version>6.2</version>
-					</dependency>
-				</dependencies>
-			</plugin>
+
+
+
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
