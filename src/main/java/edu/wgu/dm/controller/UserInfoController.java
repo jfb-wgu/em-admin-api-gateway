@@ -1,4 +1,4 @@
-package edu.wgu.dm.admin.controller;
+package edu.wgu.dm.controller;
 
 import java.text.ParseException;
 import javax.servlet.http.HttpServletRequest;

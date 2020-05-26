@@ -1,4 +1,4 @@
-package edu.wgu.dm.admin.service;
+package edu.wgu.dm.service;
 
 import static org.junit.Assert.assertEquals;
 import java.util.List;

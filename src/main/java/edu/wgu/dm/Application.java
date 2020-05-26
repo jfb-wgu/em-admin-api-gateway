@@ -1,4 +1,4 @@
-package edu.wgu.dm.admin;
+package edu.wgu.dm;
 
 import org.springframework.boot.Banner.Mode;
 import org.springframework.boot.SpringApplication;

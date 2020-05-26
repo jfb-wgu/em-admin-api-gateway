@@ -19,7 +19,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.wgu.dm.admin.controller.UserInfoController;
+import edu.wgu.dm.controller.UserInfoController;
 import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.security.service.UserInfoService;
 import edu.wgu.dm.util.IdentityUtil;

@@ -1,4 +1,4 @@
-package edu.wgu.dm.admin.repository;
+package edu.wgu.dm.repository;
 
 import java.util.List;
 import java.util.Optional;

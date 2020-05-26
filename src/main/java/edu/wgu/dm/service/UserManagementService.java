@@ -1,4 +1,4 @@
-package edu.wgu.dm.admin.service;
+package edu.wgu.dm.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 import edu.wgu.boot.core.exception.AuthorizationException;
-import edu.wgu.dm.admin.repository.RoleRepo;
-import edu.wgu.dm.admin.repository.UserRepo;
+import edu.wgu.dm.repository.RoleRepo;
+import edu.wgu.dm.repository.UserRepo;
 import edu.wgu.dm.common.exception.UserNotFoundException;
 import edu.wgu.dm.dto.response.BulkCreateResponse;
 import edu.wgu.dm.dto.security.BulkUsers;

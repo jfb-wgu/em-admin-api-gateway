@@ -15,7 +15,7 @@
 	</parent>
 	<properties>
 		<wgu.dm.common.version>5.1.1</wgu.dm.common.version>
-		<start-class>edu.wgu.dm.admin.Application</start-class>
+		<start-class>edu.wgu.dm.Application</start-class>
 		<java.version>11</java.version>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
@@ -55,18 +55,7 @@
 		<dependency>
 			<groupId>edu.wgu</groupId>
 			<artifactId>wgu-boot-starter-api</artifactId>
-			<!-- wgu-boot-aws EXCLUSION is required when running locally to not look for aws secrets manager-->
-			<!--
-			<exclusions>
-				<exclusion>
-					<groupId>edu.wgu</groupId>
-					<artifactId>wgu-boot-aws</artifactId>
-				</exclusion>
-			</exclusions>
-			-->
 		</dependency>
-
-
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

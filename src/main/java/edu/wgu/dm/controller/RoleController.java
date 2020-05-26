@@ -1,4 +1,4 @@
-package edu.wgu.dm.admin.controller;
+package edu.wgu.dm.controller;
 
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import edu.wgu.boot.auth.authz.annotation.HasAnyRole;
 import edu.wgu.boot.auth.authz.annotation.Secured;
-import edu.wgu.dm.admin.service.RoleService;
+import edu.wgu.dm.service.RoleService;
 import edu.wgu.dm.audit.Audit;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.security.strategy.SecureByPermissionStrategy;
