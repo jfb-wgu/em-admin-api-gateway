@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.wgu.boot.auth.authz.annotation.HasAnyRole;
 import edu.wgu.boot.auth.authz.annotation.Secured;
 import edu.wgu.dm.service.RoleService;
-import edu.wgu.dm.audit.Audit;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.security.strategy.SecureByPermissionStrategy;
 import edu.wgu.dm.util.IdentityUtil;
@@ -27,9 +26,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-/**
- * 
- */
+ 
 @RestController
 @Api("Role management services.  Modifying an existing role will affect any users with the role.")
 @RequestMapping("v1/admin")
@@ -41,10 +38,10 @@ public class RoleController {
 
     IdentityUtil iUtil;
 
-    @Audit
+   
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.ROLE_CREATE)
-    @PostMapping(value = "/roles", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/roles", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Add one or more roles.")
     @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
             paramType = "header", required = true)
@@ -53,10 +50,10 @@ public class RoleController {
         return ResponseEntity.ok(this.service.saveRoles(this.iUtil.getUserId(), roles));
     }
 
-    @Audit
+   
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.ROLE_CREATE)
-    @GetMapping(value = "/roles", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/roles", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("List all roles.")
     @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
             paramType = "header", required = true)
@@ -64,10 +61,10 @@ public class RoleController {
         return ResponseEntity.ok(this.service.getRoles());
     }
 
-    @Audit
+   
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.ROLE_CREATE)
-    @GetMapping(value = "/roles/{roleId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/roles/{roleId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Get details for specified role.")
     @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
             paramType = "header", required = true)
@@ -75,7 +72,7 @@ public class RoleController {
         return ResponseEntity.ok(this.service.getRole(roleId));
     }
 
-    @Audit
+   
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.ROLE_CREATE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)

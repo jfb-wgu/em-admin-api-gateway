@@ -1,198 +1,164 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>ema-admin</artifactId>
-	<packaging>jar</packaging>
-	<name>ema-admin</name>
-	<description>WGU User Management Service</description>
-	<version>3.0.4</version>
-	<parent>
-		<groupId>edu.wgu</groupId>
-		<artifactId>wgu-boot-starter-parent</artifactId>
-		<version>1.2.22.RELEASE</version>
-	</parent>
-	<properties>
-		<wgu.dm.common.version>5.1.1</wgu.dm.common.version>
-		<start-class>edu.wgu.dm.Application</start-class>
-		<java.version>11</java.version>
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<netty.handler.version>5.0.0.Alpha2</netty.handler.version>
-		<sonar.tests>src/test/java</sonar.tests>
-		<sonar.exclusions>**/properties/**</sonar.exclusions>
-		<sonar.login>466580078e959bf82a636f56d63cec51b2bee212</sonar.login>
-		<sonar.host.url>https://sonar.wgu.edu</sonar.host.url>
-		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
-		<jackson.version>2.10.1</jackson.version>
-	</properties>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>ema-admin</artifactId>
+  <packaging>jar</packaging>
+  <name>ema-admin</name>
+  <description>WGU User Management Service</description>
+  <version>3.1.0</version>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>edu.wgu</groupId>
-				<artifactId>wgu-boot-parent</artifactId>
-				<version>1.2.22.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+  <parent>
+    <groupId>edu.wgu</groupId>
+    <artifactId>wgu-boot-starter-parent</artifactId>
+    <version>1.2.23.RELEASE</version>
+  </parent>
 
-	<dependencies>
+  <properties>
+    <start-class>edu.wgu.dm.Application</start-class>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <netty.handler.version>5.0.0.Alpha2</netty.handler.version>
+    <sonar.tests>src/test/java</sonar.tests>
+    <sonar.exclusions>**/properties/**</sonar.exclusions>
+    <sonar.login>bb62a950cd937e585f0546aff9da8da075d43bd9</sonar.login>
+    <sonar.host.url>https://sonar.wgu.edu</sonar.host.url>
+    <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+    <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+  </properties>
 
-		<dependency>
-			<groupId>edu.wgu</groupId>
-			<artifactId>dm-worker</artifactId>
-			<version>${wgu.dm.common.version}</version>
-		</dependency>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>edu.wgu</groupId>
+        <artifactId>wgu-boot-parent</artifactId>
+        <version>1.2.23.RELEASE</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
-		<dependency>
-			<groupId>edu.wgu</groupId>
-			<artifactId>wgu-boot-starter-api</artifactId>
-		</dependency>
+  <dependencies>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
+    <dependency>
+      <groupId>edu.wgu</groupId>
+      <artifactId>wgu-boot-starter-api</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-handler</artifactId>
-			<version>${netty.handler.version}</version>
-		</dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-handler</artifactId>
+      <version>${netty.handler.version}</version>
+    </dependency>
 
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-		</dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<optional>true</optional>
-		</dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
+    </dependency>
 
-		<!-- Testing -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <optional>true</optional>
+    </dependency>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
+    <!-- Testing -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
 
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<scope>test</scope>
-		</dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
 
-		<!--- Mysql Connector-->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
 
-	</dependencies>
+    <!--- Mysql Connector-->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <scope>runtime</scope>
+    </dependency>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-							<goal>build-info</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+  </dependencies>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>application-local.properties</exclude>
-						<exclude>application-dev.properties</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>application-local.properties</exclude>
+            <exclude>application-dev.properties</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
 
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.3</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <destFile>${sonar.jacoco.reportPath}</destFile>
+        </configuration>
+      </plugin>
 
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.3</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<destFile>${sonar.jacoco.reportPath}</destFile>
-					<dataFile>${sonar.jacoco.reportPath}</dataFile>
-					<excludes>
-						<exclude>**/domain/**/*</exclude>
-						<exclude>**/config/**/*</exclude>
-						<exclude>**/Application</exclude>
-						<exclude>**/*Exception</exclude>
-						<exclude>**/test/**/*</exclude>
-						<exclude>**/entity/**/*</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-		</plugins>
-		<finalName>${project.artifactId}</finalName>
-	</build>
+    </plugins>
+  </build>
 
-	<repositories>
-		<repository>
-			<id>WGU</id>
-			<url>https://nexus.wgu.edu/content/repositories/WGU</url>
-		</repository>
-	</repositories>
+  <repositories>
+    <repository>
+      <id>WGU</id>
+      <url>https://nexus.wgu.edu/content/repositories/WGU</url>
+    </repository>
+  </repositories>
 
-	<distributionManagement>
-		<repository>
-			<id>WGU</id>
-			<url>https://nexus.wgu.edu/content/repositories/WGU</url>
-		</repository>
-	</distributionManagement>
+  <distributionManagement>
+    <repository>
+      <id>WGU</id>
+      <url>https://nexus.wgu.edu/content/repositories/WGU</url>
+    </repository>
+  </distributionManagement>
 
 
 </project>

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.wgu.boot.auth.authz.annotation.HasAnyRole;
 import edu.wgu.boot.auth.authz.annotation.Secured;
 import edu.wgu.dm.service.PermissionService;
-import edu.wgu.dm.audit.Audit;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.security.strategy.SecureByPermissionStrategy;
 import edu.wgu.dm.util.Permissions;
@@ -25,22 +24,17 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-/**
- * 
- */
 @RestController
-@Api("Permission management services.  Modifying an existing permission may affect all users for the permission.")
+@Api("Permission management services. Modifying an existing permission may affect all users for the permission.")
 @RequestMapping("v1/admin")
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PermissionController {
 
-    PermissionService service;
+   private final PermissionService service;
 
-    @Audit
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.ROLE_CREATE)
-    @GetMapping(value = "/permissions", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/permissions", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("List all permissions.")
     @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
             paramType = "header", required = true)
@@ -48,10 +42,10 @@ public class PermissionController {
         return ResponseEntity.ok(this.service.getPermissions());
     }
 
-    @Audit
+    
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.ROLE_CREATE)
-    @GetMapping(value = "/permissions/{permissionId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/permissions/{permissionId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Get details for specified permission.")
     @ApiImplicitParam(name = "Authorization", value = "Role-Create permission", dataType = "string",
             paramType = "header", required = true)
@@ -59,7 +53,7 @@ public class PermissionController {
         return ResponseEntity.ok(this.service.getPermission(permissionId));
     }
 
-    @Audit
+    
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.ROLE_CREATE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)

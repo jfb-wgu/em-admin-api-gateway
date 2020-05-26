@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.wgu.boot.auth.authz.annotation.HasAnyRole;
 import edu.wgu.boot.auth.authz.annotation.Secured;
 import edu.wgu.dm.service.UserManagementService;
-import edu.wgu.dm.audit.Audit;
 import edu.wgu.dm.dto.response.BulkCreateResponse;
 import edu.wgu.dm.dto.response.UserListResponse;
 import edu.wgu.dm.dto.response.UserResponse;
@@ -35,17 +34,16 @@ import lombok.experimental.FieldDefaults;
 @RestController
 @RequestMapping("v1")
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserManagementController {
 
-    UserManagementService service;
+   private final UserManagementService service;
 
-    IdentityUtil iUtil;
+   private final IdentityUtil iUtil;
 
-    @Audit
+
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_SEARCH)
-    @GetMapping(value = "/users/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("View the specified EMA user.")
     @ApiImplicitParam(name = "Authorization", value = "User-Search permission", dataType = "string",
             paramType = "header", required = true)
@@ -54,7 +52,7 @@ public class UserManagementController {
         return ResponseEntity.ok(result);
     }
 
-    @Audit
+
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_CREATE)
     @PostMapping(value = "/users")
@@ -66,10 +64,10 @@ public class UserManagementController {
         this.service.saveUser(this.iUtil.getUserId(), user);
     }
 
-    @Audit
+
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_CREATE)
-    @PostMapping(value = "/users/{username}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/users/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Create or retrieve a user skeleton from WGU username.")
     @ApiImplicitParam(name = "Authorization", value = "User-Create permission", dataType = "string",
             paramType = "header", required = true)
@@ -78,10 +76,10 @@ public class UserManagementController {
         return ResponseEntity.ok(result);
     }
 
-    @Audit
+
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_CREATE)
-    @PostMapping(value = "/users/bulk", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/users/bulk", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Create multiple users from WGU usernames.  Existing user information will be preserved.")
     @ApiImplicitParam(name = "Authorization", value = "User-Create permission", dataType = "string",
             paramType = "header", required = true)
@@ -90,7 +88,7 @@ public class UserManagementController {
         return ResponseEntity.ok(result);
     }
 
-    @Audit
+
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_DELETE)
     @DeleteMapping(value = "/users/{userId}")
@@ -102,10 +100,10 @@ public class UserManagementController {
         this.service.deleteUser(userId);
     }
 
-    @Audit
+
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_SEARCH)
-    @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("List all EMA users.")
     @ApiImplicitParam(name = "Authorization", value = "User-Search permission", dataType = "string",
             paramType = "header", required = true)
@@ -114,10 +112,10 @@ public class UserManagementController {
         return ResponseEntity.ok(result);
     }
 
-    @Audit(taskIdParam = 0)
+     
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_SEARCH)
-    @GetMapping(value = "/users/task/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/users/task/{taskId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("List all EMA users who are qualified on the specified task.")
     @ApiImplicitParam(name = "Authorization", value = "User-Search permission", dataType = "string",
             paramType = "header", required = true)

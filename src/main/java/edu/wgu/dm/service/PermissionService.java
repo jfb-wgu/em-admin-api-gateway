@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import edu.wgu.dm.repository.PermissionRepo;
-import edu.wgu.dm.common.exception.PermissionNotFoundException;
+import edu.wgu.dm.exception.PermissionNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +27,8 @@ public class PermissionService {
 
     /**
      * Add or update Permissions. Permission name is unique in the permission table.
-     * 
-     * @param permission array
+     *
+     * @param permissions
      */
     public void savePermissions(@NonNull Permission[] permissions) {
         this.repo.savePermissions(Arrays.asList(permissions));

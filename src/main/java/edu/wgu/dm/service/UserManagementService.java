@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import edu.wgu.boot.core.exception.AuthorizationException;
 import edu.wgu.dm.repository.RoleRepo;
 import edu.wgu.dm.repository.UserRepo;
-import edu.wgu.dm.common.exception.UserNotFoundException;
+import edu.wgu.dm.exception.UserNotFoundException;
 import edu.wgu.dm.dto.response.BulkCreateResponse;
 import edu.wgu.dm.dto.security.BulkUsers;
 import edu.wgu.dm.dto.security.Person;
