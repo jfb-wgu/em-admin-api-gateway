@@ -9,7 +9,6 @@ import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.entity.security.RoleEntity;
 import edu.wgu.dm.projection.security.RoleIdProjection;
 import edu.wgu.dm.projection.security.RoleProjection;
-import edu.wgu.dm.repo.security.RoleRepository;
 import lombok.RequiredArgsConstructor;
 
 @Repository

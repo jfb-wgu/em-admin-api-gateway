@@ -23,7 +23,7 @@ import edu.wgu.dm.repository.PermissionRepo;
 import edu.wgu.dm.repository.RoleRepo;
 import edu.wgu.dm.repository.UserRepo;
 import edu.wgu.dm.service.RoleService;
-import edu.wgu.dm.common.exception.RoleNotFoundException;
+import edu.wgu.dm.exception.RoleNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.User;

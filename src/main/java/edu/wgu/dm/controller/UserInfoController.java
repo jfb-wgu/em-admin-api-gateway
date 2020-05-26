@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.wgu.boot.auth.authz.annotation.HasAnyRole;
 import edu.wgu.boot.auth.authz.annotation.IgnoreAuthorization;
 import edu.wgu.boot.auth.authz.annotation.Secured;
-import edu.wgu.dm.audit.Audit;
 import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.security.service.UserInfoService;
 import edu.wgu.dm.security.strategy.SecureByPermissionStrategy;
@@ -33,12 +32,10 @@ import lombok.experimental.FieldDefaults;
 public class UserInfoController {
 
     UserInfoService service;
-
     IdentityUtil iUtil;
 
-    @Audit
     @IgnoreAuthorization
-    @GetMapping(value = "/person", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/person", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("View details about the current user.")
     @ApiImplicitParam(name = "Authorization", value = "All authenticated", dataType = "string", paramType = "header",
             required = true)
@@ -46,10 +43,10 @@ public class UserInfoController {
         return ResponseEntity.ok(this.service.getPersonFromRequest(request, this.iUtil.getUserId()));
     }
 
-    @Audit
+    
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_SEARCH)
-    @GetMapping(value = "/person/{bannerId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/person/{bannerId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("View details about the specified user.")
     @ApiImplicitParam(name = "Authorization", value = "User-Search permission", dataType = "string",
             paramType = "header", required = true)
