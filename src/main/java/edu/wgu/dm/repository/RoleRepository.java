@@ -1,6 +1,7 @@
 package edu.wgu.dm.repository;
 
 import edu.wgu.dm.entity.security.RoleEntity;
+import edu.wgu.dm.projection.security.RoleIdNameProjection;
 import edu.wgu.dm.projection.security.RoleIdProjection;
 import edu.wgu.dm.projection.security.RoleProjection;
 import java.util.List;
@@ -13,4 +14,7 @@ public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
     List<RoleIdProjection> findByPermissionsPermission(String permission);
 
     List<RoleProjection> findAllProjectedBy();
+
+    List<RoleIdNameProjection> findByRoleInOrderByRole(List<String> roles);
+
 }
