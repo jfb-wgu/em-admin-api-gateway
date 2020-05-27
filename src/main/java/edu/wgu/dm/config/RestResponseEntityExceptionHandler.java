@@ -4,7 +4,6 @@ import edu.wgu.dm.dto.response.ExceptionResponse;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -27,7 +26,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
         HttpStatus status = null;
         String reason = null;
-        UUID errorUuid = UUID.randomUUID();
         Class<? extends Exception> exceptionObject = ex.getClass();
         List<String> messages = null;
         try {
@@ -52,10 +50,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
             reason = ex.getMessage();
         }
 
-        log.error("Exception for {}: {}, and Reason: {}, Exception: {}, , Reference ID: {}", request.getMethod(),
-                  request.getRequestURI(), reason, ex, errorUuid);
+        log.error("Exception for {}: {}, and Reason: {}, Exception: {}", request.getMethod(),
+                  request.getRequestURI(), reason, ex);
         log.error("Error", ex);
-        String message = String.format("Reason: %s, Reference ID: %s", reason, errorUuid);
+        String message = String.format("Reason: %s", reason);
         ExceptionResponse exResponse = new ExceptionResponse(status.value(), status.name(), message, new Date(),
                                                              request.getRequestURI(), messages);
         return new ResponseEntity<>(exResponse, status);
