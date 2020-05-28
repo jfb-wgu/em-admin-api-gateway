@@ -23,8 +23,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.wgu.dm.admin.controller.PermissionController;
-import edu.wgu.dm.admin.service.PermissionService;
+import edu.wgu.dm.controller.PermissionController;
+import edu.wgu.dm.service.PermissionService;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.util.DateUtil;
 
