@@ -1297,14 +1297,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{LoadBalancerEndpoint}}/v1/person/E00108654",
+							"raw": "{{LoadBalancerEndpoint}}/v1/person/E00109640",
 							"host": [
 								"{{LoadBalancerEndpoint}}"
 							],
 							"path": [
 								"v1",
 								"person",
-								"E00108654"
+								"E00109640"
 							]
 						},
 						"description": "https://wgu.qtestnet.com/p/36960/portal/project#tab=testdesign&object=1&id=37988334"
