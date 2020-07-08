@@ -3,9 +3,9 @@ package edu.wgu.dm.repository;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.RoleInfo;
 import edu.wgu.dm.entity.security.RoleEntity;
-import edu.wgu.dm.projection.security.RoleIdNameProjection;
-import edu.wgu.dm.projection.security.RoleIdProjection;
-import edu.wgu.dm.projection.security.RoleProjection;
+import edu.wgu.dm.entity.projection.security.RoleIdNameProjection;
+import edu.wgu.dm.entity.projection.security.RoleIdProjection;
+import edu.wgu.dm.entity.projection.security.RoleProjection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,7 +22,7 @@ public class RoleRepo {
     @Transactional
     public List<Role> saveRoles(List<Role> roles) {
         List<RoleEntity> entities = this.roleRepository.saveAll(roles.stream()
-                                                                     .map(r -> new RoleEntity(r))
+                                                                     .map(RoleEntity::new)
                                                                      .collect(Collectors.toList()));
         return RoleEntity.toRoles(entities);
     }
@@ -44,7 +44,7 @@ public class RoleRepo {
     public List<Long> getRolesByPermission(String permission) {
         List<RoleIdProjection> ids = this.roleRepository.findByPermissionsPermission(permission);
         return ids.stream()
-                  .map(id -> id.getRoleId())
+                  .map(RoleIdProjection::getRoleId)
                   .collect(Collectors.toList());
     }
 

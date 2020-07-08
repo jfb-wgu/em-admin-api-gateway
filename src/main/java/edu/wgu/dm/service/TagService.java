@@ -1,13 +1,15 @@
-package edu.wgu.dm.tag;
+package edu.wgu.dm.service;
 
-import edu.wgu.dm.dto.security.Role;
+import edu.wgu.dm.dto.response.Tag;
 import edu.wgu.dm.dto.security.RoleInfo;
+import edu.wgu.dm.entity.security.TagEntity;
 import edu.wgu.dm.exception.InvalidTagException;
 import edu.wgu.dm.exception.TagNotFoundException;
 import edu.wgu.dm.repository.RoleRepo;
+import edu.wgu.dm.repository.TagRepository;
+import edu.wgu.dm.mapper.TagMapper;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +17,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+/**
+ * The type Tag service.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -26,6 +31,12 @@ public class TagService {
     private final TagRepository tagRepository;
     private final RoleRepo roleRepo;
 
+    /**
+     * Upsert tag tag.
+     *
+     * @param tag the tag
+     * @return the tag
+     */
     public Tag upsertTag( Tag tag) {
         Assert.notNull(tag,"Tag can not be null");
         Assert.hasText(tag.getName(), "Tag name can not be empty or null");
@@ -40,12 +51,23 @@ public class TagService {
         return getTag(entity.getTagId());
     }
 
+    /**
+     * Gets tag.
+     *
+     * @param tagId the tag id
+     * @return the tag
+     */
     public Tag getTag(Long tagId) {
         TagEntity tagEntity = tagRepository.findBytagId(tagId)
                                            .orElseThrow(() -> new TagNotFoundException("Tag not found by id:"+tagId));
         return TagMapper.toTag(tagEntity);
     }
 
+    /**
+     * Gets tags.
+     *
+     * @return the tags
+     */
     public List<Tag> getTags() {
         return tagRepository.findAll()
                             .stream()
@@ -53,6 +75,11 @@ public class TagService {
                             .collect(Collectors.toList());
     }
 
+    /**
+     * Delete tag.
+     *
+     * @param tagId the tag id
+     */
     public void deleteTag(Long tagId) {
         tagRepository.deleteById(tagId);
     }
@@ -60,7 +87,7 @@ public class TagService {
     /**
      * As of May 2020, we will just smart code roles that can be assigned to a tag.
      *
-     * @return
+     * @return roles that can be assigned to tag
      */
     public List<RoleInfo> getRolesThatCanBeAssignedToTag() {
         return this.roleRepo.getRoles(assignableRoles);

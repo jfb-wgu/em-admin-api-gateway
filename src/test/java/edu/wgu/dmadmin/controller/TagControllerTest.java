@@ -12,11 +12,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.RoleInfo;
-import edu.wgu.dm.tag.Tag;
-import edu.wgu.dm.tag.TagController;
-import edu.wgu.dm.tag.TagService;
+import edu.wgu.dm.dto.response.Tag;
+import edu.wgu.dm.controller.TagController;
+import edu.wgu.dm.service.TagService;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;

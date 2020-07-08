@@ -1,5 +1,6 @@
-package edu.wgu.dm.tag;
+package edu.wgu.dm.repository;
 
+import edu.wgu.dm.entity.security.TagEntity;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

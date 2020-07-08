@@ -1,4 +1,4 @@
-package edu.wgu.dm.repo.security;
+package edu.wgu.dm.repository;
 
 import edu.wgu.dm.entity.security.PermissionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

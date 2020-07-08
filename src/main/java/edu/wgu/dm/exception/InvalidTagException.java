@@ -1,6 +1,6 @@
 package edu.wgu.dm.exception;
 
-import edu.wgu.dm.tag.Tag;
+import edu.wgu.dm.dto.response.Tag;
 
 public class InvalidTagException extends RuntimeException {
 

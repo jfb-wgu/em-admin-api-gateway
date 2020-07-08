@@ -1,4 +1,4 @@
-package edu.wgu.dm.security.service;
+package edu.wgu.dm.service;
 
 import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.exception.UserNotFoundException;
@@ -25,8 +25,7 @@ public class UserInfoService {
         String auth = request.getHeader("authorization");
         if (auth != null) {
             Person person = new Person(auth);
-            if (person.getIsEmployee()
-                      .booleanValue()) {
+            if (Boolean.TRUE.equals(person.getIsEmployee())) {
                 person.setUserInfo(this.userInfoRepo.getUserById(person.getUserId()));
             }
             return person;
@@ -41,8 +40,7 @@ public class UserInfoService {
             throw new UserNotFoundException(userId);
         }
 
-        if (person.getIsEmployee()
-                  .booleanValue()) {
+        if (Boolean.TRUE.equals(person.getIsEmployee())) {
             person.setUserInfo(this.userInfoRepo.getUserById(userId));
         }
 

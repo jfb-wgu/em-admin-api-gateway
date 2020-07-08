@@ -1,4 +1,4 @@
-package edu.wgu.dm.projection.security;
+package edu.wgu.dm.entity.projection.security;
 
 import edu.wgu.dm.dto.security.UserSummary;
 import java.util.Collections;
@@ -9,17 +9,17 @@ import java.util.stream.Collectors;
 
 public interface UserProjection {
 
-    public String getUserId();
+    String getUserId();
 
-    public String getFirstName();
+    String getFirstName();
 
-    public String getLastName();
+    String getLastName();
 
-    public Date getLastLogin();
+    Date getLastLogin();
 
-    public String getEmployeeId();
+    String getEmployeeId();
 
-    public default UserSummary toUser() {
+    default UserSummary toUser() {
         UserSummary user = new UserSummary();
 
         user.setUserId(this.getUserId());
@@ -31,7 +31,7 @@ public interface UserProjection {
         return user;
     }
 
-    public static List<UserSummary> toUsers(List<UserProjection> models) {
+    static List<UserSummary> toUsers(List<UserProjection> models) {
         if (models == null) {
             return Collections.emptyList();
         }
@@ -40,7 +40,7 @@ public interface UserProjection {
                      .collect(Collectors.toList());
     }
 
-    public static Optional<UserSummary> toUser(UserProjection model) {
+    static Optional<UserSummary> toUser(UserProjection model) {
         if (model == null) {
             return Optional.empty();
         }

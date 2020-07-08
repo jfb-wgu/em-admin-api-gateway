@@ -1,4 +1,4 @@
-package edu.wgu.dm.view;
+package edu.wgu.dm.entity.view;
 
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;

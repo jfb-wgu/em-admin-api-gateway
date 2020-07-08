@@ -1,4 +1,4 @@
-package edu.wgu.dm.projection.security;
+package edu.wgu.dm.entity.projection.security;
 
 import edu.wgu.dm.dto.security.Role;
 import java.util.Collections;
@@ -9,17 +9,17 @@ import java.util.stream.Collectors;
 
 public interface RoleProjection {
 
-    public Long getRoleId();
+    Long getRoleId();
 
-    public String getRole();
+    String getRole();
 
-    public String getRoleDescription();
+    String getRoleDescription();
 
-    public Date getDateCreated();
+    Date getDateCreated();
 
-    public Date getDateUpdated();
+    Date getDateUpdated();
 
-    public default Role toRole() {
+    default Role toRole() {
         Role nRole = new Role();
 
         nRole.setDateCreated(getDateCreated());
@@ -31,14 +31,14 @@ public interface RoleProjection {
         return nRole;
     }
 
-    public static Optional<Role> toRole(RoleProjection model) {
+    static Optional<Role> toRole(RoleProjection model) {
         if (model == null) {
             return Optional.empty();
         }
         return Optional.of(model.toRole());
     }
 
-    public static List<Role> toRoles(List<RoleProjection> models) {
+    static List<Role> toRoles(List<RoleProjection> models) {
         if (models == null) {
             return Collections.emptyList();
         }

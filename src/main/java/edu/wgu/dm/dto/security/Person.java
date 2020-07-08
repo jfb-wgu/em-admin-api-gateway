@@ -24,6 +24,7 @@ import net.minidev.json.JSONObject;
 public class Person implements Serializable {
 
     private static final long serialVersionUID = 7181392197281511771L;
+    public static final String USER_NAME = "username";
 
     Long pidm;
     String username;
@@ -40,28 +41,28 @@ public class Person implements Serializable {
     String primaryPhone;
 
     @JsonIgnore
-    List<String> roles = new ArrayList<>();
+    private List<String> roles = new ArrayList<>();
 
     @JsonInclude(value = Include.NON_EMPTY)
-    List<Long> teams;
+    private List<Long> teams;
 
     @JsonInclude(value = Include.NON_EMPTY)
-    Set<Long> emaRoles;
+    private Set<Long> emaRoles;
 
     @JsonInclude(value = Include.NON_EMPTY)
-    Set<String> permissions;
+    private Set<String> permissions;
 
     @JsonInclude(value = Include.NON_EMPTY)
-    List<Long> tasks;
+    private List<Long> tasks;
 
     @JsonInclude(value = Include.NON_EMPTY)
-    Set<String> landings;
+    private Set<String> landings;
 
     @JsonInclude(value = Include.NON_EMPTY)
     Date lastLogin;
 
     public Person(@NonNull String authToken) throws ParseException {
-        String jwtToken = authToken.substring(6, authToken.length());
+        String jwtToken = authToken.substring(6);
 
         JSONObject json = SignedJWT.parse(jwtToken)
                                    .getPayload()
@@ -75,15 +76,15 @@ public class Person implements Serializable {
 
         this.setFirstName(json.getAsString("givenName"));
         this.setLastName(json.getAsString("sn"));
-        this.setUsername(json.getAsString("username"));
+        this.setUsername(json.getAsString(USER_NAME));
 
         String roleOne = json.getAsString("wguLevelOneRole");
         this.setIsEmployee(Boolean.valueOf("Employee".equalsIgnoreCase(roleOne)));
 
         if (this.isEmployee.booleanValue()) {
-            this.setPreferredEmail(json.get("username") + "@wgu.edu");
+            this.setPreferredEmail(json.get(USER_NAME) + "@wgu.edu");
         } else {
-            this.setPreferredEmail(json.get("username") + "@my.wgu.edu");
+            this.setPreferredEmail(json.get(USER_NAME) + "@my.wgu.edu");
         }
     }
 
