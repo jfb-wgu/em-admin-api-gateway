@@ -1,10 +1,13 @@
-package edu.wgu.dm.tag;
+package edu.wgu.dm.controller;
 
+import edu.wgu.boot.auth.Role;
 import edu.wgu.boot.auth.authz.annotation.HasAnyRole;
 import edu.wgu.boot.auth.authz.annotation.Secured;
-import edu.wgu.dm.dto.security.Role;
+import edu.wgu.boot.auth.authz.strategy.SecureByRolesStrategy;
+import edu.wgu.dm.dto.response.Tag;
 import edu.wgu.dm.dto.security.RoleInfo;
-import edu.wgu.dm.security.strategy.SecureByPermissionStrategy;
+import edu.wgu.dm.service.SecureByPermissionStrategy;
+import edu.wgu.dm.service.TagService;
 import edu.wgu.dm.util.Permissions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,30 +38,30 @@ public class TagController {
     @HasAnyRole(Permissions.USER_CREATE)
     @PostMapping(value = "/tags", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("User with ADMIN role can Create or Update a tag.")
-    public ResponseEntity<Tag> upsertTag(@RequestBody Tag tag) {
+    public ResponseEntity<Tag> createUpdateTag(@RequestBody Tag tag) {
         return ResponseEntity.ok(this.tagService.upsertTag(tag));
     }
 
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.USER_CREATE)
-    @GetMapping(value = "/tags/roles", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation("User with ADMIN role can list roles that can be assigned to a Tag.")
-    public ResponseEntity<List<RoleInfo>> getApplicableRoles() {
-        return ResponseEntity.ok(this.tagService.getRolesThatCanBeAssignedToTag());
-    }
-
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.USER_CREATE)
+    @Secured(strategies = {SecureByRolesStrategy.class})
+    @HasAnyRole(Role.EMPLOYEE)
     @GetMapping(value = "/tags/{tagId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation("User with ADMIN role can get details for specified Tag.")
+    @ApiOperation("Employee can get the details for specified Tag.")
     public ResponseEntity<Tag> getTag(@PathVariable final Long tagId) {
         return ResponseEntity.ok(this.tagService.getTag(tagId));
     }
 
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.USER_CREATE)
+    @Secured(strategies = {SecureByRolesStrategy.class})
+    @HasAnyRole(Role.EMPLOYEE)
+    @GetMapping(value = "/tags/roles", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation("Employee can list the roles that can be assigned to a Tag.")
+    public ResponseEntity<List<RoleInfo>> getApplicableRoles() {
+        return ResponseEntity.ok(this.tagService.getRolesThatCanBeAssignedToTag());
+    }
+
+    @Secured(strategies = {SecureByRolesStrategy.class})
+    @HasAnyRole(Role.EMPLOYEE)
     @GetMapping(value = "/tags", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation("User with ADMIN role can view all the Tags.")
+    @ApiOperation("Employee can view the list of Tags.")
     public ResponseEntity<List<Tag>> getTagList() {
         return ResponseEntity.ok(this.tagService.getTags());
     }

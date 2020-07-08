@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.entity.security.PermissionEntity;
-import edu.wgu.dm.repo.security.PermissionRepository;
 import lombok.RequiredArgsConstructor;
 
 @Repository

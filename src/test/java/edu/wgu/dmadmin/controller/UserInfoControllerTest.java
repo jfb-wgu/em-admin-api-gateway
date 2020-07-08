@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wgu.dm.controller.UserInfoController;
 import edu.wgu.dm.dto.security.Person;
-import edu.wgu.dm.security.service.UserInfoService;
+import edu.wgu.dm.service.UserInfoService;
 import edu.wgu.dm.util.IdentityUtil;
 import edu.wgu.dmadmin.test.TestObjectFactory;
 
@@ -43,7 +43,7 @@ public class UserInfoControllerTest {
     String userId = person.getStudentId();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.mockMvc = standaloneSetup(this.controller).build();
 
         when(this.iUtil.getUserId()).thenReturn(this.userId);

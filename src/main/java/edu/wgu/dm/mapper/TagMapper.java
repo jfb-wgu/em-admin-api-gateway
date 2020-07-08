@@ -1,5 +1,7 @@
-package edu.wgu.dm.tag;
+package edu.wgu.dm.mapper;
 
+import edu.wgu.dm.dto.response.Tag;
+import edu.wgu.dm.entity.security.TagEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;

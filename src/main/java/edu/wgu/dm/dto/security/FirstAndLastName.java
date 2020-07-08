@@ -2,7 +2,7 @@ package edu.wgu.dm.dto.security;
 
 public interface FirstAndLastName {
 
-    public String getFirstName();
+    String getFirstName();
 
-    public String getLastName();
+    String getLastName();
 }

@@ -19,14 +19,12 @@ import edu.wgu.dm.dto.response.UserListResponse;
 import edu.wgu.dm.dto.response.UserResponse;
 import edu.wgu.dm.dto.security.BulkUsers;
 import edu.wgu.dm.dto.security.User;
-import edu.wgu.dm.security.strategy.SecureByPermissionStrategy;
+import edu.wgu.dm.service.SecureByPermissionStrategy;
 import edu.wgu.dm.util.IdentityUtil;
 import edu.wgu.dm.util.Permissions;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 
 /**
  * 

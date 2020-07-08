@@ -1,4 +1,4 @@
-package edu.wgu.dm.tag;
+package edu.wgu.dm.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;

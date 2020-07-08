@@ -77,7 +77,7 @@ public class IdentityUtil {
 
     private JSONObject extractJwtToken() throws ParseException {
         String auth = this.request.getHeader("authorization");
-        String jwtToken = auth.substring(6, auth.length());
+        String jwtToken = auth.substring(6);
         return SignedJWT.parse(jwtToken)
                         .getPayload()
                         .toJSONObject();

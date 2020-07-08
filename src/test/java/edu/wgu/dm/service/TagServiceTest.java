@@ -5,11 +5,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import edu.wgu.dm.repository.RoleRepo;
-import edu.wgu.dm.tag.Tag;
-import edu.wgu.dm.tag.TagEntity;
-import edu.wgu.dm.tag.TagMapper;
-import edu.wgu.dm.tag.TagRepository;
-import edu.wgu.dm.tag.TagService;
+import edu.wgu.dm.dto.response.Tag;
+import edu.wgu.dm.entity.security.TagEntity;
+import edu.wgu.dm.mapper.TagMapper;
+import edu.wgu.dm.repository.TagRepository;
 import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;

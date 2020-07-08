@@ -1,4 +1,4 @@
-package edu.wgu.dm.security.strategy;
+package edu.wgu.dm.service;
 
 import edu.wgu.boot.auth.Role;
 import edu.wgu.boot.auth.authz.domain.AuthorizationInfo;
@@ -38,7 +38,7 @@ public class SecureByPermissionStrategy implements AuthorizationStrategy {
         }
         String userId = keys.getBannerId();
         if (StringUtils.isBlank(userId)) {
-            throw new RuntimeException("UserId Not Found  "+userId);
+            throw new IllegalArgumentException("UserId Not Found  "+userId);
         }
         List<String> allowedPermissions = new ArrayList<>(authorizationInformation.getRoles());
         allowedPermissions.add("SYSTEM"); // SYSTEM can access all functions.

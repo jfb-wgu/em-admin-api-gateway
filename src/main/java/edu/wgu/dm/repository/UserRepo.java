@@ -8,9 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.dto.security.UserSummary;
 import edu.wgu.dm.entity.security.UserEntity;
-import edu.wgu.dm.projection.security.UserProjection;
-import edu.wgu.dm.repo.security.UserRepository;
-import edu.wgu.dm.repository.SecurityRepo;
+import edu.wgu.dm.entity.projection.security.UserProjection;
 import lombok.RequiredArgsConstructor;
 
 @Repository
@@ -29,7 +27,7 @@ public class UserRepo {
     @Transactional
     public List<User> saveUsers(List<User> users) {
         List<UserEntity> entities = this.userRepository.saveAll(users.stream()
-                                                                     .map(u -> new UserEntity(u))
+                                                                     .map(UserEntity::new)
                                                                      .collect(Collectors.toList()));
         return UserEntity.toUsers(entities);
     }
