@@ -1,7 +1,7 @@
-package edu.wgu.dm.repo.security;
+package edu.wgu.dm.repository;
 
 import edu.wgu.dm.entity.security.UserEntity;
-import edu.wgu.dm.projection.security.UserProjection;
+import edu.wgu.dm.entity.projection.security.UserProjection;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.EntityGraph;

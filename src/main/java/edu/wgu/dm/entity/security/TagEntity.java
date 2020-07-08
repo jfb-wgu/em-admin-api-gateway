@@ -1,4 +1,4 @@
-package edu.wgu.dm.tag;
+package edu.wgu.dm.entity.security;
 
 import java.util.Date;
 import javax.persistence.Column;

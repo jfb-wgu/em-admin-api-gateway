@@ -1,4 +1,4 @@
-package edu.wgu.dm.projection.security;
+package edu.wgu.dm.entity.projection.security;
 
 import edu.wgu.dm.dto.security.RoleInfo;
 import java.util.Collections;

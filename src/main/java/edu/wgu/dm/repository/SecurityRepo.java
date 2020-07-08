@@ -2,10 +2,9 @@ package edu.wgu.dm.repository;
 
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.dto.security.UserSummary;
+import edu.wgu.dm.entity.projection.security.UserProjection;
 import edu.wgu.dm.entity.security.UserEntity;
-import edu.wgu.dm.projection.security.UserProjection;
-import edu.wgu.dm.repo.security.UserRepository;
-import edu.wgu.dm.view.UserPermissionsRepository;
+import edu.wgu.dm.entity.view.UserPermissionsRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -32,8 +31,7 @@ public class SecurityRepo {
     }
 
     public Set<String> getPermissionsForUser(String userId) {
-        Set<String> permissions = this.permRepo.getPermissionsForUser(userId);
-        return permissions;
+        return this.permRepo.getPermissionsForUser(userId);
     }
 
     @Transactional

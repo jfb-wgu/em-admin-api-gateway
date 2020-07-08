@@ -24,14 +24,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * The type Env properties controller.
+ */
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping
 public class EnvPropertiesController {
 
-    final private Environment env;
+    private final Environment env;
 
+    /**
+     * Gets environment.
+     *
+     * @return the environment
+     */
     @Secured(strategies = {SecureByRolesStrategy.class})
     @HasAnyRole(Role.EMPLOYEE)
     @GetMapping(value = {"/env"}, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -54,7 +62,7 @@ public class EnvPropertiesController {
                                                       .filter(key -> !key.toLowerCase()
                                                                          .contains("secret"))
                                                       .collect(Collectors.toMap(Function.identity(),
-                                                                                key -> this.env.getProperty(key), (val1, val2) -> val1));
+                                                                                this.env::getProperty, (val1, val2) -> val1));
 
         return ResponseEntity.ok(properties);
     }
