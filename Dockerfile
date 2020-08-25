@@ -1,4 +1,4 @@
-FROM 687690056036.dkr.ecr.us-west-2.amazonaws.com/wgu/base/openjdk11:latest
+FROM 687690056036.dkr.ecr.us-west-2.amazonaws.com/wgu/base/awslinux/openjdk11:latest
 
 ARG TARGET=target
 
