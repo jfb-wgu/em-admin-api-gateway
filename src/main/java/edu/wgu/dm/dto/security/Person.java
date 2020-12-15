@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import lombok.AccessLevel;
@@ -60,6 +62,8 @@ public class Person implements Serializable {
 
     @JsonInclude(value = Include.NON_EMPTY)
     Date lastLogin;
+
+    private Map<Long,String> tags=new HashMap<>();
 
     public Person(@NonNull String authToken) throws ParseException {
         String jwtToken = authToken.substring(6);

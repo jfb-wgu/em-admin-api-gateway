@@ -104,4 +104,28 @@ public class PermissionControllerTest {
         verify(this.securityService).savePermissions(arg1.capture());
         assertEquals(Arrays.toString(permissions), Arrays.toString(arg1.getValue()));
     }
+
+    @Test
+    public void testGetPermission() throws Exception {
+        String url = "/v1/admin/permissions/1212";
+
+        Permission permission = new Permission();
+        permission.setDateCreated(DateUtil.getZonedNow());
+        permission.setPermission("Admin");
+        permission.setPermissionDescription("Able to do everything");
+        permission.setLanding("Landing");
+        permission.setPermissionId(1212l);
+        permission.setPermissionDescription("description");
+        permission.setDateUpdated(DateUtil.getZonedNow());
+        permission.setPermissionType("amdin");
+
+        when(this.securityService.getPermission(1212l)).thenReturn(permission);
+
+        MvcResult result = this.mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertEquals(this.mapper.writeValueAsString(permission), result.getResponse()
+                .getContentAsString());
+    }
 }
