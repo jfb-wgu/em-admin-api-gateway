@@ -1,4 +1,4 @@
-package edu.wgu.dmadmin.controller;
+package edu.wgu.dm.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,14 +25,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.wgu.dm.controller.UserManagementController;
 import edu.wgu.dm.service.UserManagementService;
 import edu.wgu.dm.dto.response.UserListResponse;
 import edu.wgu.dm.dto.response.UserResponse;
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.dto.security.UserSummary;
 import edu.wgu.dm.util.IdentityUtil;
-import edu.wgu.dmadmin.test.TestObjectFactory;
+import edu.wgu.dm.TestObjectFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserManagementControllerTest {
@@ -95,6 +96,18 @@ public class UserManagementControllerTest {
 
         verify(this.userService).saveUser(eq(this.user.getUserId()), arg1.capture());
         assertEquals(newUser, arg1.getValue());
+    }
+
+    @Test
+    public void testSaveUser() throws Exception {
+        String userName = "pParker";
+        String url = "/v1/users";
+
+        mockMvc.perform(post(url).content(mapper.writeValueAsString(this.user))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(204));
+
+        assert(true);
     }
 
     @Test

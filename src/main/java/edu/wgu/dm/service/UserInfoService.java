@@ -19,6 +19,7 @@ public class UserInfoService {
 
     private final PersonService personService;
     private final SecurityRepo userInfoRepo;
+    private final TagService tagService;
 
     public Person getPersonFromRequest(HttpServletRequest request, String userId) throws ParseException {
 
@@ -27,6 +28,7 @@ public class UserInfoService {
             Person person = new Person(auth);
             if (Boolean.TRUE.equals(person.getIsEmployee())) {
                 person.setUserInfo(this.userInfoRepo.getUserById(person.getUserId()));
+                person.setTags(tagService.getAllowedTagsForUser(userId));
             }
             return person;
         }
@@ -42,6 +44,7 @@ public class UserInfoService {
 
         if (Boolean.TRUE.equals(person.getIsEmployee())) {
             person.setUserInfo(this.userInfoRepo.getUserById(userId));
+            person.setTags(tagService.getAllowedTagsForUser(userId));
         }
 
         return person;
