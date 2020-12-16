@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TagRepository extends JpaRepository<TagEntity, Long> {
 
-    Optional<TagEntity> findBytagId(Long tagId);
+    Optional<TagEntity> findByTagId(Long tagId);
 
     @Query(nativeQuery = true, value = "SELECT tag_id as tagId, "
             + "       name as tagName "

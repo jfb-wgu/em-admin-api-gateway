@@ -64,7 +64,7 @@ public class TagService {
      * @return the tag
      */
     public Tag getTag(Long tagId) {
-        TagEntity tagEntity = tagRepository.findBytagId(tagId)
+        TagEntity tagEntity = tagRepository.findByTagId(tagId)
                                            .orElseThrow(() -> new TagNotFoundException("Tag not found by id:"+tagId));
         return TagMapper.toTag(tagEntity);
     }

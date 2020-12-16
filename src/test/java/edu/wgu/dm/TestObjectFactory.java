@@ -1,4 +1,4 @@
-package edu.wgu.dmadmin.test;
+package edu.wgu.dm;
 
 import java.util.ArrayList;
 import java.util.Optional;

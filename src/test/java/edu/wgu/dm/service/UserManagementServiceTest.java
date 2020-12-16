@@ -1,4 +1,4 @@
-package edu.wgu.dmadmin.service;
+package edu.wgu.dm.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -24,7 +24,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import edu.wgu.boot.core.exception.AuthorizationException;
 import edu.wgu.dm.repository.RoleRepo;
 import edu.wgu.dm.repository.UserRepo;
-import edu.wgu.dm.service.UserManagementService;
 import edu.wgu.dm.exception.UserNotFoundException;
 import edu.wgu.dm.dto.response.BulkCreateResponse;
 import edu.wgu.dm.dto.security.BulkUsers;
@@ -34,7 +33,7 @@ import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.dto.security.UserSummary;
 import edu.wgu.dm.service.feign.PersonService;
 import edu.wgu.dm.util.Permissions;
-import edu.wgu.dmadmin.test.TestObjectFactory;
+import edu.wgu.dm.TestObjectFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserManagementServiceTest {
