@@ -66,7 +66,7 @@ public class UserManagementService {
 
     public User createUser(@NonNull String userId) {
         Person person = this.personService.getPersonByUsername(userId);
-        if (Boolean.TRUE.equals(person.getIsEmployee()))
+        if (Boolean.FALSE.equals(person.getIsEmployee()))
             throw new IllegalArgumentException("User is not an employee.");
 
         return this.adminRepo.getUserById(person.getUserId())
