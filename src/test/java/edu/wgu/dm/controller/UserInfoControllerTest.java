@@ -1,4 +1,4 @@
-package edu.wgu.dmadmin.controller;
+package edu.wgu.dm.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,11 +19,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.wgu.dm.controller.UserInfoController;
 import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.service.UserInfoService;
 import edu.wgu.dm.util.IdentityUtil;
-import edu.wgu.dmadmin.test.TestObjectFactory;
+import edu.wgu.dm.TestObjectFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserInfoControllerTest {

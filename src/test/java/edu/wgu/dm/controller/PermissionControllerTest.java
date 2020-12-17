@@ -1,4 +1,4 @@
-package edu.wgu.dmadmin.controller;
+package edu.wgu.dm.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doNothing;
@@ -23,7 +23,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.wgu.dm.controller.PermissionController;
 import edu.wgu.dm.service.PermissionService;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.util.DateUtil;
@@ -103,5 +102,29 @@ public class PermissionControllerTest {
 
         verify(this.securityService).savePermissions(arg1.capture());
         assertEquals(Arrays.toString(permissions), Arrays.toString(arg1.getValue()));
+    }
+
+    @Test
+    public void testGetPermission() throws Exception {
+        String url = "/v1/admin/permissions/1212";
+
+        Permission permission = new Permission();
+        permission.setDateCreated(DateUtil.getZonedNow());
+        permission.setPermission("Admin");
+        permission.setPermissionDescription("Able to do everything");
+        permission.setLanding("Landing");
+        permission.setPermissionId(1212l);
+        permission.setPermissionDescription("description");
+        permission.setDateUpdated(DateUtil.getZonedNow());
+        permission.setPermissionType("amdin");
+
+        when(this.securityService.getPermission(1212l)).thenReturn(permission);
+
+        MvcResult result = this.mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertEquals(this.mapper.writeValueAsString(permission), result.getResponse()
+                .getContentAsString());
     }
 }

@@ -1,4 +1,4 @@
-package edu.wgu.dmadmin.controller;
+package edu.wgu.dm.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -14,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wgu.dm.dto.security.RoleInfo;
 import edu.wgu.dm.dto.response.Tag;
-import edu.wgu.dm.controller.TagController;
 import edu.wgu.dm.service.TagService;
 import java.util.List;
 import org.junit.Before;

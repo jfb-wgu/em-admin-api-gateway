@@ -2,16 +2,22 @@ package edu.wgu.dm.service;
 
 import edu.wgu.dm.dto.response.Tag;
 import edu.wgu.dm.dto.security.RoleInfo;
+import edu.wgu.dm.entity.projection.TagIdNameProjection;
 import edu.wgu.dm.entity.security.TagEntity;
 import edu.wgu.dm.exception.InvalidTagException;
 import edu.wgu.dm.exception.TagNotFoundException;
 import edu.wgu.dm.repository.RoleRepo;
 import edu.wgu.dm.repository.TagRepository;
 import edu.wgu.dm.mapper.TagMapper;
+
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -58,7 +64,7 @@ public class TagService {
      * @return the tag
      */
     public Tag getTag(Long tagId) {
-        TagEntity tagEntity = tagRepository.findBytagId(tagId)
+        TagEntity tagEntity = tagRepository.findByTagId(tagId)
                                            .orElseThrow(() -> new TagNotFoundException("Tag not found by id:"+tagId));
         return TagMapper.toTag(tagEntity);
     }
@@ -73,6 +79,20 @@ public class TagService {
                             .stream()
                             .map(TagMapper::toTag)
                             .collect(Collectors.toList());
+    }
+
+    public Map<Long, String> getAllowedTagsForUser(String emaUserId) {
+
+        if (StringUtils.isEmpty(emaUserId)) {
+            return Collections.emptyMap();
+        }
+        List<TagIdNameProjection> tagsAllowedForUser = tagRepository.getTagsAllowedForUser(emaUserId);
+        if (CollectionUtils.isEmpty(tagsAllowedForUser)) {
+            return Collections.emptyMap();
+        }
+        return tagsAllowedForUser.stream()
+                .collect(
+                        Collectors.toMap(TagIdNameProjection::getTagId, TagIdNameProjection::getTagName));
     }
 
     /**

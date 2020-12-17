@@ -1,4 +1,4 @@
-package edu.wgu.dmadmin.service;
+package edu.wgu.dm.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,7 +22,6 @@ import edu.wgu.boot.core.exception.AuthorizationException;
 import edu.wgu.dm.repository.PermissionRepo;
 import edu.wgu.dm.repository.RoleRepo;
 import edu.wgu.dm.repository.UserRepo;
-import edu.wgu.dm.service.RoleService;
 import edu.wgu.dm.exception.RoleNotFoundException;
 import edu.wgu.dm.dto.security.Permission;
 import edu.wgu.dm.dto.security.Role;
@@ -30,7 +29,7 @@ import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.dto.security.UserSummary;
 import edu.wgu.dm.util.DateUtil;
 import edu.wgu.dm.util.Permissions;
-import edu.wgu.dmadmin.test.TestObjectFactory;
+import edu.wgu.dm.TestObjectFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings("boxing")
