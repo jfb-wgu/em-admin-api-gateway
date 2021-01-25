@@ -7,11 +7,11 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,9 +25,9 @@ public class IdentityUtil {
 
     public List<String> getUserFirstAndLastName() {
         try {
-            JSONObject json = extractJwtToken();
-            String firstName = json.getAsString("givenName");
-            String lastName = json.getAsString("sn");
+            Map<String, Object> json = extractJwtToken();
+            String firstName = (String) json.get("givenName");
+            String lastName = (String) json.get("sn");
             return Arrays.asList(firstName, lastName);
         } catch (Exception e) {
             log.error("Error in IdentityUtil.getUserFirstAndLastName()", e);
@@ -75,7 +75,7 @@ public class IdentityUtil {
 
     }
 
-    private JSONObject extractJwtToken() throws ParseException {
+    private Map<String, Object> extractJwtToken() throws ParseException {
         String auth = this.request.getHeader("authorization");
         String jwtToken = auth.substring(6);
         return SignedJWT.parse(jwtToken)

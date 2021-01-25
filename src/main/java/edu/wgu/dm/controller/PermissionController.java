@@ -10,7 +10,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api("Permission management services. Modifying an existing permission may affect all users for the permission.")
 @RequestMapping("v1/admin")
-@RequiredArgsConstructor
 public class PermissionController {
 
     private final PermissionService service;
+
+    public PermissionController(PermissionService service) {
+        this.service = service;
+    }
 
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.ROLE_CREATE)

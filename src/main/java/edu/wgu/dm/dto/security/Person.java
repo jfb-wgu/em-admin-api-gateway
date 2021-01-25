@@ -18,7 +18,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
-import net.minidev.json.JSONObject;
 
 @Data
 @NoArgsConstructor
@@ -63,29 +62,27 @@ public class Person implements Serializable {
     @JsonInclude(value = Include.NON_EMPTY)
     Date lastLogin;
 
-    private Map<Long,String> tags=new HashMap<>();
+    private Map<Long, String> tags = new HashMap<>();
 
     public Person(@NonNull String authToken) throws ParseException {
         String jwtToken = authToken.substring(6);
 
-        JSONObject json = SignedJWT.parse(jwtToken)
-                                   .getPayload()
-                                   .toJSONObject();
+        Map<String, Object> json = SignedJWT.parse(jwtToken)
+                                            .getPayload()
+                                            .toJSONObject();
 
-        this.setStudentId(json.getAsString("wguBannerID"));
+        this.setStudentId((String) json.get("wguBannerID"));
 
-        if (json.getAsString("wguPIDM") != null) {
-            this.setPidm(Long.valueOf(json.getAsString("wguPIDM")));
+        if (json.get("wguPIDM") != null) {
+            this.setPidm(Long.valueOf((String) json.get("wguPIDM")));
         }
+        this.setFirstName((String) json.get("givenName"));
+        this.setLastName((String) json.get("sn"));
+        this.setUsername((String) json.get(USER_NAME));
+        String roleOne = (String) json.get("wguLevelOneRole");
+        this.setIsEmployee("Employee".equalsIgnoreCase(roleOne));
 
-        this.setFirstName(json.getAsString("givenName"));
-        this.setLastName(json.getAsString("sn"));
-        this.setUsername(json.getAsString(USER_NAME));
-
-        String roleOne = json.getAsString("wguLevelOneRole");
-        this.setIsEmployee(Boolean.valueOf("Employee".equalsIgnoreCase(roleOne)));
-
-        if (this.isEmployee.booleanValue()) {
+        if (this.getIsEmployee()) {
             this.setPreferredEmail(json.get(USER_NAME) + "@wgu.edu");
         } else {
             this.setPreferredEmail(json.get(USER_NAME) + "@my.wgu.edu");
@@ -94,7 +91,7 @@ public class Person implements Serializable {
 
     @JsonInclude(value = Include.NON_EMPTY)
     public String getUserId() {
-        if (this.isEmployee.booleanValue()) {
+        if (this.getIsEmployee()) {
             return this.studentId;
         }
         return "";
