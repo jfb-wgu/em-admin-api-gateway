@@ -3,15 +3,8 @@ package edu.wgu.dm.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class StatusUtil {
-
-
     public static final String AUTHOR_WORK_SUBMITTED = "2";
     public static final String AUTHOR_WORK_RESUBMITTED = "4";
     public static final String AUTHOR_WORK_EVALUATED = "8"; // submission Locked for student
@@ -21,6 +14,8 @@ public class StatusUtil {
     public static final String ARTICULATION_HOLD = "512";
     public static final String OPEN_HOLD = "1024";
 
+    private StatusUtil() {
+    }
 
     public static List<String> getStatusesForQueues(List<String> queues) {
         List<String> statuses = new ArrayList<>();
@@ -48,9 +43,10 @@ public class StatusUtil {
                 case Permissions.LEAD_QUEUE:
                     statuses.add(LEAD_HOLD);
                     break;
+
+                default: break;
             }
         }
-
         return statuses;
     }
 

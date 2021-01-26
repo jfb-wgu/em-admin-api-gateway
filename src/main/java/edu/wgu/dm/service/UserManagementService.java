@@ -17,32 +17,41 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lombok.AccessLevel;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
-@RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserManagementService {
 
+    private static final Logger log = LoggerFactory.getLogger(UserManagementService.class);
     private final UserRepo adminRepo;
-
     private final RoleRepo roleRepo;
+    private final PersonService personService;
 
-    PersonService personService;
+    public UserManagementService(UserRepo adminRepo, RoleRepo roleRepo,
+        PersonService personService) {
+        this.adminRepo = adminRepo;
+        this.roleRepo = roleRepo;
+        this.personService = personService;
+    }
 
-    public User getUser(@NonNull String userId) {
+    public User getUser(  String userId) {
+        if (userId == null) {
+            throw new NullPointerException("non null userId is required");
+        }
         return this.adminRepo.getUserById(userId)
                              .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
-    public void saveUser(@NonNull String userId, @NonNull User user) {
+    public void saveUser( String userId,  User user) {
+        if (userId == null) {
+            throw new NullPointerException("non null userId is required");
+        }
+        if (user == null) {
+            throw new NullPointerException("non null user is required");
+        }
         Set<Long> roles = user.getRoleIds();
 
         checkIfSystemUser(roles, userId);
@@ -50,9 +59,12 @@ public class UserManagementService {
     }
 
     /**
-     *  We will need to user deletion as a soft delete
-      */
-    public void deleteUser(@NonNull String userId) {
+     * We will need to user deletion as a soft delete
+     */
+    public void deleteUser(String userId) {
+        if (userId == null) {
+            throw new NullPointerException("non null userId is required");
+        }
         this.adminRepo.deleteUser(userId);
     }
 
@@ -60,14 +72,21 @@ public class UserManagementService {
         return this.adminRepo.getAllUsers();
     }
 
-    public List<UserSummary> getUsersForTask(@NonNull Long taskId) {
+    public List<UserSummary> getUsersForTask(Long taskId) {
+        if (taskId == null) {
+            throw new NullPointerException("non null TaskId is required");
+        }
         return this.adminRepo.getUsersByTask(taskId);
     }
 
-    public User createUser(@NonNull String userId) {
+    public User createUser(String userId) {
+        if (userId == null) {
+            throw new NullPointerException("non null userId is required");
+        }
         Person person = this.personService.getPersonByUsername(userId);
-        if (Boolean.FALSE.equals(person.getIsEmployee()))
+        if (Boolean.FALSE.equals(person.getIsEmployee())) {
             throw new IllegalArgumentException("User is not an employee.");
+        }
 
         return this.adminRepo.getUserById(person.getUserId())
                              .orElseGet(() -> saveUser(person));
@@ -75,10 +94,17 @@ public class UserManagementService {
 
     private User saveUser(Person person) {
         User user = new User(person);
-        return this.adminRepo.saveUser(user).orElseThrow(()->new IllegalStateException("Saving User failed"));
+        return this.adminRepo.saveUser(user)
+                             .orElseThrow(() -> new IllegalStateException("Saving User failed"));
     }
 
-    public BulkCreateResponse createUsers(@NonNull String userId, @NonNull BulkUsers users) {
+    public BulkCreateResponse createUsers(String userId, BulkUsers users) {
+        if (userId == null) {
+            throw new NullPointerException("non null userId is required");
+        }
+        if (users == null) {
+            throw new NullPointerException("non null users is required");
+        }
         List<User> toCreate = new ArrayList<>();
         List<String> failed = new ArrayList<>();
 
@@ -110,20 +136,28 @@ public class UserManagementService {
     }
 
     /**
-     * Validate that only a system user can assign system role to other user. If any of the incoming
-     * role IDs match with any role that has system permission, then check to see if the current user
-     * has the SYSTEM permission. If not, throw an AuthorizationException.
-     *  @param roleIds
+     * Validate that only a system user can assign system role to other user. If any of the incoming role IDs match with
+     * any role that has system permission, then check to see if the current user has the SYSTEM permission. If not,
+     * throw an AuthorizationException.
+     *
+     * @param roleIds
      * @param userId
      * @return
      */
-    private UserSummary checkIfSystemUser(@NonNull Collection<Long> roleIds, @NonNull String userId) {
+    private UserSummary checkIfSystemUser(Collection<Long> roleIds, String userId) {
+        if (roleIds == null) {
+            throw new NullPointerException("non null roleIds is required");
+        }
+        if (userId == null) {
+            throw new NullPointerException("non null userId is required");
+        }
         List<Long> rolesWithSystem = this.roleRepo.getRolesByPermission(Permissions.SYSTEM);
         UserSummary summary = null;
         if (CollectionUtils.containsAny(roleIds, rolesWithSystem)) {
-            summary= this.adminRepo.getUserWithPermission(userId, Permissions.SYSTEM)
-                          .orElseThrow(
-                                  () -> new AuthorizationException("Only SYSTEM users can assign SYSTEM permissions"));
+            summary = this.adminRepo.getUserWithPermission(userId, Permissions.SYSTEM)
+                                    .orElseThrow(
+                                        () -> new AuthorizationException(
+                                            "Only SYSTEM users can assign SYSTEM permissions"));
         }
 
         return summary;

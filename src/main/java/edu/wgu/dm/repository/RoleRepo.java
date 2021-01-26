@@ -2,10 +2,10 @@ package edu.wgu.dm.repository;
 
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.RoleInfo;
-import edu.wgu.dm.entity.security.RoleEntity;
 import edu.wgu.dm.entity.projection.security.RoleIdNameProjection;
 import edu.wgu.dm.entity.projection.security.RoleIdProjection;
 import edu.wgu.dm.entity.projection.security.RoleProjection;
+import edu.wgu.dm.entity.security.RoleEntity;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

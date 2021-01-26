@@ -1,5 +1,18 @@
 package edu.wgu.dm.controller;
 
+import edu.wgu.boot.auth.authz.annotation.HasAnyRole;
+import edu.wgu.boot.auth.authz.annotation.Secured;
+import edu.wgu.dm.dto.response.BulkCreateResponse;
+import edu.wgu.dm.dto.response.UserListResponse;
+import edu.wgu.dm.dto.response.UserResponse;
+import edu.wgu.dm.dto.security.BulkUsers;
+import edu.wgu.dm.dto.security.User;
+import edu.wgu.dm.service.SecureByPermissionStrategy;
+import edu.wgu.dm.service.UserManagementService;
+import edu.wgu.dm.util.IdentityUtil;
+import edu.wgu.dm.util.Permissions;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,33 +24,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import edu.wgu.boot.auth.authz.annotation.HasAnyRole;
-import edu.wgu.boot.auth.authz.annotation.Secured;
-import edu.wgu.dm.service.UserManagementService;
-import edu.wgu.dm.dto.response.BulkCreateResponse;
-import edu.wgu.dm.dto.response.UserListResponse;
-import edu.wgu.dm.dto.response.UserResponse;
-import edu.wgu.dm.dto.security.BulkUsers;
-import edu.wgu.dm.dto.security.User;
-import edu.wgu.dm.service.SecureByPermissionStrategy;
-import edu.wgu.dm.util.IdentityUtil;
-import edu.wgu.dm.util.Permissions;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 
-/**
- * 
- */
 @RestController
 @RequestMapping("v1")
-@RequiredArgsConstructor
 public class UserManagementController {
 
    private final UserManagementService service;
-
    private final IdentityUtil iUtil;
 
+    public UserManagementController(UserManagementService service, IdentityUtil iUtil) {
+        this.service = service;
+        this.iUtil = iUtil;
+    }
 
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_SEARCH)

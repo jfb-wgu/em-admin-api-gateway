@@ -10,17 +10,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@Slf4j
 public class IdentityUtil {
 
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(IdentityUtil.class);
+
     @Autowired
-    @Getter
     private HttpServletRequest request;
 
     public List<String> getUserFirstAndLastName() {
@@ -81,5 +80,13 @@ public class IdentityUtil {
         return SignedJWT.parse(jwtToken)
                         .getPayload()
                         .toJSONObject();
+    }
+
+    public HttpServletRequest getRequest() {
+        return request;
+    }
+
+    public void setRequest(HttpServletRequest request) {
+        this.request = request;
     }
 }

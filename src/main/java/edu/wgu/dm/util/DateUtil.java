@@ -10,6 +10,9 @@ public class DateUtil {
 
     public static final ZoneId SERVER_ZONEID = ZoneId.of("MST7MDT");
 
+    private DateUtil() {
+    }
+
     public static Date getZonedNow() {
         return Date.from(ZonedDateTime.now(SERVER_ZONEID)
                                       .toInstant());

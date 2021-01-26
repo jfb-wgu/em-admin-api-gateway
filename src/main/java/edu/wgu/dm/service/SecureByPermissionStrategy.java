@@ -9,36 +9,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
-@RequiredArgsConstructor
 public class SecureByPermissionStrategy implements AuthorizationStrategy {
 
+    private static final Logger log = LoggerFactory.getLogger(SecureByPermissionStrategy.class);
     private final SecurityRepo repo;
+
+    public SecureByPermissionStrategy(SecurityRepo repo) {
+        this.repo = repo;
+    }
 
     @Override
     public boolean isAuthorized(final HttpServletRequest request, final AuthorizationInfo authorizationInformation) {
 
-        Optional<AuthzIdentityKeys> identityKeys = AuthzIdentityKeys.retrieveFrom(request);
-        if (!identityKeys.isPresent()) {
-            log.error("AuthzIdentityKeys missing from the request.");
+        AuthzIdentityKeys identityKeys = AuthzIdentityKeys.retrieveFrom(request)
+                                                          .orElse(null);
+        if (identityKeys == null || identityKeys.getRoles() == null || !identityKeys.getRoles()
+                                                                                    .contains(Role.EMPLOYEE)) {
+            log.error("AuthzIdentityKeys is missing or is Invalid in the request.");
             return false;
         }
-        AuthzIdentityKeys keys = identityKeys.get();
-        if (keys.getRoles() == null || !keys.getRoles()
-                                            .contains(Role.EMPLOYEE)) {
-            return false;
-        }
-        String userId = keys.getBannerId();
+        String userId = identityKeys.getBannerId();
         if (StringUtils.isBlank(userId)) {
-            throw new IllegalArgumentException("UserId Not Found  "+userId);
+            throw new IllegalArgumentException("UserId Not Found  " + userId);
         }
         List<String> allowedPermissions = new ArrayList<>(authorizationInformation.getRoles());
         allowedPermissions.add("SYSTEM"); // SYSTEM can access all functions.

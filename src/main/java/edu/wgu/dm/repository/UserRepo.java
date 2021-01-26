@@ -1,15 +1,15 @@
 package edu.wgu.dm.repository;
 
+import edu.wgu.dm.dto.security.User;
+import edu.wgu.dm.dto.security.UserSummary;
+import edu.wgu.dm.entity.projection.security.UserProjection;
+import edu.wgu.dm.entity.security.UserEntity;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import edu.wgu.dm.dto.security.User;
-import edu.wgu.dm.dto.security.UserSummary;
-import edu.wgu.dm.entity.security.UserEntity;
-import edu.wgu.dm.entity.projection.security.UserProjection;
-import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
