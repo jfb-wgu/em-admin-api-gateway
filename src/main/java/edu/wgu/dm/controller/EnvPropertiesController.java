@@ -53,7 +53,6 @@ public class EnvPropertiesController {
             if (propertySource instanceof EnumerablePropertySource) {
                 String[] names = ((EnumerablePropertySource<?>) propertySource).getPropertyNames();
                 propertyNames.addAll(Arrays.asList(names));
-                log.debug("Properties for {}:{}", propertySource.getName(), Arrays.asList(names));
             }
         }
         Map<String, String> properties = propertyNames.stream()
