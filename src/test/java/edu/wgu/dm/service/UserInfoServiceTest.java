@@ -129,9 +129,5 @@ public class UserInfoServiceTest {
         assertEquals(result.getPidm(), this.person1.getPidm());
     }
 
-    @Test
-    public void testGetUserPermissions() {
-        this.service.getUserPermissions(this.user1.getUserId());
-        verify(this.userInfoRepo).getPermissionsForUser(ArgumentMatchers.eq(this.user1.getUserId()));
-    }
+
 }
