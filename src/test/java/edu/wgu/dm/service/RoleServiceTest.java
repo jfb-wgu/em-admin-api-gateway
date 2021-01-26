@@ -171,8 +171,7 @@ public class RoleServiceTest {
                   .add(systemPerm);
 
         when(this.permRepo.getPermissionByName(Permissions.SYSTEM)).thenReturn(Optional.of(systemPerm));
-        when(this.userRepo.getUserWithPermission("test", Permissions.SYSTEM)).thenReturn(
-                Optional.of(new UserSummary()));
+        when(this.userRepo.checkIfUserHasPermission("test", Permissions.SYSTEM)).thenReturn(1);
 
         // Act
         this.service.saveRoles("test", new Role[] {systemRole});
@@ -201,7 +200,6 @@ public class RoleServiceTest {
                   .add(systemPerm);
 
         when(this.permRepo.getPermissionByName(Permissions.SYSTEM)).thenReturn(Optional.of(systemPerm));
-        when(this.userRepo.getUserWithPermission("test", Permissions.SYSTEM)).thenReturn(Optional.empty());
 
         // Act
         this.service.saveRoles("test", new Role[] {systemRole});

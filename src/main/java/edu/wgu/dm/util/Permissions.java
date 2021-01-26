@@ -65,36 +65,15 @@ public class Permissions {
     public static final String MASTER_RELEASE = "master-release";
     public static final String INTERNAL_COMMENT = "internal-comment";
 
+    private Permissions() {
+    }
+
     public static List<String> getQueues() {
-        List<String> queues = new ArrayList<String>();
+        List<String> queues = new ArrayList<>();
         queues.add(OPEN_QUEUE);
         queues.add(ORIGINALITY_QUEUE);
         queues.add(ARTICULATION_QUEUE);
         queues.add(LEAD_QUEUE);
         return queues;
-    }
-
-    public static String getPermissionforStatus(String status) {
-        String permission = "";
-
-        switch (status) {
-            case StatusUtil.LEAD_HOLD:
-                permission = LEAD_CLEAR;
-                break;
-            case StatusUtil.ARTICULATION_HOLD:
-                permission = ARTICULATION_CLEAR;
-                break;
-            case StatusUtil.ORIGINALITY_HOLD:
-                permission = ORIGINALITY_CLEAR;
-                break;
-            case StatusUtil.OPEN_HOLD:
-                permission = OPEN_CLEAR;
-                break;
-            case StatusUtil.AUTHOR_WORK_EVALUATED:
-                permission = ATTEMPTS_CLEAR;
-                break;
-        }
-
-        return permission;
     }
 }

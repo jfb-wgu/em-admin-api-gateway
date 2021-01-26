@@ -11,9 +11,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,12 +27,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api("Role management services.  Modifying an existing role will affect any users with the role.")
 @RequestMapping("v1/admin")
-@RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RoleController {
 
-    RoleService service;
-    IdentityUtil iUtil;
+    private final RoleService service;
+    private final IdentityUtil iUtil;
+
+    public RoleController(RoleService service, IdentityUtil iUtil) {
+        this.service = service;
+        this.iUtil = iUtil;
+    }
 
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.ROLE_CREATE)

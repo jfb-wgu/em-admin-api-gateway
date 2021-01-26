@@ -12,7 +12,6 @@ import edu.wgu.dm.util.Permissions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api("Tag management services. Deactivating an existing tag will stop users from creating new referral with that tag. For e.g. On the evaluation page, evaluator wont be able to see deactivated tag in the dropdown to add on the submission")
 @RequestMapping("v1/admin")
-@RequiredArgsConstructor
 public class TagController {
 
     private final TagService tagService;
+
+    public TagController(TagService tagService) {
+        this.tagService = tagService;
+    }
 
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_CREATE)
