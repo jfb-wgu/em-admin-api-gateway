@@ -7,17 +7,19 @@ import edu.wgu.dm.entity.security.UserEntity;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-@RequiredArgsConstructor
 public class UserRepo {
 
     private final UserRepository userRepository;
-
     private final SecurityRepo secRepo;
+
+    public UserRepo(UserRepository userRepository, SecurityRepo secRepo) {
+        this.userRepository = userRepository;
+        this.secRepo = secRepo;
+    }
 
     @Transactional
     public Optional<User> saveUser(User user) {

@@ -2,15 +2,13 @@ package edu.wgu.dm.mapper;
 
 import edu.wgu.dm.dto.response.Tag;
 import edu.wgu.dm.entity.security.TagEntity;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.Value;
 
-@Value
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class TagMapper {
+public final class TagMapper {
 
-    public static TagEntity toTagEntity( Tag tag) {
+    private TagMapper() {
+    }
+
+    public static TagEntity toTagEntity(Tag tag) {
         if (tag == null) {
             throw new NullPointerException("non null tag required ");
         }
@@ -23,7 +21,7 @@ public class TagMapper {
         return tagEntity;
     }
 
-    public static  Tag toTag( TagEntity tagEntity) {
+    public static Tag toTag(TagEntity tagEntity) {
         if (tagEntity == null) {
             throw new NullPointerException("non null tagEntity required");
         }

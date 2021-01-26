@@ -9,15 +9,17 @@ import edu.wgu.dm.entity.security.RoleEntity;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-@RequiredArgsConstructor
 public class RoleRepo {
 
     private final RoleRepository roleRepository;
+
+    public RoleRepo(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
     @Transactional
     public List<Role> saveRoles(List<Role> roles) {
