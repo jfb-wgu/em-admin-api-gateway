@@ -107,9 +107,10 @@ public class RoleService {
                                          .orElseThrow(() -> new IllegalStateException(
                                              "No SYSTEM permission is configured."));
         if (permissions.contains(system.getPermissionId())) {
-            this.userRepo.getUserWithPermission(userId, Permissions.SYSTEM)
-                         .orElseThrow(
-                             () -> new AuthorizationException("Only SYSTEM users can assign SYSTEM permissions"));
+            int count = this.userRepo.checkIfUserHasPermission(userId, Permissions.SYSTEM);
+            if (count == 0) {
+                throw new AuthorizationException("Only SYSTEM users can assign SYSTEM permissions");
+            }
         }
     }
 }

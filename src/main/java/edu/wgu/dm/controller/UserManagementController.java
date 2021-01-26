@@ -2,10 +2,8 @@ package edu.wgu.dm.controller;
 
 import edu.wgu.boot.auth.authz.annotation.HasAnyRole;
 import edu.wgu.boot.auth.authz.annotation.Secured;
-import edu.wgu.dm.dto.response.BulkCreateResponse;
 import edu.wgu.dm.dto.response.UserListResponse;
 import edu.wgu.dm.dto.response.UserResponse;
-import edu.wgu.dm.dto.security.BulkUsers;
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.service.SecureByPermissionStrategy;
 import edu.wgu.dm.service.UserManagementService;
@@ -71,19 +69,6 @@ public class UserManagementController {
         User result = this.service.createUser(username);
         return ResponseEntity.ok(result);
     }
-
-
-    @Secured(strategies = {SecureByPermissionStrategy.class})
-    @HasAnyRole(Permissions.USER_CREATE)
-    @PostMapping(value = "/users/bulk", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation("Create multiple users from WGU usernames.  Existing user information will be preserved.")
-    @ApiImplicitParam(name = "Authorization", value = "User-Create permission", dataType = "string",
-            paramType = "header", required = true)
-    public ResponseEntity<BulkCreateResponse> createUsers(@RequestBody BulkUsers users) {
-        BulkCreateResponse result = this.service.createUsers(this.iUtil.getUserId(), users);
-        return ResponseEntity.ok(result);
-    }
-
 
     @Secured(strategies = {SecureByPermissionStrategy.class})
     @HasAnyRole(Permissions.USER_DELETE)

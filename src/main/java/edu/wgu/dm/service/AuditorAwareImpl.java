@@ -2,6 +2,7 @@ package edu.wgu.dm.service;
 
 import edu.wgu.dm.util.IdentityUtil;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.AuditorAware;
@@ -22,6 +23,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
         this.iUtil = iUtil;
     }
 
+    @NotNull
     public Optional<String> getCurrentAuditor() {
         String bannerId = "NA";
         try {

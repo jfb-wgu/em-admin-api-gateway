@@ -1,16 +1,13 @@
 package edu.wgu.dm.config;
 
 import edu.wgu.dm.dto.response.ExceptionResponse;
-import java.lang.reflect.Field;
 import java.util.Date;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,16 +26,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         HttpStatus status = null;
         String reason = null;
         Class<? extends Exception> exceptionObject = ex.getClass();
-        List<String> messages = null;
-        try {
-            Field messagesField = ReflectionUtils.findField(exceptionObject, "messages", List.class);
-            if (messagesField != null) {
-                messagesField.setAccessible(true);
-                messages = (List<String>) ReflectionUtils.getField(messagesField, ex);
-            }
-        } catch (Exception e) {
-            // Intentional
-        }
         ResponseStatus annotation = exceptionObject.getAnnotation(ResponseStatus.class);
         if (annotation != null) {
             status = annotation.value();
@@ -57,7 +44,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         log.error("Error", ex);
         String message = String.format("Reason: %s", reason);
         ExceptionResponse exResponse = new ExceptionResponse(status.value(), status.name(), message, new Date(),
-                                                             request.getRequestURI(), messages);
+                                                             request.getRequestURI());
         return new ResponseEntity<>(exResponse, status);
     }
 }

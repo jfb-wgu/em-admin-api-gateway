@@ -20,6 +20,8 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
 
     UserProjection findByUserIdAndRolesPermissionsPermission(String userId, String permission);
 
+    int countByUserIdAndRolesPermissionsPermission(String userId, String permission);
+
     UserProjection findByUserId(String userId);
 
     @Modifying
