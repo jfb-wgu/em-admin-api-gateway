@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.env.AbstractEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
@@ -28,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping
 public class EnvPropertiesController {
 
-    private static final Logger log = LoggerFactory.getLogger(EnvPropertiesController.class);
     private final Environment env;
 
     public EnvPropertiesController(Environment env) {
