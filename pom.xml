@@ -7,7 +7,7 @@
   <packaging>jar</packaging>
   <name>ema-admin</name>
   <description>WGU User Management Service</description>
-  <version>3.2.3</version>
+  <version>3.2.4</version>
 
   <parent>
     <groupId>edu.wgu</groupId>
@@ -146,7 +146,6 @@
           </excludes>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -157,19 +156,47 @@
               <goal>prepare-agent</goal>
             </goals>
           </execution>
+          <execution>
+            <id>report</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
         </executions>
         <configuration>
           <destFile>${sonar.jacoco.reportPath}</destFile>
+          <dataFile>${sonar.jacoco.reportPath}</dataFile>
+          <excludes>
+            <exclude>**/dto/**</exclude>
+            <exclude>**/entity/**</exclude>
+            <exclude>**/enums</exclude>
+            <exclude>**/exception/**</exclude>
+            <exclude>**/mapper/**</exclude>
+            <exclude>**/config/**</exclude>
+            <exclude>**/converters/**</exclude>
+            <exclude>**/properties/**</exclude>
+            <exclude>**/constant/**</exclude>
+            <exclude>**/mediator/**</exclude>
+            <exclude>**/repository/**</exclude>
+            <exclude>**/util/**</exclude>
+          </excludes>
         </configuration>
       </plugin>
-
     </plugins>
   </build>
 
   <repositories>
     <repository>
       <id>WGU</id>
-      <url>https://nexus.wgu.edu/content/repositories/WGU</url>
+      <url>https://nexus.wgu.edu/content/repositories/WGU/</url>
+    </repository>
+    <repository>
+      <id>public</id>
+      <url>https://nexus.wgu.edu/content/repositories/public/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
     </repository>
   </repositories>
 
