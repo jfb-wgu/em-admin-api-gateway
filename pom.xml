@@ -7,7 +7,7 @@
   <packaging>jar</packaging>
   <name>ema-admin</name>
   <description>WGU User Management Service</description>
-  <version>3.2.1</version>
+  <version>3.2.2</version>
 
   <parent>
     <groupId>edu.wgu</groupId>
@@ -20,6 +20,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <netty.handler.version>5.0.0.Alpha2</netty.handler.version>
+    <it.skip>true</it.skip>
     <sonar.tests>src/test/java</sonar.tests>
     <sonar.exclusions>**/dto/**/*,**/entity/**/*,**/enums/**/*,**/exception/**/*,**/mapper/**/*,**/config/**/*,**/converters/**/*,**/properties/**/*,**/constant/**/*,**/mediator/**/*,**/repository/**/*,**/util/**/*</sonar.exclusions>
     <sonar.login>bb62a950cd937e585f0546aff9da8da075d43bd9</sonar.login>
