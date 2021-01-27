@@ -9,6 +9,7 @@
   <description>WGU User Management Service</description>
   <version>3.2.5</version>
 
+
   <parent>
     <groupId>edu.wgu</groupId>
     <artifactId>wgu-boot-starter-parent</artifactId>
