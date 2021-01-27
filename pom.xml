@@ -7,7 +7,7 @@
   <packaging>jar</packaging>
   <name>ema-admin</name>
   <description>WGU User Management Service</description>
-  <version>3.2.4</version>
+  <version>3.2.5</version>
 
   <parent>
     <groupId>edu.wgu</groupId>
@@ -100,6 +100,20 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.junit.vintage</groupId>
+          <artifactId>junit-vintage-engine</artifactId>
+        </exclusion>
+        <exclusion>
+          <artifactId>junit-jupiter</artifactId>
+          <groupId>org.junit.jupiter</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>mockito-junit-jupiter</artifactId>
+          <groupId>org.mockito</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
