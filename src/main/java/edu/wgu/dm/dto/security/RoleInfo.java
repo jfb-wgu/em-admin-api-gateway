@@ -1,17 +1,32 @@
 package edu.wgu.dm.dto.security;
 
-import java.io.Serializable;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
-
-@Data
-@NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoleInfo {
 
-    Long roleId;
-    String role;
-    String roleDescription;
+    private Long roleId;
+    private String role;
+    private String roleDescription;
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRoleDescription() {
+        return roleDescription;
+    }
+
+    public void setRoleDescription(String roleDescription) {
+        this.roleDescription = roleDescription;
+    }
 }

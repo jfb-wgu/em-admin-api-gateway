@@ -2,17 +2,16 @@ package edu.wgu.dm.mapper;
 
 import edu.wgu.dm.dto.response.Tag;
 import edu.wgu.dm.entity.security.TagEntity;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Value;
 
-@Value
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class TagMapper {
+public final class TagMapper {
 
-    public static TagEntity toTagEntity(@NonNull Tag tag) {
+    private TagMapper() {
+    }
 
+    public static TagEntity toTagEntity(Tag tag) {
+        if (tag == null) {
+            throw new NullPointerException("non null tag required ");
+        }
         TagEntity tagEntity = new TagEntity();
         tagEntity.setTagId(tag.getTagId());
         tagEntity.setName(tag.getName());
@@ -22,8 +21,10 @@ public class TagMapper {
         return tagEntity;
     }
 
-    public static  Tag toTag(@NonNull TagEntity tagEntity) {
-
+    public static Tag toTag(TagEntity tagEntity) {
+        if (tagEntity == null) {
+            throw new NullPointerException("non null tagEntity required");
+        }
         Tag tag = new Tag();
         tag.setTagId(tagEntity.getTagId());
         tag.setRoleId(tagEntity.getRoleId());

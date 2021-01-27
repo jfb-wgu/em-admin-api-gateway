@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.AbstractEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
@@ -24,16 +22,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * The type Env properties controller.
- */
-@Slf4j
-@RequiredArgsConstructor
 @RestController
 @RequestMapping
 public class EnvPropertiesController {
 
     private final Environment env;
+
+    public EnvPropertiesController(Environment env) {
+        this.env = env;
+    }
 
     /**
      * Gets environment.
@@ -53,7 +50,6 @@ public class EnvPropertiesController {
             if (propertySource instanceof EnumerablePropertySource) {
                 String[] names = ((EnumerablePropertySource<?>) propertySource).getPropertyNames();
                 propertyNames.addAll(Arrays.asList(names));
-                log.debug("Properties for " + propertySource.getName() + ": " + Arrays.asList(names));
             }
         }
         Map<String, String> properties = propertyNames.stream()
@@ -62,7 +58,8 @@ public class EnvPropertiesController {
                                                       .filter(key -> !key.toLowerCase()
                                                                          .contains("secret"))
                                                       .collect(Collectors.toMap(Function.identity(),
-                                                                                this.env::getProperty, (val1, val2) -> val1));
+                                                                                this.env::getProperty,
+                                                                                (val1, val2) -> val1));
 
         return ResponseEntity.ok(properties);
     }

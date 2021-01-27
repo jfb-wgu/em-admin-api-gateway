@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,10 +26,6 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.Table;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.CreatedBy;
@@ -37,11 +34,8 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Data
-@NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "user")
 @NamedEntityGraph(name = "roles",
                   attributeNodes = {@NamedAttributeNode(value = "roles", subgraph = "roles.permissions")},
@@ -54,47 +48,47 @@ public class UserEntity implements Serializable {
     @Id
     @Column(name = "user_id")
     @Access(AccessType.PROPERTY)
-    String userId;
+    private String userId;
 
     @Column(name = "first_name")
-    String firstName;
+    private String firstName;
 
     @Column(name = "last_name")
-    String lastName;
+    private String lastName;
 
     @Column(name = "last_login")
-    Date lastLogin;
+    private Date lastLogin;
 
     @Column(name = "employee_id")
-    String employeeId;
+    private String employeeId;
 
     @CreatedDate
     @Column(name = "date_created", updatable = false)
-    Date dateCreated;
+    private Date dateCreated;
 
     @LastModifiedDate
     @Column(name = "date_updated")
-    Date dateUpdated;
+    private Date dateUpdated;
 
     @ManyToMany
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
                inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     @Fetch(value = FetchMode.SUBSELECT)
-    Set<RoleEntity> roles = new HashSet<>();
+    private Set<RoleEntity> roles = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "user_tasks", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
                inverseJoinColumns = @JoinColumn(name = "task_id", referencedColumnName = "task_id"))
     @Fetch(value = FetchMode.SUBSELECT)
-    Set<TaskIdEntity> tasks = new HashSet<>();
+    private Set<TaskIdEntity> tasks = new HashSet<>();
 
     @CreatedBy
     @Column(name = "created_by", updatable = false)
-    String createdBy;
+    private String createdBy;
 
     @LastModifiedBy
     @Column(name = "last_modified_by")
-    String lastModifiedBy;
+    private String lastModifiedBy;
 
     public UserEntity(String userId) {
         this.userId = userId;
@@ -114,6 +108,9 @@ public class UserEntity implements Serializable {
             this.getRoles()
                 .add(new RoleEntity(role.getRoleId()));
         }
+    }
+
+    public UserEntity() {
     }
 
     public User toUser() {
@@ -156,5 +153,118 @@ public class UserEntity implements Serializable {
         }
         return Optional.of(model.get()
                                 .toUser());
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getDateUpdated() {
+        return dateUpdated;
+    }
+
+    public void setDateUpdated(Date dateUpdated) {
+        this.dateUpdated = dateUpdated;
+    }
+
+    public Set<RoleEntity> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<RoleEntity> roles) {
+        this.roles = roles;
+    }
+
+    public Set<TaskIdEntity> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<TaskIdEntity> tasks) {
+        this.tasks = tasks;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(userId, that.userId) && Objects.equals(firstName, that.firstName)
+                   && Objects.equals(lastName, that.lastName) && Objects.equals(lastLogin,
+                                                                                that.lastLogin)
+                   && Objects.equals(employeeId, that.employeeId) && Objects.equals(dateCreated,
+                                                                                    that.dateCreated)
+                   && Objects.equals(dateUpdated, that.dateUpdated) && Objects.equals(roles, that.roles)
+                   && Objects.equals(tasks, that.tasks) && Objects.equals(createdBy, that.createdBy)
+                   && Objects.equals(lastModifiedBy, that.lastModifiedBy);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, firstName, lastName, lastLogin, employeeId, dateCreated, dateUpdated, roles, tasks,
+                            createdBy, lastModifiedBy);
     }
 }

@@ -2,7 +2,6 @@ package edu.wgu.dm.repository;
 
 import edu.wgu.dm.entity.projection.TagIdNameProjection;
 import edu.wgu.dm.entity.security.TagEntity;
-
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

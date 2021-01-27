@@ -7,7 +7,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -21,18 +20,14 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import edu.wgu.boot.core.exception.AuthorizationException;
 import edu.wgu.dm.repository.RoleRepo;
 import edu.wgu.dm.repository.UserRepo;
 import edu.wgu.dm.exception.UserNotFoundException;
-import edu.wgu.dm.dto.response.BulkCreateResponse;
-import edu.wgu.dm.dto.security.BulkUsers;
 import edu.wgu.dm.dto.security.Person;
 import edu.wgu.dm.dto.security.Role;
 import edu.wgu.dm.dto.security.User;
 import edu.wgu.dm.dto.security.UserSummary;
 import edu.wgu.dm.service.feign.PersonService;
-import edu.wgu.dm.util.Permissions;
 import edu.wgu.dm.TestObjectFactory;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -166,89 +161,5 @@ public class UserManagementServiceTest {
                                                         .getFirstName());
         assertEquals(this.user1.getLastName(), argument.getValue()
                                                        .getLastName());
-    }
-
-    @Test
-    public void testCreateUsers() {
-        List<Long> roles = Arrays.asList(1L, 2L, 3L);
-        List<Long> tasks = Arrays.asList(4L, 5L, 6L);
-        List<String> names = Arrays.asList("test", "user", "fail");
-
-        BulkUsers users = new BulkUsers();
-        users.setRoles(roles);
-        users.setTasks(tasks);
-        users.setUsernames(names);
-
-        when(this.pService.getPersonByUsername("test")).thenReturn(this.person1);
-        when(this.pService.getPersonByUsername("user")).thenReturn(this.person2);
-        when(this.pService.getPersonByUsername("fail")).thenThrow(new UserNotFoundException("fail"));
-        when(this.repo.getUserById(this.person1.getUserId())).thenReturn(Optional.empty());
-        when(this.repo.getUserById(this.person2.getUserId())).thenReturn(Optional.empty());
-        when(this.roleRepo.getRolesByPermission(Permissions.SYSTEM)).thenReturn(Collections.emptyList());
-
-        BulkCreateResponse result = this.service.createUsers("admin", users);
-
-        verify(this.repo).saveUsers(this.captor.capture());
-        assertEquals("fail", result.getFailed()
-                                   .get(0));
-        assertTrue(result.getUsers()
-                         .get(0)
-                         .getRoleIds()
-                         .contains(1L));
-        assertTrue(result.getUsers()
-                         .get(1)
-                         .getTasks()
-                         .contains(5L));
-    }
-
-    @Test
-    public void testCreateUsersSystemRole() {
-        List<Long> roles = Arrays.asList(1L, 2L, 3L);
-        List<Long> tasks = Arrays.asList(4L, 5L, 6L);
-        List<String> names = Arrays.asList("test", "user", "fail");
-
-        BulkUsers users = new BulkUsers();
-        users.setRoles(roles);
-        users.setTasks(tasks);
-        users.setUsernames(names);
-
-        when(this.pService.getPersonByUsername("test")).thenReturn(this.person1);
-        when(this.pService.getPersonByUsername("user")).thenReturn(this.person2);
-        when(this.pService.getPersonByUsername("fail")).thenThrow(new UserNotFoundException("fail"));
-        when(this.repo.getUserById(this.person1.getUserId())).thenReturn(Optional.empty());
-        when(this.repo.getUserById(this.person2.getUserId())).thenReturn(Optional.empty());
-        when(this.roleRepo.getRolesByPermission(Permissions.SYSTEM)).thenReturn(Arrays.asList(1L));
-        when(this.repo.getUserWithPermission("admin", Permissions.SYSTEM)).thenReturn(Optional.of(new UserSummary()));
-
-        BulkCreateResponse result = this.service.createUsers("admin", users);
-
-        verify(this.repo).saveUsers(this.captor.capture());
-        assertEquals("fail", result.getFailed()
-                                   .get(0));
-        assertTrue(result.getUsers()
-                         .get(0)
-                         .getRoleIds()
-                         .contains(1L));
-        assertTrue(result.getUsers()
-                         .get(1)
-                         .getTasks()
-                         .contains(5L));
-    }
-
-    @Test(expected = AuthorizationException.class)
-    public void testCreateUsersSystemRoleCheckFails() {
-        List<Long> roles = Arrays.asList(1L, 2L, 3L);
-        List<Long> tasks = Arrays.asList(4L, 5L, 6L);
-        List<String> names = Arrays.asList("test", "user", "fail");
-
-        BulkUsers users = new BulkUsers();
-        users.setRoles(roles);
-        users.setTasks(tasks);
-        users.setUsernames(names);
-
-        when(this.roleRepo.getRolesByPermission(Permissions.SYSTEM)).thenReturn(Arrays.asList(1L));
-        when(this.repo.getUserWithPermission("admin", Permissions.SYSTEM)).thenReturn(Optional.empty());
-
-        this.service.createUsers("admin", users);
     }
 }

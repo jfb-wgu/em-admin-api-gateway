@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.Column;
@@ -20,20 +21,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Data
-@NoArgsConstructor
 @Table(name = "role")
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class RoleEntity implements Serializable {
@@ -43,26 +37,26 @@ public class RoleEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id", updatable = false, insertable = false)
-    Long roleId;
+    private Long roleId;
 
-    String role;
+    private String role;
 
     @Column(name = "role_description")
-    String roleDescription;
+    private String roleDescription;
 
     @CreatedDate
     @Column(name = "date_created", updatable = false)
-    Date dateCreated;
+    private Date dateCreated;
 
     @LastModifiedDate
     @Column(name = "date_updated")
-    Date dateUpdated;
+    private Date dateUpdated;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_permissions", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"),
                inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "permission_id"))
     @Fetch(value = FetchMode.SUBSELECT)
-    List<PermissionEntity> permissions = new ArrayList<>();
+    private List<PermissionEntity> permissions = new ArrayList<>();
 
     public RoleEntity(Long roleId) {
         this.roleId = roleId;
@@ -76,6 +70,9 @@ public class RoleEntity implements Serializable {
             this.getPermissions()
                 .add(new PermissionEntity(p.getPermissionId()));
         }
+    }
+
+    public RoleEntity() {
     }
 
     public Role toRole() {
@@ -113,5 +110,71 @@ public class RoleEntity implements Serializable {
         return models.stream()
                      .map(r -> r.toRole())
                      .collect(Collectors.toList());
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRoleDescription() {
+        return roleDescription;
+    }
+
+    public void setRoleDescription(String roleDescription) {
+        this.roleDescription = roleDescription;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getDateUpdated() {
+        return dateUpdated;
+    }
+
+    public void setDateUpdated(Date dateUpdated) {
+        this.dateUpdated = dateUpdated;
+    }
+
+    public List<PermissionEntity> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<PermissionEntity> permissions) {
+        this.permissions = permissions;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        RoleEntity that = (RoleEntity) o;
+        return Objects.equals(roleId, that.roleId) && Objects.equals(role, that.role);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roleId, role);
     }
 }

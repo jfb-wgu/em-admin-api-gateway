@@ -1,19 +1,21 @@
 package edu.wgu.dm.repository;
 
+import edu.wgu.dm.dto.security.Permission;
+import edu.wgu.dm.entity.security.PermissionEntity;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import edu.wgu.dm.dto.security.Permission;
-import edu.wgu.dm.entity.security.PermissionEntity;
-import lombok.RequiredArgsConstructor;
 
 @Repository
-@RequiredArgsConstructor
 public class PermissionRepo {
 
     private final PermissionRepository permissionRepository;
+
+    public PermissionRepo(PermissionRepository permissionRepository) {
+        this.permissionRepository = permissionRepository;
+    }
 
     @Transactional
     public void savePermissions(List<Permission> permissions) {
