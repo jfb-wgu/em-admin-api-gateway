@@ -2,8 +2,8 @@
   "Common": {
     "ALBHealthcheckEndpoint": "/actuator/health",
     "ALBListenerRulePriority": "10",
-    "ApplicationHostname": "ema-admin",
-    "ApplicationName": "ema-admin",
+    "ApplicationHostname": "evaluation-management-admin",
+    "ApplicationName": "evaluation-management-admin",
     "ApplicationPort": "8080",
     "AutoscalingMetricTargetCPU": "0",
     "AutoscalingMetricTargetRAM": "90",
@@ -12,28 +12,24 @@
     "AutoscalingScaleOutCooldown": "120",
     "FargateBaseNumTasks": "2",
     "FargateCPU": "256",
-    "FargateCluster": "EMASharedCluster",
+    "FargateCluster": "EvaluationManagementInternalCluster",
     "FargateHealthcheckGracePeriod": "480",
     "FargateMaxNumTasks": "10",
     "FargateRAM": "2048",
-    "ProductTeam": "EMA",
+    "ProductTeam": "EvaluationManagement",
     "EgressCidrIp1": "172.27.0.0/16",
     "EgressPort1": "3306"
   },
   "Sandbox": {
-    "ALBHostname": "internal-fargatetraining-1500725784.us-west-2.elb.amazonaws.com",
-    "ALBListenerArn": "arn:aws:elasticloadbalancing:us-west-2:826098188524:listener/app/fargatetraining/01237da669dbb4cf/ee0df050ac0548c7",
-    "ALBSecurityGroup": "sg-0cf96b01218b01393",
-    "FargateCluster": "fargatetraining",
     "FargateBaseNumTasks": "1"
   },
   "Development": {
     "FargateBaseNumTasks": "1"
   },
   "Stage": {
-    "FargateBaseNumTasks": "2"
+    "FargateBaseNumTasks": "1"
   },
   "Production": {
-    "FargateBaseNumTasks": "2"
+    "FargateBaseNumTasks": "1"
   }
 }

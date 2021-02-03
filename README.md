@@ -1,7 +1,7 @@
 ﻿
 ### Synopsis
 
-EMA-Admin is a supporting application for EMA.  It provides APIs for user administration.
+evaluation-management-admin is a supporting application for EMA.  It provides APIs for user administration.
 
 ### Motivation
 
@@ -20,5 +20,3 @@ A set of junit/mockito tests are executed with each build.
 Please contact ema.backend@wgu.edu with any questions.
 
 ### Swagger Documentation
-
-[https://ema-admin.prod.wgu.edu/swagger-ui.html](https://ema-admin.prod.wgu.edu/swagger-ui.html)
