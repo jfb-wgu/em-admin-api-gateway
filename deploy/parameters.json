@@ -1,7 +1,8 @@
 {
   "Common": {
     "ALBHealthcheckEndpoint": "/actuator/health",
-    "ALBListenerRulePriority": "10",
+    "ALBGreenListenerRulePriority": "1",
+    "ALBBlueListenerRulePriority": "2",
     "ApplicationHostname": "evaluation-management-admin",
     "ApplicationName": "evaluation-management-admin",
     "ApplicationPort": "8080",
