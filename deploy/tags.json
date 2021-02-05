@@ -1,10 +1,10 @@
 {
-  "Application" : "ema-admin",
-  "ProductOwner" : "jared.hatch@wgu.edu",
-  "TechnicalContact" : "EMA",
-  "BusinessUnit" : "AssessmentEvaluationDevelopment",
-  "ProductTeam" : "EMA",
-  "DataClassification" : "Internal",
-  "RTO" : "ND",
-  "RPO" : "ND"
+  "Application": "evaluation-management-admin",
+  "ProductOwner": "EvaluationManagement",
+  "TechnicalContact": "ema.backend@wgu.edu",
+  "BusinessUnit": "EvaluationManagement",
+  "ProductTeam": "EvaluationManagement",
+  "DataClassification": "Internal",
+  "RTO": "ND",
+  "RPO": "ND"
 }
