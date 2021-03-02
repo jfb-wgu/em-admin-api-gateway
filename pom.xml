@@ -3,11 +3,11 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>ema-admin</artifactId>
+  <artifactId>em-admin</artifactId>
   <packaging>jar</packaging>
-  <name>ema-admin</name>
+  <name>em-admin</name>
   <description>WGU User Management Service</description>
-  <version>3.2.5</version>
+  <version>4.0.4</version>
 
 
   <parent>
@@ -22,10 +22,13 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <netty.handler.version>5.0.0.Alpha2</netty.handler.version>
     <it.skip>true</it.skip>
+    <sonar.projectKey>WGU-edu_em-admin</sonar.projectKey>
+    <sonar.organization>wgu-edu</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar.tests>src/test/java</sonar.tests>
-    <sonar.exclusions>**/dto/**/*,**/entity/**/*,**/enums/**/*,**/exception/**/*,**/mapper/**/*,**/config/**/*,**/converters/**/*,**/properties/**/*,**/constant/**/*,**/mediator/**/*,**/repository/**/*,**/util/**/*</sonar.exclusions>
-    <sonar.login>bb62a950cd937e585f0546aff9da8da075d43bd9</sonar.login>
-    <sonar.host.url>https://sonar.wgu.edu</sonar.host.url>
+    <sonar.exclusions>
+      **/dto/**/*,**/entity/**/*,**/enums/**/*,**/exception/**/*,**/mapper/**/*,**/config/**/*,**/converters/**/*,**/properties/**/*,**/constant/**/*,**/mediator/**/*,**/repository/**/*,**/util/**/*
+    </sonar.exclusions>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
