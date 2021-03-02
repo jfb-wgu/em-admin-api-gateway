@@ -1,12 +1,12 @@
 {
   "Common": {
     "ALBHealthcheckEndpoint": "/actuator/health",
-    "ALBGreenListenerRulePriority": "1",
-    "ALBBlueListenerRulePriority": "2",
-    "ApplicationHostname": "evaluation-management-admin",
-    "ApplicationName": "evaluation-management-admin",
+    "ALBGreenListenerRulePriority": "9",
+    "ALBBlueListenerRulePriority": "10",
+    "ApplicationHostname": "em-admin",
+    "ApplicationName": "em-admin",
     "ApplicationPort": "8080",
-    "AutoscalingMetricTargetCPU": "0",
+    "AutoscalingMetricTargetCPU": "90",
     "AutoscalingMetricTargetRAM": "90",
     "AutoscalingMetricTargetRequests": "500",
     "AutoscalingScaleInCooldown": "120",
