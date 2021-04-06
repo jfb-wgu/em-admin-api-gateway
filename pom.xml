@@ -7,13 +7,12 @@
   <packaging>jar</packaging>
   <name>em-admin</name>
   <description>WGU User Management Service</description>
-  <version>4.0.4</version>
-
+  <version>4.0.7</version>
 
   <parent>
     <groupId>edu.wgu</groupId>
     <artifactId>wgu-boot-starter-parent</artifactId>
-    <version>1.3.4.RELEASE</version>
+    <version>1.3.6.RELEASE</version>
   </parent>
 
   <properties>
@@ -39,7 +38,7 @@
       <dependency>
         <groupId>edu.wgu</groupId>
         <artifactId>wgu-boot-parent</artifactId>
-        <version>1.3.4.RELEASE</version>
+        <version>1.3.6.RELEASE</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

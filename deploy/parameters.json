@@ -7,7 +7,7 @@
     "ApplicationName": "em-admin",
     "ApplicationPort": "8080",
     "AutoscalingMetricTargetCPU": "90",
-    "AutoscalingMetricTargetRAM": "90",
+    "AutoscalingMetricTargetRAM": "0",
     "AutoscalingMetricTargetRequests": "500",
     "AutoscalingScaleInCooldown": "120",
     "AutoscalingScaleOutCooldown": "120",
@@ -25,12 +25,18 @@
     "FargateBaseNumTasks": "1"
   },
   "Development": {
-    "FargateBaseNumTasks": "1"
+    "FargateBaseNumTasks": "1",
+    "EgressCidrIp2": "172.26.0.0/21",
+    "EgressPort2": "3306"
   },
   "Stage": {
-    "FargateBaseNumTasks": "1"
+    "FargateBaseNumTasks": "1",
+    "EgressCidrIp2": "172.23.0.0/16",
+    "EgressPort2": "3306"
   },
   "Production": {
-    "FargateBaseNumTasks": "1"
+    "FargateBaseNumTasks": "1",
+    "EgressCidrIp2": "172.24.0.0/16",
+    "EgressPort2": "3306"
   }
 }
