@@ -1,7 +1,7 @@
 {
   "Common": {
     "ProductTeam": "EvaluationManagement",
-    "ApplicationName": "em-admin:",
+    "ApplicationName": "em-admin",
     "ApiGatewayHostname":"em-admin",
     "ALBHealthcheckEndpoint": "/actuator/health",
     "ALBGreenListenerRulePriority": "9",
@@ -21,7 +21,6 @@
     "FargateRAM": "2048",
     "EgressCidrIp1": "172.27.0.0/16",
     "EgressPort1": "3306",
-    "FargateTaskRoleArn": "EvaluationManagementSoftwareEngineerRole"
   },
   "Sandbox": {
     "FargateBaseNumTasks": "1"
@@ -29,15 +28,18 @@
   "Development": {
     "FargateBaseNumTasks": "1",
     "EgressCidrIp2": "172.26.0.0/21",
+    "FargateTaskRoleArn": "",
     "EgressPort2": "3306"
   },
   "Stage": {
     "FargateBaseNumTasks": "1",
+    "FargateTaskRoleArn": "",
     "EgressCidrIp2": "172.23.0.0/16",
     "EgressPort2": "3306"
   },
   "Production": {
     "FargateBaseNumTasks": "1",
+    "FargateTaskRoleArn": "",
     "EgressCidrIp2": "172.24.0.0/16",
     "EgressPort2": "3306"
   }
