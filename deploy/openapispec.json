@@ -1,0 +1,1482 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "EMA User Management (Roles, Permissions and Teams)",
+      "description": "Provides an API for managing users in EMA.",
+      "contact": {
+        "email": "ema.backend@wgu.edu"
+      },
+      "license": {
+        "name": "not yours",
+        "url": "em-admin.wgu.edu/license"
+      },
+      "version": "4.0.7"
+    },
+    "servers": [
+      {
+        "url": "//em-admin.development.wgu.edu/"
+      }
+    ],
+    "tags": [
+      {
+        "name": "permission-controller",
+        "description": "Permission Controller"
+      },
+      {
+        "name": "role-controller",
+        "description": "Role Controller"
+      },
+      {
+        "name": "tag-controller",
+        "description": "Tag Controller"
+      },
+      {
+        "name": "user-info-controller",
+        "description": "User Info Controller"
+      },
+      {
+        "name": "user-management-controller",
+        "description": "User Management Controller"
+      }
+    ],
+    "paths": {
+      "/v1/admin/permissions": {
+        "get": {
+          "tags": [
+            "permission-controller"
+          ],
+          "summary": "List all permissions.",
+          "operationId": "getPermissionsUsingGET",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "Role-Create permission",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Permission"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ]
+        },
+        "post": {
+          "tags": [
+            "permission-controller"
+          ],
+          "summary": "Add one or more permissions.",
+          "operationId": "addPermissionsUsingPOST",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "Role-Create permission",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Permission"
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "201": {
+              "description": "Created",
+              "content": {}
+            },
+            "204": {
+              "description": "No Content",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ],
+          "x-codegen-request-body-name": "permissions"
+        }
+      },
+      "/v1/admin/permissions/{permissionId}": {
+        "get": {
+          "tags": [
+            "permission-controller"
+          ],
+          "summary": "Get details for specified permission.",
+          "operationId": "getPermissionUsingGET",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "Role-Create permission",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "permissionId",
+              "in": "path",
+              "description": "permissionId",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Permission"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ]
+        }
+      },
+      "/v1/admin/roles": {
+        "get": {
+          "tags": [
+            "role-controller"
+          ],
+          "summary": "List all roles.",
+          "operationId": "getRolesUsingGET",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "Role-Create permission",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Role"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ]
+        },
+        "post": {
+          "tags": [
+            "role-controller"
+          ],
+          "summary": "Add one or more roles.",
+          "operationId": "saveRolesUsingPOST",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "Role-Create permission",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "roles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Role"
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Role"
+                    }
+                  }
+                }
+              }
+            },
+            "201": {
+              "description": "Created",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ],
+          "x-codegen-request-body-name": "roles"
+        }
+      },
+      "/v1/admin/roles/{roleId}": {
+        "get": {
+          "tags": [
+            "role-controller"
+          ],
+          "summary": "Get details for specified role.",
+          "operationId": "getRoleUsingGET",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "Role-Create permission",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "roleId",
+              "in": "path",
+              "description": "roleId",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Role"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ]
+        },
+        "delete": {
+          "tags": [
+            "role-controller"
+          ],
+          "summary": "Delete specified role.",
+          "operationId": "deleteRoleUsingDELETE",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "Role-Create permission",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "roleId",
+              "in": "path",
+              "description": "roleId",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "No Content",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ]
+        }
+      },
+      "/v1/admin/tags": {
+        "get": {
+          "tags": [
+            "tag-controller"
+          ],
+          "summary": "Employee can view the list of Tags.",
+          "operationId": "getTagListUsingGET",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "Bearer {pingToken}",
+              "schema": {
+                "type": "string",
+                "default": "Bearer "
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Tag"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ]
+        },
+        "post": {
+          "tags": [
+            "tag-controller"
+          ],
+          "summary": "User with ADMIN role can Create or Update a tag.",
+          "operationId": "createUpdateTagUsingPOST",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "Bearer {pingToken}",
+              "schema": {
+                "type": "string",
+                "default": "Bearer "
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "tag",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tag"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Tag"
+                  }
+                }
+              }
+            },
+            "201": {
+              "description": "Created",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ],
+          "x-codegen-request-body-name": "tag"
+        }
+      },
+      "/v1/admin/tags/roles": {
+        "get": {
+          "tags": [
+            "tag-controller"
+          ],
+          "summary": "Employee can list the roles that can be assigned to a Tag.",
+          "operationId": "getApplicableRolesUsingGET",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "Bearer {pingToken}",
+              "schema": {
+                "type": "string",
+                "default": "Bearer "
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RoleInfo"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ]
+        }
+      },
+      "/v1/admin/tags/{tagId}": {
+        "get": {
+          "tags": [
+            "tag-controller"
+          ],
+          "summary": "Employee can get the details for specified Tag.",
+          "operationId": "getTagUsingGET",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "Bearer {pingToken}",
+              "schema": {
+                "type": "string",
+                "default": "Bearer "
+              }
+            },
+            {
+              "name": "tagId",
+              "in": "path",
+              "description": "tagId",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Tag"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ]
+        },
+        "delete": {
+          "tags": [
+            "tag-controller"
+          ],
+          "summary": "User with SYSTEM role can delete the specified tag.",
+          "operationId": "deleteTagUsingDELETE",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "Bearer {pingToken}",
+              "schema": {
+                "type": "string",
+                "default": "Bearer "
+              }
+            },
+            {
+              "name": "tagId",
+              "in": "path",
+              "description": "tagId",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "No Content",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ]
+        }
+      },
+      "/v1/person": {
+        "get": {
+          "tags": [
+            "user-info-controller"
+          ],
+          "summary": "View details about the current user.",
+          "operationId": "getPersonUsingGET_1",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "All authenticated",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ]
+        }
+      },
+      "/v1/person/{bannerId}": {
+        "get": {
+          "tags": [
+            "user-info-controller"
+          ],
+          "summary": "View details about the specified user.",
+          "operationId": "getPersonUsingGET",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "User-Search permission",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "bannerId",
+              "in": "path",
+              "description": "bannerId",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ]
+        }
+      },
+      "/v1/users": {
+        "get": {
+          "tags": [
+            "user-management-controller"
+          ],
+          "summary": "List all EMA users.",
+          "operationId": "getAllUsersUsingGET",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "User-Search permission",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserListResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ]
+        },
+        "post": {
+          "tags": [
+            "user-management-controller"
+          ],
+          "summary": "Save or update an EMA user.",
+          "operationId": "saveUserUsingPOST",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "User-Create permission",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "201": {
+              "description": "Created",
+              "content": {}
+            },
+            "204": {
+              "description": "No Content",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ],
+          "x-codegen-request-body-name": "user"
+        }
+      },
+      "/v1/users/task/{taskId}": {
+        "get": {
+          "tags": [
+            "user-management-controller"
+          ],
+          "summary": "List all EMA users who are qualified on the specified task.",
+          "operationId": "getUsersForTaskUsingGET",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "User-Search permission",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "taskId",
+              "in": "path",
+              "description": "taskId",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserListResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ]
+        }
+      },
+      "/v1/users/{userId}": {
+        "get": {
+          "tags": [
+            "user-management-controller"
+          ],
+          "summary": "View the specified EMA user.",
+          "operationId": "getUserUsingGET",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "User-Search permission",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "userId",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ]
+        },
+        "delete": {
+          "tags": [
+            "user-management-controller"
+          ],
+          "summary": "Remove a user from EMA.",
+          "operationId": "deleteUserUsingDELETE",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "User-Delete permission",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "userId",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "No Content",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "client_credential_scheme": []
+            },
+            {
+              "password_scheme": []
+            }
+          ]
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Permission": {
+          "title": "Permission",
+          "type": "object",
+          "properties": {
+            "dateCreated": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "dateUpdated": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "landing": {
+              "type": "string"
+            },
+            "permission": {
+              "type": "string"
+            },
+            "permissionDescription": {
+              "type": "string"
+            },
+            "permissionId": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "permissionType": {
+              "type": "string"
+            }
+          }
+        },
+        "Person": {
+          "title": "Person",
+          "type": "object",
+          "properties": {
+            "emaRoles": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            "firstName": {
+              "type": "string"
+            },
+            "isEmployee": {
+              "type": "boolean"
+            },
+            "landings": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "lastLogin": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "permissions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "pidm": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "preferredEmail": {
+              "type": "string"
+            },
+            "studentId": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            "teams": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            "userId": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            }
+          }
+        },
+        "Role": {
+          "title": "Role",
+          "type": "object",
+          "properties": {
+            "dateCreated": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "dateUpdated": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "permissionNames": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "permissions": {
+              "type": "array",
+              "example": [
+                0
+              ],
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
+            },
+            "role": {
+              "type": "string"
+            },
+            "roleDescription": {
+              "type": "string"
+            },
+            "roleId": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        },
+        "RoleInfo": {
+          "title": "RoleInfo",
+          "type": "object",
+          "properties": {
+            "role": {
+              "type": "string"
+            },
+            "roleDescription": {
+              "type": "string"
+            },
+            "roleId": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        },
+        "Tag": {
+          "title": "Tag",
+          "type": "object",
+          "properties": {
+            "active": {
+              "type": "boolean"
+            },
+            "description": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "roleId": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "tagId": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        },
+        "User": {
+          "title": "User",
+          "type": "object",
+          "properties": {
+            "employeeId": {
+              "type": "string"
+            },
+            "firstName": {
+              "type": "string"
+            },
+            "landings": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "lastLogin": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "permissions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "queues": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "roles": {
+              "type": "array",
+              "example": [
+                0
+              ],
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            "teams": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            "userId": {
+              "type": "string"
+            }
+          }
+        },
+        "UserListResponse": {
+          "title": "UserListResponse",
+          "type": "object",
+          "properties": {
+            "evaluators": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/UserSummary"
+              }
+            }
+          }
+        },
+        "UserResponse": {
+          "title": "UserResponse",
+          "type": "object",
+          "properties": {
+            "evaluator": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        },
+        "UserSummary": {
+          "title": "UserSummary",
+          "type": "object",
+          "properties": {
+            "employeeId": {
+              "type": "string"
+            },
+            "firstName": {
+              "type": "string"
+            },
+            "lastLogin": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "userId": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "securitySchemes": {
+        "client_credential_scheme": {
+          "type": "oauth2",
+          "flows": {
+            "clientCredentials": {
+              "tokenUrl": "https://access.dev.wgu.edu/pingfed/as/token.oauth2",
+              "scopes": {}
+            }
+          }
+        },
+        "password_scheme": {
+          "type": "oauth2",
+          "flows": {
+            "password": {
+              "tokenUrl": "https://access.dev.wgu.edu/pingfed/as/token.oauth2",
+              "scopes": {}
+            }
+          }
+        }
+      }
+    }
+  }
+  
